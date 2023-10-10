@@ -166,7 +166,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    transition: ;
+    transition: 0.3s;
 }
 .butt2:hover{
     background-color: #2C2C2C;;
