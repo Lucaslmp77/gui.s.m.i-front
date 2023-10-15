@@ -1,10 +1,10 @@
-import { ContentHome } from "./HomeContent"
+import { Login } from "./Login"
 
 function App() {
 
   return (
     <>
-      <ContentHome />
+      <Login />
     </>
   )
 }
