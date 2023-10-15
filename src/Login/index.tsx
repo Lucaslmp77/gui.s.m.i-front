@@ -11,7 +11,7 @@ export const Login = () => {
                         <h2 className={styles.title}>Bem-vindo de volta</h2>
                         <p className={styles.description}>Por favor, faça o login para acessar sua conta</p>
                         <p className={styles.description}>Caso não tenha uma conta, efetue o cadastro abaixo</p>
-                        <NavLink to={`/Register`}>
+                        <NavLink to={`/Register`} className={styles.butt_fat}>
                             <button className={styles.butt}>CADASTRE-SE</button>
                         </NavLink>
                     </div>
