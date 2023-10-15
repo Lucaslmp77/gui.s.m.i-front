@@ -1,5 +1,7 @@
 import styles from './styles.module.css';
 
+import { NavLink } from 'react-router-dom';
+
 export const Login = () => {
     return (
         <section className={styles.conteiner}>
@@ -9,7 +11,9 @@ export const Login = () => {
                         <h2 className={styles.title}>Bem-vindo de volta</h2>
                         <p className={styles.description}>Por favor, faça o login para acessar sua conta</p>
                         <p className={styles.description}>Caso não tenha uma conta, efetue o cadastro abaixo</p>
-                        <button className={styles.butt}>CADASTRE-SE</button>
+                        <NavLink to={`/Register`}>
+                            <button className={styles.butt}>CADASTRE-SE</button>
+                        </NavLink>
                     </div>
                     <div className={styles.secondColum}>
                         <h2 className={styles.title2}>Faça Seu Login</h2>

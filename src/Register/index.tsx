@@ -1,4 +1,6 @@
+import { NavLink } from "react-router-dom"
 import styles from "./styles.module.css"
+
 
 export const Register = () => {
     return (
@@ -18,7 +20,9 @@ export const Register = () => {
                     <h2 className={styles.title}>Possui uma conta ?</h2>
                     <p className={styles.description}>Crie sua conta para embarcar em uma jornada épica.</p>
                     <p className={styles.description}>Caso tenha uma conta, faça o login abaixo</p>
-                    <button className={styles.butt}>ENTRAR</button>
+                    <NavLink to={`/Login`}>
+                        <button className={styles.butt}>ENTRAR</button>=
+                    </NavLink>
                 </div>
             </div>
         </section>
