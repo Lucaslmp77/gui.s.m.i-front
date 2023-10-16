@@ -4,16 +4,28 @@ import styles from "./styles.module.css"
 
 export const Register = () => {
     return (
-        <section>
-            <div className={styles.secondContent}>
+        <section className={styles.conteiner}>
+            <div className={styles.conteinerHome}>
                 <div className={styles.secondColum}>
-                    <h2 className={styles.title2}>Crie Sua Conta</h2>
-                    <form className={styles.form}>
-                        <input type="text" placeholder="Login"/>
-                        <input type="email" placeholder="Email"/>
-                        <input type="password" placeholder="Senha"/>
-                        <input type="password" placeholder="Confirmar Senha"/>
-                    </form>
+                    <h2 className={styles.title}>Crie Sua Conta</h2>
+                    <div className={styles.form}>
+                        <div className={styles.inputs}> 
+                            <label>Login</label>
+                            <input type="text"/>
+                        </div>
+                        <div className={styles.inputs}> 
+                            <label>Email</label>
+                            <input type="text"/>
+                        </div>
+                        <div className={styles.inputs}>
+                            <label>Senha</label>
+                            <input type="password"/>
+                        </div>
+                        <div className={styles.inputs}>
+                            <label>Confirmar Senha</label>
+                            <input type="password"/>
+                        </div>
+                    </div>
                     <button className={styles.butt2}>CADASTRE-SE</button>
                 </div>
                 <div className={styles.firstColum}>
