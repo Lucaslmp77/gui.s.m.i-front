@@ -1,5 +1,4 @@
 import styles from './styles.module.css';
-
 import { NavLink } from 'react-router-dom';
 
 export const Login = () => {
@@ -8,15 +7,15 @@ export const Login = () => {
             <div className={styles.conteinerHome}>
                 <div className={styles.firstContent}>
                     <div className={styles.firstColum}>
-                        <h2 className={styles.title}>Bem-vindo de volta</h2>
-                        <p className={styles.description}>Por favor, faça o login para acessar sua conta</p>
-                        <p className={styles.description}>Caso não tenha uma conta, efetue o cadastro abaixo</p>
+                        <h1 className={styles.title}>GUI.S.M.I</h1>
+                        <h2 className={styles.subtitle}>Bem-vindo</h2>
+                        <p className={styles.description}>Novo por aqui? Cadastre-se agora e comece sua aventura</p>
                         <NavLink to={`/Register`} className={styles.butt_fat}>
                             <button className={styles.butt}>CADASTRE-SE</button>
                         </NavLink>
                     </div>
                     <div className={styles.secondColum}>
-                        <h2 className={styles.title2}>Faça Seu Login</h2>
+                        <h2 className={styles.title2}>Faça seu login</h2>
                         <div className={styles.form}>
                             <div className={styles.inputs}> 
                                 <label>Login</label>
