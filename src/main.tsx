@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client'
 import App from "./App.tsx"
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { Login } from './Login/index.tsx'
-import { Register } from './Register/index.tsx'
+import { Login } from './Pages/Login/index.tsx'
+import { Register } from './Pages/Register/index.tsx'
 
 const router = createBrowserRouter ([
   {
@@ -12,7 +12,7 @@ const router = createBrowserRouter ([
     element: <App />,
     children: [
       {
-        path: "/Login",
+        path: "/",
         element: <Login />
       },
       {
