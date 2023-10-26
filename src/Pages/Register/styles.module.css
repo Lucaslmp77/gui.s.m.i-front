@@ -134,3 +134,7 @@
     line-height: normal;
     color: #E0D3DE;
 }
+
+.error {
+    color: red;
+}

@@ -21,4 +21,13 @@ export class UserClient {
             return Promise.reject(error.response)
         }
     }
+
+    public async findUserByEmail(email: string) : Promise<User> {
+        try {
+            return (await this.axiosClient.get<User>(`/${email}`)).data
+        }
+        catch(error:any) {
+            return Promise.reject(error.response)
+        }
+    }
 }
