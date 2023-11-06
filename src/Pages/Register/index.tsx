@@ -12,7 +12,6 @@ export const Register = () => {
   });
 
   const [emailError, setEmailError] = useState("");
-  const [errorEmailIsTrue, setErrorEmailIsTrue] = useState(false);
 
   const handleChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
@@ -24,24 +23,17 @@ export const Register = () => {
     try {
       const userClient = new UserClient();
       const user = new User();
-  
+
       user.name = formData.name;
       user.email = formData.email;
       user.password = formData.password;
-  
+
       const isEmailUnique = await userClient.findUserByEmail(formData.email);
-  
+
       if (isEmailUnique) {
-        setErrorEmailIsTrue(true);
         setEmailError("Email já está em uso");
       } else {
-        setErrorEmailIsTrue(false);
         setEmailError("");
-      }
-  
-      setFormData({ ...formData });
-  
-      if (!errorEmailIsTrue) {
         await userClient.save(user);
         console.log("Usuário cadastrado com sucesso:", user);
       }
@@ -72,7 +64,7 @@ export const Register = () => {
               value={formData.email}
               onChange={handleChange}
             />
-            {errorEmailIsTrue && <div className={styles.error}>{emailError}</div>}
+            {emailError && <div className={styles.error}>{emailError}</div>}
           </div>
           <div className={styles.inputs}>
             <label>Senha</label>
