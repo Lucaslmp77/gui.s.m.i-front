@@ -19,6 +19,13 @@ export const Login = () => {
         setError("");
     };
 
+    const setCookie = (name: string, value: string, expiresInSeconds: number) => {
+        const date = new Date();
+        date.setTime(date.getTime() + expiresInSeconds * 1000);
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    };
+
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
@@ -32,12 +39,15 @@ export const Login = () => {
 
             const response = await authenticateClient.authenticate(authenticateData);
 
-            // Verifique a resposta do servidor aqui e aja de acordo com o sucesso ou erro.
-            // Você pode redirecionar o usuário ou exibir uma mensagem de sucesso.
+            if (response.access_token) {
+                setCookie('authToken', response.access_token, 7 * 24 * 60 * 60);
 
-            console.log('Autenticação bem-sucedida:', response);
+                console.log('Autenticação bem-sucedida:', response);
+            } else {
+                setError('Token de acesso ausente na resposta.');
+                console.error('Token de acesso ausente na resposta.');
+            }
         } catch (error) {
-            // Trate os erros retornados pela API de autenticação
             setError('Autenticação falhou. Por favor, verifique suas credenciais.');
             console.error('Erro de autenticação:', error);
         }
@@ -58,7 +68,7 @@ export const Login = () => {
                     <div className={styles.secondColum}>
                         <h2 className={styles.title2}>Faça seu login</h2>
                         <div className={styles.form}>
-                        {error && <div className={styles.error}>{error}</div>}
+                            {error && <div className={styles.error}>{error}</div>}
 
                             <div className={styles.inputs}>
                                 <label>Login</label>
