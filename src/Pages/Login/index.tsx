@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './styles.module.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthenticateClient } from '../../client/authenticate.client';
 
 export const Login = () => {
@@ -19,12 +19,14 @@ export const Login = () => {
         setError("");
     };
 
-    const setCookie = (name: string, value: string, expiresInSeconds: number) => {
+    const setCookie = (name: string, value: string, expiresInMillis: number) => {
         const date = new Date();
-        date.setTime(date.getTime() + expiresInSeconds * 1000);
+        date.setTime(date.getTime() + expiresInMillis);
         const expires = "expires=" + date.toUTCString();
         document.cookie = name + "=" + value + ";" + expires + ";path=/";
     };
+
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -40,9 +42,9 @@ export const Login = () => {
             const response = await authenticateClient.authenticate(authenticateData);
 
             if (response.access_token) {
-                setCookie('authToken', response.access_token, 7 * 24 * 60 * 60);
-
+                setCookie('authToken', response.access_token, 5 * 1000);
                 console.log('Autenticação bem-sucedida:', response);
+                navigate('/Home');
             } else {
                 setError('Token de acesso ausente na resposta.');
                 console.error('Token de acesso ausente na resposta.');
