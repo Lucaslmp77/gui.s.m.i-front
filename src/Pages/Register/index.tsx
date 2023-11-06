@@ -5,41 +5,133 @@ import { User } from "../../models/user";
 import { NavLink } from "react-router-dom";
 
 export const Register = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     name: "",
     email: "",
     password: "",
   });
 
-  const [emailError, setEmailError] = useState("");
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const isEmailUnique = async (email: string) => {
+    const userClient = new UserClient();
+    return await userClient.findUserByEmail(email);
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    clearErrors(name);
+  };
+
+  const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "name" || name === "password" || name === "email") {
+      const isValid = await validateField(name, value);
+      if (!isValid) {
+        e.preventDefault();
+      }
+    }
+  };
+
+  const clearErrors = (field: string) => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: "",
+    }));
+  };
+
+  const validateField = async (name: string, value: string) => {
+    let isValid = true;
+
+    if (name === "name") {
+      if (value.length === 0) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          name: "Nome de usuário é obrigatório",
+        }));
+        isValid = false;
+      } else if (value.length < 3 || value.length > 10) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          name: "Nome de usuário deve ter entre 3 e 10 caracteres",
+        }));
+        isValid = false;
+      }
+    }
+
+    if (name === "password") {
+      if (value.length === 0) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          password: "Senha é obrigatória",
+        }));
+        isValid = false;
+      } else if (value.length < 5 || value.length > 8) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          password: "Senha deve ter entre 5 e 8 caracteres",
+        }));
+        isValid = false;
+      }
+    }
+
+    if (name === "email") {
+      if (value.length === 0) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: "Email é obrigatório",
+        }));
+        isValid = false;
+      } else {
+        const isEmailNotUniqueResult = await isEmailUnique(value);
+        if (isEmailNotUniqueResult) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            email: "Email já está em uso",
+          }));
+          isValid = false;
+        }
+      }
+    }
+
+    return isValid;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userClient = new UserClient();
-      const user = new User();
+      const isFormValid = await validateForm();
 
-      user.name = formData.name;
-      user.email = formData.email;
-      user.password = formData.password;
+      if (isFormValid) {
+        const userClient = new UserClient();
+        const user = new User();
 
-      const isEmailUnique = await userClient.findUserByEmail(formData.email);
+        user.name = formData.name;
+        user.email = formData.email;
+        user.password = formData.password;
 
-      if (isEmailUnique) {
-        setEmailError("Email já está em uso");
-      } else {
-        setEmailError("");
         await userClient.save(user);
         console.log("Usuário cadastrado com sucesso:", user);
       }
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
     }
+  };
+
+  const validateForm = async () => {
+    let isValid = true;
+    const fieldNames = ["name", "email", "password"];
+
+    for (const name of fieldNames) {
+      isValid = await validateField(name, formData[name]) && isValid;
+    }
+
+    return isValid;
   };
 
   return (
@@ -54,7 +146,9 @@ export const Register = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
+              onBlur={handleBlur}
             />
+            {errors.name && <div className={styles.error}>{errors.name}</div>}
           </div>
           <div className={styles.inputs}>
             <label>Email</label>
@@ -63,8 +157,9 @@ export const Register = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              onBlur={handleBlur}
             />
-            {emailError && <div className={styles.error}>{emailError}</div>}
+            {errors.email && <div className={styles.error}>{errors.email}</div>}
           </div>
           <div className={styles.inputs}>
             <label>Senha</label>
@@ -73,7 +168,9 @@ export const Register = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              onBlur={handleBlur}
             />
+            {errors.password && <div className={styles.error}>{errors.password}</div>}
           </div>
           <button className={styles.butt} type="submit">
             Cadastre-se
