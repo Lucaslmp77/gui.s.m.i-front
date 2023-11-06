@@ -143,10 +143,10 @@
     display: flex;
     justify-content: center;
     padding: 1%;
-    color: green;
     margin-top: 10px;
     width: 50%;
     height: 36px;
     border-radius: 5px;
+    color: green;
     background-color: rgb(188, 255, 188);
 }

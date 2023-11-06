@@ -194,3 +194,14 @@
     background-color: #32021F;;
     color: #fff; 
 }
+
+.error {
+    display: flex;
+    justify-content: center;
+    padding: 3%;
+    margin-top: 10px;
+    width: 110%;
+    border-radius: 5px;
+    color: red;
+    background-color: rgb(255, 168, 168);
+}
