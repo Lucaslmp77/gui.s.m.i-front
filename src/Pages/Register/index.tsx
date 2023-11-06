@@ -17,6 +17,8 @@ export const Register = () => {
     password: "",
   });
 
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
   const isEmailUnique = async (email: string) => {
     const userClient = new UserClient();
     return await userClient.findUserByEmail(email);
@@ -127,7 +129,12 @@ export const Register = () => {
         user.password = formData.password;
 
         await userClient.save(user);
-        console.log("Usuário cadastrado com sucesso:", user);
+        setSuccessMessage("Usuário cadastrado com sucesso");
+        setFormData({ name: "", email: "", password: "" });
+
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 5000);
       }
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
@@ -150,6 +157,9 @@ export const Register = () => {
       <div className={styles.container}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <h2 className={styles.title}>Crie Sua Conta</h2>
+          {successMessage && (
+            <div className={styles.successMessage}>{successMessage}</div>
+          )}
           <div className={styles.inputs}>
             <label>Username</label>
             <input
