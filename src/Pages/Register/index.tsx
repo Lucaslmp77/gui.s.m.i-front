@@ -87,6 +87,12 @@ export const Register = () => {
           email: "Email é obrigatório",
         }));
         isValid = false;
+      } else if (!isValidEmailFormat(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: "Email no formato inválido",
+        }));
+        isValid = false;
       } else {
         const isEmailNotUniqueResult = await isEmailUnique(value);
         if (isEmailNotUniqueResult) {
@@ -100,6 +106,11 @@ export const Register = () => {
     }
 
     return isValid;
+  };
+
+  const isValidEmailFormat = (email: string) => {
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    return emailRegex.test(email);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
