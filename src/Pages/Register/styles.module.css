@@ -134,3 +134,19 @@
     line-height: normal;
     color: #E0D3DE;
 }
+
+.error {
+    color: red;
+}
+
+.successMessage {
+    display: flex;
+    justify-content: center;
+    padding: 1%;
+    margin-top: 10px;
+    width: 50%;
+    height: 36px;
+    border-radius: 5px;
+    color: green;
+    background-color: rgb(188, 255, 188);
+}
