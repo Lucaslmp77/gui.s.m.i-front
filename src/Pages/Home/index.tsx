@@ -1,9 +1,32 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
+import { jwtDecode } from "jwt-decode";
+import { Decoded } from '../../models/decoded';
 
 export const Home = () => {
-    const userName = "Seu Nome de Usuário"; // Substitua por seu nome de usuário real
+    const userName = "Seu Nome de Usuário";
+
+    function getCookie(name: string) {
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookieArray = decodedCookie.split(';');
+        for (let i = 0; i < cookieArray.length; i++) {
+          let cookie = cookieArray[i].trim();
+          if (cookie.indexOf(name + '=') === 0) {
+            return cookie.substring(name.length + 1);
+          }
+        }
+        return null;
+      }
+
+      const authToken = getCookie('authToken');
+
+      let decoded = Decoded;
+
+      if (authToken) {
+        decoded = jwtDecode(authToken);
+      }
+
+      console.log(decoded.name);
 
     return (
         <div className={styles.container}>
