@@ -42,6 +42,7 @@ export const Login = () => {
             const response = await authenticateClient.authenticate(authenticateData);
 
             if (response.access_token) {
+                sessionStorage.setItem('token', response.access_token)
                 setCookie('authToken', response.access_token, 5 * 1000);
                 console.log('Autenticação bem-sucedida:', response);
                 navigate('/Home');
@@ -67,7 +68,7 @@ export const Login = () => {
                             <button className={styles.butt}>CADASTRE-SE</button>
                         </NavLink>
                     </div>
-                    <div className={styles.secondColum}>
+                    <div className={styles.secondColum} >
                         <h2 className={styles.title2}>Faça seu login</h2>
                         <div className={styles.form}>
                             {error && <div className={styles.error}>{error}</div>}
@@ -91,7 +92,7 @@ export const Login = () => {
                                 />
                             </div>
                         </div>
-                        <button className={styles.butt2} onClick={handleSubmit}>ENTRAR</button>
+                        <button className={styles.butt2} onClick={handleSubmit} onKeyPress={handleSubmit}>ENTRAR</button>
                     </div>
                 </div>
             </div>
