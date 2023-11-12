@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {RpgGameClient} from "../../client/rpg-game.client.ts";
-import {Table} from "./table.tsx";
 import {useNavigate} from "react-router-dom";
 
 
@@ -33,6 +32,7 @@ export const CreateTable = () =>{
             };
             const response = await rpgGameClient.save(table);
             response ? setVisibility(true) : setVisibility(false);
+            console.log(visibility)
             navigate('/mesa');
         }
         catch (error){
