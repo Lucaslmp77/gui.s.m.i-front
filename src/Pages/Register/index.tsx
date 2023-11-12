@@ -95,15 +95,6 @@ export const Register = () => {
           email: "Email no formato inválido",
         }));
         isValid = false;
-      } else {
-        const isEmailNotUniqueResult = await isEmailUnique(value);
-        if (isEmailNotUniqueResult) {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            email: "Email já está em uso",
-          }));
-          isValid = false;
-        }
       }
     }
 
