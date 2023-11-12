@@ -4,29 +4,14 @@ import { jwtDecode } from "jwt-decode";
 import { Decoded } from '../../models/decoded';
 
 export const Home = () => {
-    const userName = "Seu Nome de Usuário";
+    const authToken = sessionStorage.getItem('token');
+    let decoded = Decoded;
 
-    function getCookie(name: string) {
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const cookieArray = decodedCookie.split(';');
-        for (let i = 0; i < cookieArray.length; i++) {
-          let cookie = cookieArray[i].trim();
-          if (cookie.indexOf(name + '=') === 0) {
-            return cookie.substring(name.length + 1);
-          }
-        }
-        return null;
-      }
-
-      const authToken = getCookie('authToken');
-
-      let decoded = Decoded;
-
-      if (authToken) {
+    if (authToken) {
         decoded = jwtDecode(authToken);
-      }
+    }
 
-      console.log(decoded.name);
+    const userName = decoded.name;
 
     return (
         <div className={styles.container}>

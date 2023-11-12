@@ -19,13 +19,6 @@ export const Login = () => {
         setError("");
     };
 
-    const setCookie = (name: string, value: string, expiresInMillis: number) => {
-        const date = new Date();
-        date.setTime(date.getTime() + expiresInMillis);
-        const expires = "expires=" + date.toUTCString();
-        document.cookie = name + "=" + value + ";" + expires + ";path=/";
-    };
-
     const navigate = useNavigate();
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
@@ -43,8 +36,7 @@ export const Login = () => {
 
             sessionStorage.setItem('username', authenticateData.email)
             if (response.access_token) {
-                sessionStorage.setItem('token', response.access_token)
-                setCookie('authToken', response.access_token, 5 * 1000);
+                sessionStorage.setItem('token', response.access_token);
                 console.log('Autenticação bem-sucedida:', response);
                 navigate('/Home');
             } else {
