@@ -41,6 +41,7 @@ export const Login = () => {
 
             const response = await authenticateClient.authenticate(authenticateData);
 
+            sessionStorage.setItem('username', authenticateData.email)
             if (response.access_token) {
                 sessionStorage.setItem('token', response.access_token)
                 setCookie('authToken', response.access_token, 5 * 1000);
