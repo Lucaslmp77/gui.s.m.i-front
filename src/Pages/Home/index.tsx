@@ -38,6 +38,11 @@ export const Home = () => {
                 <nav className={styles.navigation}>
                     <ul>
                         <li>
+                            <NavLink to="/mesas" className={styles.link}>
+                                Mesas Online
+                            </NavLink>
+                        </li>
+                        <li>
                             <NavLink to="/minhas-mesas" className={styles.link}>
                                 Minhas Mesas
                             </NavLink>

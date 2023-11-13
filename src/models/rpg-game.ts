@@ -1,4 +1,4 @@
 export class RpgGame{
-    name!: string;
+    room!: string;
     description!: string
 }

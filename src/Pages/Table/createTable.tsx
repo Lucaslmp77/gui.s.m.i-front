@@ -1,17 +1,33 @@
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {RpgGameClient} from "../../client/rpg-game.client.ts";
 import {useNavigate} from "react-router-dom";
+import socketIOClient from 'socket.io-client';
+import {Decoded} from "../../models/decoded.ts";
+import {jwtDecode} from "jwt-decode";
 
+const ENDPOINT = 'http://localhost:3333/';
 
 export const CreateTable = () =>{
     const [tableData, setTableData] = useState({
         sala: '',
         descricao: ''
     });
+    const messageRef = useRef<HTMLInputElement | null>(null);
+    const [errorMessage, setErrorMessage] = useState('');
+    const socket = socketIOClient(ENDPOINT, {
+        transports: ['websocket']
+    });
     const [error, setError] = useState("");
     const rpgGameClient = new RpgGameClient();
-    const [visibility, setVisibility] = useState(false)
     const navigate = useNavigate();
+    const username = sessionStorage.getItem('username');
+
+    useEffect(() => {
+        return () => {
+            socket.off('error');
+            socket.off('message')
+        };
+    }, []);
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
         setTableData({
@@ -24,20 +40,39 @@ export const CreateTable = () =>{
 
     const HandleSubmmit = async(e: { preventDefault: () => void; }) =>{
         e.preventDefault();
+        const authToken = sessionStorage.getItem('token');
+        let decoded = Decoded;
 
-        try{
+        if (authToken) {
+            decoded = jwtDecode(authToken);
+        }
+
+        const userId = decoded.sub;
+
+        try {
             const table = {
-                name: tableData.sala,
-                description: tableData.descricao
+                username: username,
+                room: tableData.sala,
+                description: tableData.descricao,
+                id_user: userId
             };
+            console.log(table)
+            socket.emit("mesa", { table });
+            socket.on("error", (response) => {
+                console.log(response)
+                setErrorMessage(response)
+                sessionStorage.setItem("room", table.room);
+                sessionStorage.setItem("description", table.description);
+                navigate("/mesa");
+                socket.off('error')
+
+            });
             const response = await rpgGameClient.save(table);
-            response ? setVisibility(true) : setVisibility(false);
-            console.log(visibility)
-            navigate('/mesa');
+            console.log(response)
+        } catch (error) {
+            console.log(error);
         }
-        catch (error){
-            console.log(error)
-        }
+
     }
 
     return(
@@ -46,7 +81,7 @@ export const CreateTable = () =>{
                 <h1>Criar</h1>
                 <div>
                     <label>Nome da Sala</label>
-                    <input value={tableData.sala} onChange={handleChange} type="text" name="sala" placeholder='Nome da sala'/>
+                    <input ref={messageRef} value={tableData.sala} onChange={handleChange} type="text" name="sala" placeholder='Nome da sala'/>
                 </div>
                 <div>
                     <label>Descrição da sala</label>
@@ -54,6 +89,7 @@ export const CreateTable = () =>{
                 </div>
 
                 <button onClick={HandleSubmmit}>Criar</button>
+                <p>{errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}</p>
             </div>
         </section>
     )
