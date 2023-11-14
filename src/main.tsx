@@ -8,7 +8,7 @@ import { Login } from './Pages/Login/index.tsx'
 import { Home } from './Pages/Home/index.tsx'
 import {CreateTable} from "./Pages/Table/createTable.tsx";
 import {Table} from "./Pages/Table/table.tsx";
-import { Roulette } from './components/roulette/index.tsx'
+import { Modifiers } from './components/modifiers/index.tsx'
 
 const router = createBrowserRouter ([
   {
@@ -37,7 +37,7 @@ const router = createBrowserRouter ([
       },
       {
         path: "/dice",
-        element: <Roulette/>
+        element: <Modifiers/>
       }
     ]
 
