@@ -5,6 +5,7 @@ import { RpgGameClient } from '../../client/rpg-game.client';
 import { jwtDecode } from 'jwt-decode';
 import { Decoded } from '../../models/decoded';
 import { RpgGame } from '../../models/rpg-game';
+import FundoRPG from '../../assets/FundoRPG.png';
 
 export const Home = () => {
     const authToken = sessionStorage.getItem('token');
@@ -39,7 +40,7 @@ export const Home = () => {
     }, [userId]);
 
     return (
-        <div className={styles.container}>
+        <section>
             <div className={styles.header}>
                 <div className={styles.userMenu}>
                     Bem-vindo, {userName}
@@ -47,13 +48,14 @@ export const Home = () => {
                 <nav className={styles.navigation}>
                     <ul>
                         <li>
-                            <NavLink to="/minhas-mesas" className={styles.link}>
-                                Minhas Mesas
+                            <NavLink to="/home-minhas-mesas" className={`${styles.link} ${window.location.pathname === '/home-minhas-mesas' ? styles.selected : ''}`}>
+                                Minhas mesas
                             </NavLink>
                         </li>
+
                         <li>
                             <NavLink to="/criar-mesa" className={styles.link}>
-                                Criar Mesa
+                                Criar mesa
                             </NavLink>
                         </li>
                         <li>
@@ -64,22 +66,31 @@ export const Home = () => {
                     </ul>
                 </nav>
             </div>
-            <div>
-                {loading ? (
-                    <p>Carregando...</p>
-                ) : rpgGames.length > 0 ? (
-                    <div>
-                        <h2>Seus RPGs:</h2>
-                        <ul>
-                            {rpgGames.map((rpg: RpgGame) => (
-                                <li key={rpg.id}>{rpg.name}</li>
-                            ))}
-                        </ul>
-                    </div>
-                ) : (
-                    <p>Nenhum RPG encontrado.</p>
-                )}
+            <div className={styles.container}>
+                <div className={styles.cardContainer}>
+                    {loading ? (
+                        <p>Carregando...</p>
+                    ) : rpgGames.length > 0 ? (
+                        <div>
+                            <div className={styles.cardContainer}>
+                                {rpgGames.map((rpg: RpgGame) => (
+                                    <div className={styles.card} key={rpg.id}>
+                                        <div className={styles.imageContainer}>
+                                            <img src={FundoRPG} alt="Imagem do RPG" />
+                                        </div>
+                                        <div className={styles.cardInfo}>
+                                            <h3>Nome: {rpg.name}</h3>
+                                            <h3>Descrição: {rpg.description}</h3>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <p>Nenhum RPG encontrado.</p>
+                    )}
+                </div>
             </div>
-        </div>
+        </section>
     );
 };

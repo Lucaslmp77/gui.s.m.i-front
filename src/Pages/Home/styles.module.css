@@ -7,11 +7,13 @@
   text-decoration: none;
 }
 
-.container {
+section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   width: 100%;
+  height: 100vh;
   background-color: #22223B;
-  padding: 20px 0;
-  text-align: center;
   font-family: 'Acme', sans-serif;
   font-size: 24px;
 }
@@ -19,15 +21,19 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  padding: 40px;
   color: #fff;
-  padding: 10px;
 }
 
-.userMenu {
-  margin-right: 20px;
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  background-color: #22223B;
+  text-align: center;
+  border-top: 1px solid white;
 }
 
 .navigation ul {
@@ -36,7 +42,7 @@
 }
 
 .navigation li {
-  margin-right: 20px;
+  margin-right: 40px;
 }
 
 .link {
@@ -47,4 +53,32 @@
 
 .link:hover {
   color: #FFA500;
+}
+
+.card {
+  display: flex;
+  align-items: flex-start;
+  text-align: start;
+  background-color: #22223B;
+  color: #fff;
+  border: 1px solid #777;
+  border-radius: 5px;
+  padding: 10px;
+  width: 1300px;
+  display: flex;
+  gap: 20px;
+  margin: 20px;
+}
+
+.imageContainer img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100px;
+  height: 80px;
+}
+
+.selected {
+  color: #FFA500;
+  font-weight: bold;
 }
