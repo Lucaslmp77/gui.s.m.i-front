@@ -6,9 +6,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Register } from './Pages/Register/index.tsx'
 import { Login } from './Pages/Login/index.tsx'
 import { Home } from './Pages/Home/index.tsx'
-import {CreateTable} from "./Pages/Table/createTable.tsx";
-import {Table} from "./Pages/Table/table.tsx";
-import { Modifiers } from './components/modifiers/index.tsx'
+import { CreateTable } from "./Pages/Table/createTable.tsx";
+import { Table } from "./Pages/Table/table.tsx";
+import Dice from './components/dice/index.tsx'
 
 const router = createBrowserRouter ([
   {
@@ -37,7 +37,7 @@ const router = createBrowserRouter ([
       },
       {
         path: "/dice",
-        element: <Modifiers/>
+        element: <Dice/>
       }
     ]
 
