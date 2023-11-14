@@ -1,6 +1,8 @@
 import axios, {AxiosInstance} from "axios";
 import {RpgGame} from "../models/rpg-game.ts";
 import {RpgGameData} from "../models/rpg-game-data.ts";
+import axios, { AxiosInstance } from "axios";
+
 
 export class RpgGameClient {
     private axiosClient: AxiosInstance;
@@ -23,9 +25,9 @@ export class RpgGameClient {
         }
     }
 
-    public async findAll(): Promise<RpgGame>{
+    public async findAll(): Promise<RpgGame[]> {
         try {
-            return (await this.axiosClient.get('', )).data
+            return (await this.axiosClient.get('',)).data
         }
         catch (error: any) {
             return Promise.reject(error.response)
@@ -38,6 +40,12 @@ export class RpgGameClient {
         }
         catch (error: any) {
             return Promise.reject(error.response)
+            
+    public async findRpgByUser(userId: string): Promise<RpgGame[]> {
+        try {
+            return (await this.axiosClient.get(`/findRpgByUser/${userId}`)).data;
+        } catch (error) {
+            throw error;
         }
     }
 }

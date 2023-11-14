@@ -1,60 +1,96 @@
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
-import { jwtDecode } from "jwt-decode";
+import { RpgGameClient } from '../../client/rpg-game.client';
+import { jwtDecode } from 'jwt-decode';
 import { Decoded } from '../../models/decoded';
+import { RpgGame } from '../../models/rpg-game';
+import FundoRPG from '../../assets/FundoRPG.png';
 
 export const Home = () => {
-    const userName = "Seu Nome de Usuário";
+    const authToken = sessionStorage.getItem('token');
+    let decoded: Decoded = {} as Decoded;
 
-    function getCookie(name: string) {
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const cookieArray = decodedCookie.split(';');
-        for (let i = 0; i < cookieArray.length; i++) {
-          let cookie = cookieArray[i].trim();
-          if (cookie.indexOf(name + '=') === 0) {
-            return cookie.substring(name.length + 1);
-          }
+    if (authToken) {
+        decoded = jwtDecode(authToken) as Decoded;
+    }
+
+    const userName = decoded.name;
+    const userId = decoded.sub;
+
+    const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchRpgGames = async () => {
+            try {
+                const client = new RpgGameClient();
+                const rpgs = await client.findRpgByUser(userId);
+                setRpgGames(rpgs);
+            } catch (error) {
+                console.error('Erro ao buscar os RPGs:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (userId) {
+            fetchRpgGames();
         }
-        return null;
-      }
-
-      const authToken = getCookie('authToken');
-
-      let decoded = Decoded;
-
-      if (authToken) {
-        decoded = jwtDecode(authToken);
-      }
-
-      console.log(decoded.name);
+    }, [userId]);
 
     return (
-        <div className={styles.container}>
+        <section>
             <div className={styles.header}>
                 <div className={styles.userMenu}>
                     Bem-vindo, {userName}
-                    {/* Adicione um ícone de usuário ou avatar aqui, se desejar */}
                 </div>
                 <nav className={styles.navigation}>
                     <ul>
                         <li>
-                            <NavLink to="/mesas" className={styles.link}>
-                                Mesas Online
+                            <NavLink to="/home-minhas-mesas" className={`${styles.link} ${window.location.pathname === '/home-minhas-mesas' ? styles.selected : ''}`}>
+                                Minhas mesas
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to="/minhas-mesas" className={styles.link}>
-                                Minhas Mesas
-                            </NavLink>
-                        </li>
+
                         <li>
                             <NavLink to="/criar-mesa" className={styles.link}>
-                                Criar Mesa
+                                Criar mesa
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/procurar-mesas" className={styles.link}>
+                                Procurar mesas
                             </NavLink>
                         </li>
                     </ul>
                 </nav>
             </div>
-        </div>
+            <div className={styles.container}>
+                <div className={styles.cardContainer}>
+                    {loading ? (
+                        <p>Carregando...</p>
+                    ) : rpgGames.length > 0 ? (
+                        <div>
+                            <div className={styles.cardContainer}>
+                                {rpgGames.map((rpg: RpgGame) => (
+                                    <div className={styles.card} key={rpg.id}>
+                                        <div className={styles.imageContainer}>
+                                            <img src={FundoRPG} alt="Imagem do RPG" />
+                                        </div>
+                                        <div className={styles.cardInfo}>
+                                            <h3>Nome: {rpg.name}</h3>
+                                            <h3>Descrição: {rpg.description}</h3>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <p>Nenhum RPG encontrado.</p>
+                    )}
+                </div>
+            </div>
+        </section>
     );
 };
