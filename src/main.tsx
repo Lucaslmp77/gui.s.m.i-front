@@ -6,8 +6,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Register } from './Pages/Register/index.tsx'
 import { Login } from './Pages/Login/index.tsx'
 import { Home } from './Pages/Home/index.tsx'
-import {CreateTable} from "./Pages/Table/createTable.tsx";
-import {Table} from "./Pages/Table/table.tsx";
+import {CreateTable} from "./Pages/Table";
+import {TableAccess} from "./Pages/TableAccess";
+import {Tables} from "./Pages/Table/tables.tsx";
 
 const router = createBrowserRouter ([
   {
@@ -32,7 +33,11 @@ const router = createBrowserRouter ([
       },
       {
         path: "/mesa",
-        element: <Table/>
+        element: <TableAccess/>
+      },
+      {
+        path: "/mesas",
+        element: <Tables/>
       }
     ]
 
