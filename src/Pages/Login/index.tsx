@@ -38,7 +38,7 @@ export const Login = () => {
             if (response.access_token) {
                 sessionStorage.setItem('token', response.access_token);
                 console.log('Autenticação bem-sucedida:', response);
-                navigate('/Home');
+                navigate('/home-minhas-mesas');
             } else {
                 setError('Token de acesso ausente na resposta.');
                 console.error('Token de acesso ausente na resposta.');
