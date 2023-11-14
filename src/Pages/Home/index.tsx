@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import styles from './styles.module.css';
+import React, { useEffect, useState } from 'react';
 import { RpgGameClient } from '../../client/rpg-game.client';
 import { jwtDecode } from 'jwt-decode';
 import { Decoded } from '../../models/decoded';
-import { RpgGame } from '../../models/rpg-game';
+import RpgCard from '../../components/card';
 import FundoRPG from '../../assets/FundoRPG.png';
+import styles from './styles.module.css';
+import { RpgGame } from '../../models/rpg-game';
+import { NavLink } from 'react-router-dom';
 
-export const Home = () => {
+export const Home: React.FC = () => {
     const authToken = sessionStorage.getItem('token');
     let decoded: Decoded = {} as Decoded;
 
@@ -41,7 +42,10 @@ export const Home = () => {
     }, [userId, currentPage]);
 
     const handleNextPage = () => {
-        setCurrentPage((prev) => prev + 1);
+        // Verifica se há mais páginas antes de incrementar
+        if (rpgGames.length === 8) {
+            setCurrentPage((prev) => prev + 1);
+        }
     };
 
     const handlePrevPage = () => {
@@ -83,24 +87,30 @@ export const Home = () => {
                     ) : rpgGames.length > 0 ? (
                         <div>
                             <div className={styles.cardContainer}>
-                                {rpgGames.map((rpg: RpgGame) => (
-                                    <div className={styles.card} key={rpg.id}>
-                                        <div className={styles.imageContainer}>
-                                            <img src={FundoRPG} alt="Imagem do RPG" />
-                                        </div>
-                                        <div className={styles.cardInfo}>
-                                            <h3>Nome: {rpg.name}</h3>
-                                            <h3>Descrição: {rpg.description}</h3>
-                                        </div>
-                                    </div>
+                                {rpgGames.map((rpg) => (
+                                    <RpgCard
+                                        key={rpg.id}
+                                        id={rpg.id}
+                                        name={rpg.name}
+                                        description={rpg.description}
+                                        imageUrl={FundoRPG}
+                                    />
                                 ))}
                             </div>
                             <div className={styles.pagination}>
-                                <button onClick={handlePrevPage} disabled={currentPage === 1}>
+                                <button
+                                    onClick={handlePrevPage}
+                                    disabled={currentPage === 1}
+                                    className={currentPage === 1 ? styles.disabled : ''}
+                                >
                                     Anterior
                                 </button>
                                 <span>Página {currentPage}</span>
-                                <button onClick={handleNextPage} disabled={rpgGames.length < 4}>
+                                <button
+                                    onClick={handleNextPage}
+                                    disabled={rpgGames.length < 8}
+                                    className={rpgGames.length < 8 ? styles.disabled : ''}
+                                >
                                     Próximo
                                 </button>
                             </div>
