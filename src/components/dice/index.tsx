@@ -1,29 +1,32 @@
-import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+import { useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Box } from '@react-three/drei';
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
+const Dice = () => {
+  const cubeRef = useRef(null);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  useFrame(() => {
+    // Função de animação aqui, se necessário
+  });
 
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+  return (
+    <Box 
+        ref={cubeRef} 
+        args={[1, 1, 1]} 
+        position={[0, 0, 0]}>
+      <meshBasicMaterial color={0x00ff00} />
+    </Box>
+  );
+};
 
-camera.position.z = 5;
+const App = () => {
+  return (
+    <Canvas>
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} />
+      <Dice />
+    </Canvas>
+  );
+};
 
-function animate() {
-	requestAnimationFrame( animate );
-	renderer.render( scene, camera );
-}
-animate();
-
-export const Dice = () => {
-    return (
-        <>
-        <article></article>
-        </>
-    )
-}
+export default App;
