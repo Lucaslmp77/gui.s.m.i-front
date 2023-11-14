@@ -34,16 +34,19 @@ export class RpgGameClient {
         }
     }
 
+
     public async findUnique(id: string): Promise<RpgGame>{
         try {
             return (await this.axiosClient.get<RpgGame>(`/${id}`)).data
         }
         catch (error: any) {
             return Promise.reject(error.response)
-            
+        }
+    }
+  
     public async findRpgByUser(userId: string): Promise<RpgGame[]> {
         try {
-            return (await this.axiosClient.get(`/findRpgByUser/${userId}`)).data;
+            return (await this.axiosClient.get(`/findRpgByUser/${userId}?page=${page}`)).data;
         } catch (error) {
             throw error;
         }

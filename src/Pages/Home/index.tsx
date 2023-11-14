@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import styles from './styles.module.css';
+import React, { useEffect, useState } from 'react';
 import { RpgGameClient } from '../../client/rpg-game.client';
 import { jwtDecode } from 'jwt-decode';
 import { Decoded } from '../../models/decoded';
-import { RpgGame } from '../../models/rpg-game';
+import RpgCard from '../../components/card';
 import FundoRPG from '../../assets/FundoRPG.png';
+import styles from './styles.module.css';
+import { RpgGame } from '../../models/rpg-game';
+import { NavLink } from 'react-router-dom';
 
-export const Home = () => {
+export const Home: React.FC = () => {
     const authToken = sessionStorage.getItem('token');
     let decoded: Decoded = {} as Decoded;
 
@@ -20,12 +21,13 @@ export const Home = () => {
 
     const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        const fetchRpgGames = async () => {
+        const fetchRpgGames = async (page: number) => {
             try {
                 const client = new RpgGameClient();
-                const rpgs = await client.findRpgByUser(userId);
+                const rpgs = await client.findRpgByUser(userId, page);
                 setRpgGames(rpgs);
             } catch (error) {
                 console.error('Erro ao buscar os RPGs:', error);
@@ -35,9 +37,22 @@ export const Home = () => {
         };
 
         if (userId) {
-            fetchRpgGames();
+            fetchRpgGames(currentPage);
         }
-    }, [userId]);
+    }, [userId, currentPage]);
+
+    const handleNextPage = () => {
+        // Verifica se há mais páginas antes de incrementar
+        if (rpgGames.length === 8) {
+            setCurrentPage((prev) => prev + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prev) => prev - 1);
+        }
+    };
 
     return (
         <section>
@@ -52,7 +67,6 @@ export const Home = () => {
                                 Minhas mesas
                             </NavLink>
                         </li>
-
                         <li>
                             <NavLink to="/criar-mesa" className={styles.link}>
                                 Criar mesa
@@ -73,17 +87,32 @@ export const Home = () => {
                     ) : rpgGames.length > 0 ? (
                         <div>
                             <div className={styles.cardContainer}>
-                                {rpgGames.map((rpg: RpgGame) => (
-                                    <div className={styles.card} key={rpg.id}>
-                                        <div className={styles.imageContainer}>
-                                            <img src={FundoRPG} alt="Imagem do RPG" />
-                                        </div>
-                                        <div className={styles.cardInfo}>
-                                            <h3>Nome: {rpg.name}</h3>
-                                            <h3>Descrição: {rpg.description}</h3>
-                                        </div>
-                                    </div>
+                                {rpgGames.map((rpg) => (
+                                    <RpgCard
+                                        key={rpg.id}
+                                        id={rpg.id}
+                                        name={rpg.name}
+                                        description={rpg.description}
+                                        imageUrl={FundoRPG}
+                                    />
                                 ))}
+                            </div>
+                            <div className={styles.pagination}>
+                                <button
+                                    onClick={handlePrevPage}
+                                    disabled={currentPage === 1}
+                                    className={currentPage === 1 ? styles.disabled : ''}
+                                >
+                                    Anterior
+                                </button>
+                                <span>Página {currentPage}</span>
+                                <button
+                                    onClick={handleNextPage}
+                                    disabled={rpgGames.length < 8}
+                                    className={rpgGames.length < 8 ? styles.disabled : ''}
+                                >
+                                    Próximo
+                                </button>
                             </div>
                         </div>
                     ) : (
