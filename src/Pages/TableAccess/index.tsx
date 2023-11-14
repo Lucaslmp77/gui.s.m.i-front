@@ -1,19 +1,37 @@
 import { useEffect, useRef, useState } from 'react';
 import socketIOClient from 'socket.io-client';
+import {Decoded} from "../../models/decoded.ts";
+import {jwtDecode} from "jwt-decode";
+import {RpgGame} from "../../models/rpg-game.ts";
+import {RpgGameClient} from "../../client/rpg-game.client.ts";
 
 const ENDPOINT = 'http://localhost:3333/';
-
-export const Table = () => {
+type TableProps = {
+    props: string;
+};
+export const Index = ({props}: TableProps) => {
     const socket = socketIOClient(ENDPOINT, {
         transports: ['websocket']
     });
+    const id = props
+    const rpgGameClient = new RpgGameClient();
     const messageRef = useRef<HTMLInputElement | null>(null);
     const bottomRef = useRef<HTMLInputElement | null>(null);
+    let room = new RpgGame()
     const [messageList, setMessageList] = useState<{
         text: string; author: string; authorId: string, dateH: Date, room: string
     }[]>([]);
 
     useEffect(() => {
+        rpgGameClient.findUnique(id).then(
+            success => {
+                room = success
+            },
+            error => {
+                console.log(error)
+            }
+        )
+        socket.emit("room", room)
         socket.on('message', (message) => {
             console.log(message)
             // Atualize o estado com o novo objeto recebido
@@ -29,12 +47,21 @@ export const Table = () => {
 
     const handleSubmit = () => {
         const username = sessionStorage.getItem('username');
-        const room = sessionStorage.getItem('room');
+        const rpgGameId = sessionStorage.getItem('rpgGameId');
         const text = messageRef.current?.value
+        const authToken = sessionStorage.getItem('token');
+        let decoded = Decoded;
+
+        if (authToken) {
+            decoded = jwtDecode(authToken);
+        }
+
+        const userId = decoded.sub;
         const data = {
-            room,
+            rpgGameId,
             username,
-            text
+            text,
+            userId
         }
         socket.emit('message', data);
         clearInput();

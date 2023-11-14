@@ -1,36 +1,43 @@
-import socketIOClient from 'socket.io-client';
 import {useEffect, useState} from "react";
-
-const ENDPOINT = 'http://localhost:3333/';
+import {RpgGameClient} from "../../client/rpg-game.client.ts";
+import {RpgGame} from "../../models/rpg-game.ts";
 
 export const Tables = () => {
-    const [usersRoom, setUsersRoom] = useState<{
-        text: string; author: string; authorId: string, dateH: Date, room: string
-    }[]>([])
-    const socket = socketIOClient(ENDPOINT, {
-        transports: ['websocket']
-    });
-    const lista: string = "lista"
+    const [Rooms, setRooms] = useState<RpgGame[]>()
+    let idRoom = ''
+    const rpgGameClient = new RpgGameClient();
+
+
     useEffect(() => {
-        console.log('entrou no useeffect')
-        socket.emit('list', lista)
-        socket.on('message', (message) => {
-            console.log(message)
-            // Atualize o estado com o novo objeto recebido
-            setUsersRoom(message);
-            console.log(usersRoom)
-        });
-        return () => {socket.off('message')}
+        rpgGameClient.findAll().then(
+            success => {
+                setRooms([success]);
+            },
+            error => {
+                console.log(error)
+            }
+        )
     }, []);
 
+    const [mostrarTabela, setMostrarTabela] = useState(false); // estado para controlar a renderização da tabela
+
+    const handleClick = (id: string) => {
+        setMostrarTabela(true); // atualiza o estado para mostrar a tabela quando o botão é clicado
+        idRoom = id
+    };
 
     return (
         <div>
             {
-                usersRoom.map((rooms, index) => (
-                    <p key={index}>{rooms.room}</p>
+                Rooms?.map((rooms, index) => (
+                    <div >
+                        <p key={index}>{rooms.name}</p>
+                        <p>{rooms.description}</p>
+                        <button onClick={() =>handleClick(rooms.id)}>Entrar</button>
+                    </div>
                 ))
             }
         </div>
+
     )
 }

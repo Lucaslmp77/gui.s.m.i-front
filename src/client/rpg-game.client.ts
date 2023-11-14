@@ -1,5 +1,6 @@
 import axios, {AxiosInstance} from "axios";
 import {RpgGame} from "../models/rpg-game.ts";
+import {RpgGameData} from "../models/rpg-game-data.ts";
 
 export class RpgGameClient {
     private axiosClient: AxiosInstance;
@@ -13,7 +14,7 @@ export class RpgGameClient {
         })
     }
 
-    public async save(rpg: RpgGame): Promise<RpgGame> {
+    public async save(rpg: RpgGameData): Promise<RpgGame> {
         try {
             return (await this.axiosClient.post('', rpg)).data
         }
@@ -22,9 +23,18 @@ export class RpgGameClient {
         }
     }
 
-    public async findAll(): Promise<RpgGame[]>{
+    public async findAll(): Promise<RpgGame>{
         try {
             return (await this.axiosClient.get('', )).data
+        }
+        catch (error: any) {
+            return Promise.reject(error.response)
+        }
+    }
+
+    public async findUnique(id: string): Promise<RpgGame>{
+        try {
+            return (await this.axiosClient.get<RpgGame>(`/${id}`)).data
         }
         catch (error: any) {
             return Promise.reject(error.response)

@@ -1,5 +1,4 @@
-export class RpgGame{
-    id!: string;
+export class RpgGameData{
     name!: string;
     description!: string
 }
