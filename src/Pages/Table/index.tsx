@@ -2,7 +2,7 @@ import {useRef, useState} from "react";
 import {RpgGameClient} from "../../client/rpg-game.client.ts";
 
 
-export const Index = () =>{
+export const CreateTable = () =>{
 
     const messageRef = useRef<HTMLInputElement | null>(null);
     const [errorMessage, setErrorMessage] = useState('');

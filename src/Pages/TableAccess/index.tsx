@@ -6,14 +6,11 @@ import {RpgGame} from "../../models/rpg-game.ts";
 import {RpgGameClient} from "../../client/rpg-game.client.ts";
 
 const ENDPOINT = 'http://localhost:3333/';
-type TableProps = {
-    props: string;
-};
-export const Index = ({props}: TableProps) => {
+
+export const TableAccess = () => {
     const socket = socketIOClient(ENDPOINT, {
         transports: ['websocket']
     });
-    const id = props
     const rpgGameClient = new RpgGameClient();
     const messageRef = useRef<HTMLInputElement | null>(null);
     const bottomRef = useRef<HTMLInputElement | null>(null);
@@ -23,14 +20,14 @@ export const Index = ({props}: TableProps) => {
     }[]>([]);
 
     useEffect(() => {
-        rpgGameClient.findUnique(id).then(
-            success => {
-                room = success
-            },
-            error => {
-                console.log(error)
-            }
-        )
+        // rpgGameClient.findUnique(id).then( #requisição para usar quando entrar numa mesa
+        //     success => {
+        //         room = success
+        //     },
+        //     error => {
+        //         console.log(error)
+        //     }
+        // )
         socket.emit("room", room)
         socket.on('message', (message) => {
             console.log(message)
