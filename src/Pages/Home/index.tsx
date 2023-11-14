@@ -20,12 +20,13 @@ export const Home = () => {
 
     const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        const fetchRpgGames = async () => {
+        const fetchRpgGames = async (page: number) => {
             try {
                 const client = new RpgGameClient();
-                const rpgs = await client.findRpgByUser(userId);
+                const rpgs = await client.findRpgByUser(userId, page);
                 setRpgGames(rpgs);
             } catch (error) {
                 console.error('Erro ao buscar os RPGs:', error);
@@ -35,9 +36,19 @@ export const Home = () => {
         };
 
         if (userId) {
-            fetchRpgGames();
+            fetchRpgGames(currentPage);
         }
-    }, [userId]);
+    }, [userId, currentPage]);
+
+    const handleNextPage = () => {
+        setCurrentPage((prev) => prev + 1);
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prev) => prev - 1);
+        }
+    };
 
     return (
         <section>
@@ -52,7 +63,6 @@ export const Home = () => {
                                 Minhas mesas
                             </NavLink>
                         </li>
-
                         <li>
                             <NavLink to="/criar-mesa" className={styles.link}>
                                 Criar mesa
@@ -84,6 +94,15 @@ export const Home = () => {
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+                            <div className={styles.pagination}>
+                                <button onClick={handlePrevPage} disabled={currentPage === 1}>
+                                    Anterior
+                                </button>
+                                <span>Página {currentPage}</span>
+                                <button onClick={handleNextPage} disabled={rpgGames.length < 4}>
+                                    Próximo
+                                </button>
                             </div>
                         </div>
                     ) : (

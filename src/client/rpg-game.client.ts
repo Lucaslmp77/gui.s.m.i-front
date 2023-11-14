@@ -31,9 +31,9 @@ export class RpgGameClient {
         }
     }
 
-    public async findRpgByUser(userId: string): Promise<RpgGame[]> {
+    public async findRpgByUser(userId: string, page: number): Promise<RpgGame[]> {
         try {
-            return (await this.axiosClient.get(`/findRpgByUser/${userId}`)).data;
+            return (await this.axiosClient.get(`/findRpgByUser/${userId}?page=${page}`)).data;
         } catch (error) {
             throw error;
         }
