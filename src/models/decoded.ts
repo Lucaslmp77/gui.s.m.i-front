@@ -1,6 +1,9 @@
 export class Decoded {
-    static sub(sub: string) {
-        throw new Error('Method not implemented.');
+    sub: string;
+    name: string;
+
+    constructor(sub: string, name: string) {
+        this.sub = sub;
+        this.name = name;
     }
-    sub!: string;
 }

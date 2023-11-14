@@ -1,5 +1,5 @@
-import axios, {AxiosInstance} from "axios";
-import {RpgGame} from "../models/rpg-game.ts";
+import axios, { AxiosInstance } from "axios";
+import { RpgGame } from "../models/rpg-game.ts";
 
 export class RpgGameClient {
     private axiosClient: AxiosInstance;
@@ -22,12 +22,20 @@ export class RpgGameClient {
         }
     }
 
-    public async findAll(): Promise<RpgGame[]>{
+    public async findAll(): Promise<RpgGame[]> {
         try {
-            return (await this.axiosClient.get('', )).data
+            return (await this.axiosClient.get('',)).data
         }
         catch (error: any) {
             return Promise.reject(error.response)
+        }
+    }
+
+    public async findRpgByUser(userId: string): Promise<RpgGame[]> {
+        try {
+            return (await this.axiosClient.get(`/findRpgByUser/${userId}`)).data;
+        } catch (error) {
+            throw error;
         }
     }
 }
