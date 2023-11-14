@@ -1,5 +1,8 @@
+import axios, {AxiosInstance} from "axios";
+import {RpgGame} from "../models/rpg-game.ts";
+import {RpgGameData} from "../models/rpg-game-data.ts";
 import axios, { AxiosInstance } from "axios";
-import { RpgGame } from "../models/rpg-game.ts";
+
 
 export class RpgGameClient {
     private axiosClient: AxiosInstance;
@@ -13,7 +16,7 @@ export class RpgGameClient {
         })
     }
 
-    public async save(rpg: RpgGame): Promise<RpgGame> {
+    public async save(rpg: RpgGameData): Promise<RpgGame> {
         try {
             return (await this.axiosClient.post('', rpg)).data
         }
@@ -31,7 +34,17 @@ export class RpgGameClient {
         }
     }
 
-    public async findRpgByUser(userId: string, page: number): Promise<RpgGame[]> {
+
+    public async findUnique(id: string): Promise<RpgGame>{
+        try {
+            return (await this.axiosClient.get<RpgGame>(`/${id}`)).data
+        }
+        catch (error: any) {
+            return Promise.reject(error.response)
+        }
+    }
+  
+    public async findRpgByUser(userId: string): Promise<RpgGame[]> {
         try {
             return (await this.axiosClient.get(`/findRpgByUser/${userId}?page=${page}`)).data;
         } catch (error) {
