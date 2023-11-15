@@ -1,11 +1,11 @@
+import { Text } from '@react-three/drei';
 import styles from './styles.module.css';
 
 import { useRef } from "react";
 import { Canvas, useFrame } from "react-three-fiber";
 import { Mesh } from "three";
-import { color } from 'three/examples/jsm/nodes/Nodes.js';
 
-function Cube({position, size, color}){
+const CubeGeo = ({position, size, color, number}) => {
 
   const meshRef = useRef<Mesh>(null);
 
@@ -13,18 +13,23 @@ function Cube({position, size, color}){
     if (!meshRef.current){
       return;
     }
-
     meshRef.current.rotation.x += 0.01;
-    meshRef.current.rotation.y += 0.01;
-
+    meshRef.current.rotation.y += 0.1;
   });
+
   return(
-    <mesh 
-      ref={meshRef}
-      position={position}
-      >
+    <mesh ref={meshRef} position={position}>
       <boxGeometry args={size}/>
       <meshStandardMaterial color={color}/>
+      <Text 
+        position={[0, 0, size[2] / 2 + 0.01]}
+        color="white"
+        fontSize={0.5}
+        anchorX="center"
+        anchorY="middle"
+      >
+        {number}
+      </Text>
     </mesh>
   )
 }
@@ -33,13 +38,13 @@ export default function Dice(){
   return (
     <section className={styles.container}>
       <Canvas>
-        <directionalLight position={[0,5,0]}/>
+        <directionalLight 
+          position={[0,1,1]}
+          intensity={10}
+        />
         <ambientLight />
         <pointLight position={[10, 10, 10]}/>
-        <Cube position={[1,2,0]} color={"green"} size={[1,1,1]}/>
-        <Cube position={[-1,2,0]} color={"green"} size={[1,1,1]}/>
-        <Cube position={[-1,0,0]} color={"green"} size={[1,1,1]}/>
-        <Cube position={[1,0,0]} color={"green"} size={[1,1,1]}/>
+        <CubeGeo position={[0,1,0]} color={"green"} size={[1,1,1]} number={1}/>
       </Canvas>
     </section>
   )
