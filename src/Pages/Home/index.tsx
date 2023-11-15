@@ -88,13 +88,17 @@ export const Home: React.FC = () => {
                         <div>
                             <div className={styles.cardContainer}>
                                 {rpgGames.map((rpg) => (
-                                    <RpgCard
-                                        key={rpg.id}
-                                        id={rpg.id}
-                                        name={rpg.name}
-                                        description={rpg.description}
-                                        imageUrl={FundoRPG}
-                                    />
+                                    <div key={rpg.id}>
+                                        <RpgCard
+                                            id={rpg.id}
+                                            name={rpg.name}
+                                            description={rpg.description}
+                                            imageUrl={FundoRPG}
+                                        />
+                                        <NavLink to={`/table-access/${rpg.id}`} className={styles.link}>
+                                            Acessar mesa
+                                        </NavLink>
+                                    </div>
                                 ))}
                             </div>
                             <div className={styles.pagination}>

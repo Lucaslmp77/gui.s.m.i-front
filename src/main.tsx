@@ -6,11 +6,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Register } from './Pages/Register/index.tsx'
 import { Login } from './Pages/Login/index.tsx'
 import { Home } from './Pages/Home/index.tsx'
-import {CreateTable} from "./Pages/Table";
-import {TableAccess} from "./Pages/TableAccess";
-import {Tables} from "./Pages/Table/tables.tsx";
+import { CreateTable } from "./Pages/Table";
+import { TableAccess } from "./Pages/TableAccess";
+import { Tables } from "./Pages/Table/tables.tsx";
 
-const router = createBrowserRouter ([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
@@ -21,23 +21,23 @@ const router = createBrowserRouter ([
       },
       {
         path: "/register",
-        element: <Register/>
+        element: <Register />
       },
       {
         path: "/home-minhas-mesas",
-        element: <Home/>
+        element: <Home />
       },
       {
         path: "/criar-mesa",
-        element: <CreateTable/>
+        element: <CreateTable />
       },
       {
-        path: "/mesa",
-        element: <TableAccess/>
+        path: "/table-access/:id",
+        element: <TableAccess />
       },
       {
         path: "/mesas",
-        element: <Tables/>
+        element: <Tables />
       }
     ]
 
