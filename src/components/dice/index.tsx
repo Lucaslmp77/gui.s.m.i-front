@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Mesh} from "three";
+import React, { useRef, useState, useEffect, Suspense } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Mesh } from 'three';
 
 interface MyBoxProps {
   position: [number, number, number];
@@ -18,50 +18,51 @@ const MyBox: React.FC<MyBoxProps> = ({ position, handleClick }) => {
   });
 
   return (
-    <mesh
-      ref={boxRef}
-      position={position}
-      onClick={handleClick}
-    >
+    <mesh ref={boxRef} position={position} onClick={handleClick}>
       <boxGeometry args={[2, 2, 2]} />
       <meshBasicMaterial attach="material" color={0x00ff00} />
     </mesh>
   );
 };
 
-const Dice = () => {
-  const [falling, setFalling] = useState(true);
-  const [positionDice, setPositionDice] = useState<[number, number, number]>([0, 1, 0]);
+const App = () => {
+  const [falling, setFalling] = useState(false);
+  const [positionDice, setPositionDice] = useState<[number, number, number]>([0, 10, 0]);
+
+  useEffect(() => {
+    if (falling) {
+      const animationId = requestAnimationFrame(() => {
+        const gravity = 9.8;
+        const newPositionY = positionDice[1] - gravity * 0.01;
+
+        if (newPositionY <= 1) {
+          setFalling(false);
+          setPositionDice([positionDice[0], 1, positionDice[2]]);
+        } else {
+          setPositionDice([positionDice[0], newPositionY, positionDice[2]]);
+        }
+      });
+
+      return () => cancelAnimationFrame(animationId);
+    }
+  }, [falling, positionDice]);
 
   const handleBoxClick = () => {
-    setFalling(true);
-  };
-
-  useFrame(({ clock }) => {
-    if (falling) {
-      const delta = clock.getDelta();
-      const gravity = 9.8;
-      const speedY = gravity * delta;
-      let newPositionY = positionDice[1] - speedY;
-  
-      if (newPositionY <= 1) {
-        setFalling(false);
-        newPositionY = 1;
-      }
-  
-      setPositionDice([positionDice[0], newPositionY, positionDice[2]]);
+    if (!falling) {
+      setFalling(true);
     }
-  });
-  
+  };
 
   return (
     <Canvas>
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />
       <directionalLight position={[5, 5, 5]} intensity={0.5} />
-      <MyBox position={positionDice} handleClick={handleBoxClick} />
+      <Suspense fallback={null}>
+        <MyBox position={positionDice} handleClick={handleBoxClick} />
+      </Suspense>
     </Canvas>
   );
 };
 
-export default Dice;
+export default App;
