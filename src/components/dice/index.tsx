@@ -5,7 +5,14 @@ import { useRef } from "react";
 import { Canvas, useFrame } from "react-three-fiber";
 import { Mesh } from "three";
 
-const CubeGeo = ({position, size, color, number}) => {
+interface CubeGeoProps {
+  position: [number, number, number];
+  size: [number, number, number];
+  color: string;
+  number: string | number;
+}
+
+const CubeGeo: React.FC<CubeGeoProps> = ({ position, size, color, number }) => {
 
   const meshRef = useRef<Mesh>(null);
 
@@ -14,7 +21,7 @@ const CubeGeo = ({position, size, color, number}) => {
       return;
     }
     meshRef.current.rotation.x += 0.01;
-    meshRef.current.rotation.y += 0.1;
+    meshRef.current.rotation.y += 0.01;
   });
 
   return(
@@ -39,7 +46,7 @@ export default function Dice(){
     <section className={styles.container}>
       <Canvas>
         <directionalLight 
-          position={[0,1,1]}
+          position={[0,0,0]}
           intensity={10}
         />
         <ambientLight />
