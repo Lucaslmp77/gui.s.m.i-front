@@ -1,73 +1,46 @@
-import React, { useRef, useState, useEffect, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Mesh } from 'three';
-import styles from "./styles.module.css";
+import styles from './styles.module.css';
 
-interface MyBoxProps {
-  position: [number, number, number];
-  handleClick: () => void;
-}
+import { useRef } from "react";
+import { Canvas, useFrame } from "react-three-fiber";
+import { Mesh } from "three";
+import { color } from 'three/examples/jsm/nodes/Nodes.js';
 
-const MyBox: React.FC<MyBoxProps> = ({ position, handleClick }) => {
-  const boxRef = useRef<Mesh>(null);
+function Cube({position, size, color}){
+
+  const meshRef = useRef<Mesh>(null);
 
   useFrame(() => {
-    if (boxRef.current) {
-      boxRef.current.rotation.x += 0.09;
-      boxRef.current.rotation.y += 0.09;
+    if (!meshRef.current){
+      return;
     }
+
+    meshRef.current.rotation.x += 0.01;
+    meshRef.current.rotation.y += 0.01;
+
   });
-
-  return (
-    <mesh ref={boxRef} position={position} onClick={handleClick}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshBasicMaterial attach="material" color={0x00ff00} />
+  return(
+    <mesh 
+      ref={meshRef}
+      position={position}
+      >
+      <boxGeometry args={size}/>
+      <meshStandardMaterial color={color}/>
     </mesh>
-  );
-};
+  )
+}
 
-const App = () => {
-  const [falling, setFalling] = useState(false);
-  const [positionDice, setPositionDice] = useState<[number, number, number]>([0, 0, 0]);
-
-  useEffect(() => {
-    if (falling) {
-      const animationId = requestAnimationFrame(() => {
-        const gravity = 1;
-        const acceleration = 2;
-        const speedY = gravity * acceleration;
-        const newPositionY = positionDice[1] - gravity * 0.01 * speedY;
-
-        if (newPositionY <= 1) {
-          setFalling(false);
-          setPositionDice([positionDice[0], 1, positionDice[2]]);
-        } else {
-          setPositionDice([positionDice[0], newPositionY, positionDice[2]]);
-        }
-      });
-
-      return () => cancelAnimationFrame(animationId);
-    }
-  }, [falling, positionDice]);
-
-  const handleBoxClick = () => {
-    if (!falling) {
-      setFalling(true);
-    }
-  };
-
+export default function Dice(){
   return (
-    <section className={styles.conteiner}>
+    <section className={styles.container}>
       <Canvas>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} />
-      <directionalLight position={[5, 5, 5]} intensity={0.5} />
-      <Suspense fallback={null}>
-        <MyBox position={positionDice} handleClick={handleBoxClick} />
-      </Suspense>
-    </Canvas>
+        <directionalLight position={[0,5,0]}/>
+        <ambientLight />
+        <pointLight position={[10, 10, 10]}/>
+        <Cube position={[1,2,0]} color={"green"} size={[1,1,1]}/>
+        <Cube position={[-1,2,0]} color={"green"} size={[1,1,1]}/>
+        <Cube position={[-1,0,0]} color={"green"} size={[1,1,1]}/>
+        <Cube position={[1,0,0]} color={"green"} size={[1,1,1]}/>
+      </Canvas>
     </section>
-  );
-};
-
-export default App;
+  )
+}
