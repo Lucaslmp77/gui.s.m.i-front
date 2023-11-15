@@ -9,7 +9,7 @@ interface CubeGeoProps {
   position: [number, number, number];
   size: [number, number, number];
   color: string;
-  number: string | number;
+  number: [number, number, number, number, number, number]
 }
 
 const CubeGeo: React.FC<CubeGeoProps> = ({ position, size, color, number }) => {
@@ -26,17 +26,13 @@ const CubeGeo: React.FC<CubeGeoProps> = ({ position, size, color, number }) => {
 
   return(
     <mesh ref={meshRef} position={position}>
-      <boxGeometry args={size}/>
-      <meshStandardMaterial color={color}/>
-      <Text 
-        position={[0, 0, size[2] / 2 + 0.01]}
-        color="white"
-        fontSize={0.5}
-        anchorX="center"
-        anchorY="middle"
-      >
-        {number}
-      </Text>
+      <boxGeometry attach="geometry" args={size}/>
+      <meshStandardMaterial attach="material" />
+      <meshStandardMaterial attach="material" />
+      <meshStandardMaterial attach="material" />
+      <meshStandardMaterial attach="material" />
+      <meshStandardMaterial attach="material" />
+      <meshStandardMaterial attach="material" />
     </mesh>
   )
 }
@@ -46,12 +42,12 @@ export default function Dice(){
     <section className={styles.container}>
       <Canvas>
         <directionalLight 
-          position={[0,0,0]}
+          position={[0,3,0]}
           intensity={10}
         />
         <ambientLight />
         <pointLight position={[10, 10, 10]}/>
-        <CubeGeo position={[0,1,0]} color={"green"} size={[1,1,1]} number={1}/>
+        <CubeGeo position={[0,1,0]} color={"green"} size={[1,1,1]}/>
       </Canvas>
     </section>
   )
