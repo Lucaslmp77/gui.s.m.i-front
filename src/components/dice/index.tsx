@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Mesh } from 'three';
+import styles from "./styles.module.css";
 
 interface MyBoxProps {
   position: [number, number, number];
@@ -12,14 +13,14 @@ const MyBox: React.FC<MyBoxProps> = ({ position, handleClick }) => {
 
   useFrame(() => {
     if (boxRef.current) {
-      boxRef.current.rotation.x += 0.01;
-      boxRef.current.rotation.y += 0.01;
+      boxRef.current.rotation.x += 0.09;
+      boxRef.current.rotation.y += 0.09;
     }
   });
 
   return (
     <mesh ref={boxRef} position={position} onClick={handleClick}>
-      <boxGeometry args={[2, 2, 2]} />
+      <boxGeometry args={[1, 1, 1]} />
       <meshBasicMaterial attach="material" color={0x00ff00} />
     </mesh>
   );
@@ -27,13 +28,15 @@ const MyBox: React.FC<MyBoxProps> = ({ position, handleClick }) => {
 
 const App = () => {
   const [falling, setFalling] = useState(false);
-  const [positionDice, setPositionDice] = useState<[number, number, number]>([0, 10, 0]);
+  const [positionDice, setPositionDice] = useState<[number, number, number]>([0, 0, 0]);
 
   useEffect(() => {
     if (falling) {
       const animationId = requestAnimationFrame(() => {
-        const gravity = 9.8;
-        const newPositionY = positionDice[1] - gravity * 0.01;
+        const gravity = 1;
+        const acceleration = 2;
+        const speedY = gravity * acceleration;
+        const newPositionY = positionDice[1] - gravity * 0.01 * speedY;
 
         if (newPositionY <= 1) {
           setFalling(false);
@@ -54,7 +57,8 @@ const App = () => {
   };
 
   return (
-    <Canvas>
+    <section className={styles.conteiner}>
+      <Canvas>
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />
       <directionalLight position={[5, 5, 5]} intensity={0.5} />
@@ -62,6 +66,7 @@ const App = () => {
         <MyBox position={positionDice} handleClick={handleBoxClick} />
       </Suspense>
     </Canvas>
+    </section>
   );
 };
 

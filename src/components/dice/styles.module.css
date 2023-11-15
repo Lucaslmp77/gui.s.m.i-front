@@ -1,8 +1,29 @@
-body{
-    margin: 0;
-    overflow: hidden;
-}
-
-#root {
+.conteiner{
+    width: 100%;
     height: 100vh;
 }
+
+/*
+
+useEffect(() => {
+    if (falling) {
+      const animationId = requestAnimationFrame(() => {
+        const gravity = 9.8;
+        const acceleration = 2;
+        const speedY = gravity * 
+        const newPositionY = positionDice[1] - gravity * 0.01;
+
+        if (newPositionY <= 1) {
+          setFalling(false);
+          setPositionDice([positionDice[0], 1, positionDice[2]]);
+        } else {
+          setPositionDice([positionDice[0], newPositionY, positionDice[2]]);
+        }
+      });
+
+      return () => cancelAnimationFrame(animationId);
+    }
+  }, [falling, positionDice]);
+
+
+*/
