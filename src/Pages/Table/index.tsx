@@ -5,7 +5,7 @@ import {RpgGameClient} from "../../client/rpg-game.client.ts";
 export const CreateTable = () =>{
 
     const messageRef = useRef<HTMLInputElement | null>(null);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState(false);
     const rpgGameClient = new RpgGameClient();
     const [rpgGame, setRpgGame] = useState({ name: '', description: '' });
     const handleChange = (event: { target: { name: any; value: any; }; }) => {
@@ -17,7 +17,7 @@ export const CreateTable = () =>{
         e.preventDefault();
 
         try {
-            await rpgGameClient.save(rpgGame);
+            await rpgGameClient.save(rpgGame).then(()=>{setErrorMessage(true)});
         } catch (error) {
             console.log(error);
         }
@@ -38,7 +38,7 @@ export const CreateTable = () =>{
                 </div>
 
                 <button onClick={HandleSubmmit}>Criar</button>
-                <p>{errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}</p>
+                <p key={1}>{errorMessage && <p style={{ color: 'green' }}>Sala criada com sucesso</p>}</p>
             </div>
         </section>
     )

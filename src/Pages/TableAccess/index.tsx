@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import socketIOClient, {io} from 'socket.io-client';
+import socketIOClient from 'socket.io-client';
 import { Decoded } from "../../models/decoded.ts";
 import { jwtDecode } from "jwt-decode";
 import { RpgGameClient } from "../../client/rpg-game.client.ts";
@@ -17,7 +17,7 @@ export const TableAccess = () => {
     const bottomRef = useRef<HTMLInputElement | null>(null);
     const [messageList, setMessageList] = useState<{
         text: string;
-        username: string;
+        author: string;
         userId: string;
         dateH: Date;
     }[]>([]);
@@ -55,7 +55,7 @@ export const TableAccess = () => {
     }, [messageList]);
 
     const handleSubmit = () => {
-        const username = sessionStorage.getItem('username');
+        const author = sessionStorage.getItem('username');
         const rpgGameId = id;
         const text = messageRef.current?.value;
         const authToken = sessionStorage.getItem('token');
@@ -69,10 +69,11 @@ export const TableAccess = () => {
 
         const userId = decoded.sub;
         const data = {
-            username,
+            author,
             text,
             userId,
-            dateH
+            dateH,
+            rpgGameId
         };
 
         socket.emit('message', {room: rpgGameId, data});
@@ -103,7 +104,7 @@ export const TableAccess = () => {
         <div>
             <h1>Chat na Mesa: {rpgGameName}</h1>
             {messageList.map((message, index) => (
-                <p key={index}>{message.username}: {message.text}</p>
+                <p key={index}>{message.author}: {message.text}</p>
             ))}
             <div ref={bottomRef} />
             <input type="text" ref={messageRef} onKeyDown={(e) => handleKeyPress(e)} placeholder="mensagem" />

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {RpgGameClient} from "../../client/rpg-game.client.ts";
 import {RpgGame} from "../../models/rpg-game.ts";
 import styles from "../Home/styles.module.css";
@@ -9,8 +9,6 @@ import { jwtDecode } from 'jwt-decode';
 import {NavLink} from "react-router-dom";
 
 export const Tables = () => {
-    const [Rooms, setRooms] = useState<RpgGame[]>()
-    let idRoom = ''
     const authToken = sessionStorage.getItem('token');
     let decoded: Decoded = {} as Decoded;
 
@@ -42,13 +40,6 @@ export const Tables = () => {
             fetchRpgGames(currentPage);
         }
     }, [currentPage]);
-
-    const [mostrarTabela, setMostrarTabela] = useState(false); // estado para controlar a renderização da tabela
-
-    const handleClick = (id: string) => {
-        setMostrarTabela(true); // atualiza o estado para mostrar a tabela quando o botão é clicado
-        idRoom = id
-    };
 
     const handleNextPage = () => {
         // Verifica se há mais páginas antes de incrementar

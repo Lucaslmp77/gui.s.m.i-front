@@ -95,7 +95,7 @@ export const Home: React.FC = () => {
                                             description={rpg.description}
                                             imageUrl={FundoRPG}
                                         />
-                                        <NavLink to={`/table-access/${rpg.id}`} className={styles.link}>
+                                        <NavLink to={`/mesa/${rpg.id}`} className={styles.link}>
                                             Acessar mesa
                                         </NavLink>
                                     </div>
