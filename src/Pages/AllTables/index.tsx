@@ -45,7 +45,7 @@ export const Tables = () => {
 
     const handleNextPage = () => {
         // Verifica se há mais páginas antes de incrementar
-        if (rpgGames.length === 8) {
+        if (rpgGames.length === 4) {
             setCurrentPage((prev) => prev + 1);
         }
     };
@@ -74,10 +74,8 @@ export const Tables = () => {
                                             master={rpg.user.name}
                                             description={rpg.description}
                                             imageUrl={FundoRPG}
+                                            rpgGameId={rpg.id}
                                         />
-                                        <NavLink to={`/mesa/${rpg.id}`} className={styles.link}>
-                                            Acessar mesa
-                                        </NavLink>
                                     </div>
                                 ))}
                             </div>
@@ -92,8 +90,8 @@ export const Tables = () => {
                                 <span>Página {currentPage}</span>
                                 <button
                                     onClick={handleNextPage}
-                                    disabled={rpgGames.length < 8}
-                                    className={rpgGames.length < 8 ? styles.disabled : ''}
+                                    disabled={rpgGames.length < 4}
+                                    className={rpgGames.length < 4 ? styles.disabled : ''}
                                 >
                                     Próximo
                                 </button>
