@@ -6,7 +6,7 @@ import RpgCard from '../../components/card';
 import FundoRPG from '../../assets/FundoRPG.png';
 import styles from './styles.module.css';
 import { RpgGame } from '../../models/rpg-game';
-import { NavLink } from 'react-router-dom';
+import Header from '../../components/header';
 
 export const Home: React.FC = () => {
     const authToken = sessionStorage.getItem('token');
@@ -43,7 +43,7 @@ export const Home: React.FC = () => {
 
     const handleNextPage = () => {
         // Verifica se há mais páginas antes de incrementar
-        if (rpgGames.length === 8) {
+        if (rpgGames.length === 4) {
             setCurrentPage((prev) => prev + 1);
         }
     };
@@ -56,30 +56,7 @@ export const Home: React.FC = () => {
 
     return (
         <section>
-            <div className={styles.header}>
-                <div className={styles.userMenu}>
-                    Bem-vindo, {userName}
-                </div>
-                <nav className={styles.navigation}>
-                    <ul>
-                        <li>
-                            <NavLink to="/home-minhas-mesas" className={`${styles.link} ${window.location.pathname === '/home-minhas-mesas' ? styles.selected : ''}`}>
-                                Minhas mesas
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/criar-mesa" className={styles.link}>
-                                Criar mesa
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/procurar-mesas" className={styles.link}>
-                                Procurar mesas
-                            </NavLink>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <Header userName={userName} />
             <div className={styles.container}>
                 <div className={styles.cardContainer}>
                     {loading ? (
@@ -92,12 +69,11 @@ export const Home: React.FC = () => {
                                         <RpgCard
                                             id={rpg.id}
                                             name={rpg.name}
+                                            master={rpg.user.name}
                                             description={rpg.description}
                                             imageUrl={FundoRPG}
+                                            rpgGameId={rpg.id}
                                         />
-                                        <NavLink to={`/mesa/${rpg.id}`} className={styles.link}>
-                                            Acessar mesa
-                                        </NavLink>
                                     </div>
                                 ))}
                             </div>
@@ -112,8 +88,8 @@ export const Home: React.FC = () => {
                                 <span>Página {currentPage}</span>
                                 <button
                                     onClick={handleNextPage}
-                                    disabled={rpgGames.length < 8}
-                                    className={rpgGames.length < 8 ? styles.disabled : ''}
+                                    disabled={rpgGames.length < 4}
+                                    className={rpgGames.length < 4 ? styles.disabled : ''}
                                 >
                                     Próximo
                                 </button>

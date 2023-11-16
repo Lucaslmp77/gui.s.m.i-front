@@ -1,12 +1,13 @@
-import {useEffect, useState} from "react";
-import {RpgGameClient} from "../../client/rpg-game.client.ts";
-import {RpgGame} from "../../models/rpg-game.ts";
+import { useEffect, useState } from "react";
+import { RpgGameClient } from "../../client/rpg-game.client.ts";
+import { RpgGame } from "../../models/rpg-game.ts";
 import styles from "../Home/styles.module.css";
-import RpgCard from "../../components/card";
+import RpgCard from "../../components/card/index.tsx";
 import FundoRPG from "../../assets/FundoRPG.png";
-import { Decoded } from '../../models/decoded';
+import { Decoded } from '../../models/decoded.ts';
 import { jwtDecode } from 'jwt-decode';
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Header from "../../components/header/index.tsx";
 
 export const Tables = () => {
     const authToken = sessionStorage.getItem('token');
@@ -17,6 +18,7 @@ export const Tables = () => {
     }
 
     const userId = decoded.sub;
+    const userName = decoded.name;
 
     const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
     const [loading, setLoading] = useState(true);
@@ -43,7 +45,7 @@ export const Tables = () => {
 
     const handleNextPage = () => {
         // Verifica se há mais páginas antes de incrementar
-        if (rpgGames.length === 8) {
+        if (rpgGames.length === 4) {
             setCurrentPage((prev) => prev + 1);
         }
     };
@@ -56,6 +58,7 @@ export const Tables = () => {
 
     return (
         <section>
+            <Header userName={userName} />
             <div className={styles.container}>
                 <div className={styles.cardContainer}>
                     {loading ? (
@@ -68,12 +71,11 @@ export const Tables = () => {
                                         <RpgCard
                                             id={rpg.id}
                                             name={rpg.name}
+                                            master={rpg.user.name}
                                             description={rpg.description}
                                             imageUrl={FundoRPG}
+                                            rpgGameId={rpg.id}
                                         />
-                                        <NavLink to={`/mesa/${rpg.id}`} className={styles.link}>
-                                            Acessar mesa
-                                        </NavLink>
                                     </div>
                                 ))}
                             </div>
@@ -88,8 +90,8 @@ export const Tables = () => {
                                 <span>Página {currentPage}</span>
                                 <button
                                     onClick={handleNextPage}
-                                    disabled={rpgGames.length < 8}
-                                    className={rpgGames.length < 8 ? styles.disabled : ''}
+                                    disabled={rpgGames.length < 4}
+                                    className={rpgGames.length < 4 ? styles.disabled : ''}
                                 >
                                     Próximo
                                 </button>
