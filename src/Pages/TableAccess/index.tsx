@@ -54,7 +54,7 @@ export const TableAccess = () => {
             console.log(message)
             setMessageList(prevMessageList => [...prevMessageList, message]);
             console.log(messageList)
-            socket.off('message')
+
         });
         socket.on('messageHistory', (message) => {
             message.forEach((dado: any) =>{
