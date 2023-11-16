@@ -1,0 +1,36 @@
+/* header.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 25px;
+    color: #fff;
+    font-family: 'Acme', sans-serif;
+    font-size: 24px;
+}
+
+.navigation ul {
+    list-style: none;
+    display: flex;
+}
+
+.navigation li {
+    margin-right: 40px;
+}
+
+.link {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+}
+
+.link:hover {
+    color: #FFA500;
+}
+
+.selected {
+    color: #FFA500;
+    font-weight: bold;
+}
