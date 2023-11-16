@@ -8,7 +8,7 @@ import { Login } from './Pages/Login/index.tsx'
 import { Home } from './Pages/Home/index.tsx'
 import {CreateTable} from "./Pages/Table";
 import {TableAccess} from "./Pages/TableAccess";
-import {Tables} from "./Pages/Table/tables.tsx";
+import {Tables} from "./Pages/AllTables/tables.tsx";
 
 const router = createBrowserRouter ([
   {
@@ -32,11 +32,15 @@ const router = createBrowserRouter ([
         element: <CreateTable/>
       },
       {
-        path: "/mesa",
+        path: "/mesa/:id",
         element: <TableAccess/>
       },
       {
         path: "/mesas",
+        element: <Tables/>
+      },
+      {
+        path: "/procurar-mesas",
         element: <Tables/>
       }
     ]
