@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Register } from './Pages/Register/index.tsx'
 import { Login } from './Pages/Login/index.tsx'
 import { Home } from './Pages/Home/index.tsx'
-import {CreateTable} from "./Pages/Table";
 import {TableAccess} from "./Pages/TableAccess";
 import {Tables} from "./Pages/AllTables/index.tsx";
 
@@ -26,10 +25,6 @@ const router = createBrowserRouter ([
       {
         path: "/home-minhas-mesas",
         element: <Home/>
-      },
-      {
-        path: "/criar-mesa",
-        element: <CreateTable/>
       },
       {
         path: "/mesa/:id",

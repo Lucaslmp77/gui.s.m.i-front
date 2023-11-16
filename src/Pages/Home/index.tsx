@@ -6,7 +6,6 @@ import RpgCard from '../../components/card';
 import FundoRPG from '../../assets/FundoRPG.png';
 import styles from './styles.module.css';
 import { RpgGame } from '../../models/rpg-game';
-import { NavLink } from 'react-router-dom';
 import Header from '../../components/header';
 
 export const Home: React.FC = () => {
