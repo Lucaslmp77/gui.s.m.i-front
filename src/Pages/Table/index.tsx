@@ -4,7 +4,6 @@ import {RpgGameClient} from "../../client/rpg-game.client.ts";
 
 export const CreateTable = () =>{
 
-    const messageRef = useRef<HTMLInputElement | null>(null);
     const [errorMessage, setErrorMessage] = useState(false);
     const rpgGameClient = new RpgGameClient();
     const [rpgGame, setRpgGame] = useState({ name: '', description: '' });
@@ -30,7 +29,7 @@ export const CreateTable = () =>{
                 <h1>Criar</h1>
                 <div>
                     <label>Nome da Sala</label>
-                    <input ref={messageRef} onChange={handleChange}  type="text" name="name" placeholder='Nome da sala'/>
+                    <input onChange={handleChange}  type="text" name="name" placeholder='Nome da sala'/>
                 </div>
                 <div>
                     <label>Descrição da sala</label>
