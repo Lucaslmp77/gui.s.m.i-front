@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import socketIOClient, {io} from 'socket.io-client';
+import socketIOClient, { io } from 'socket.io-client';
 import { Decoded } from "../../models/decoded.ts";
 import { jwtDecode } from "jwt-decode";
 import { RpgGameClient } from "../../client/rpg-game.client.ts";
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
+import styles from './styles.module.css';
+
+import { BiPencil } from "react-icons/bi";
+import { BsXLg } from "react-icons/bs";
 
 const ENDPOINT = 'http://localhost:3333/';
 
@@ -19,7 +23,7 @@ export const TableAccess = () => {
         text: string;
         username: string;
         userId: string;
-        dateH: Date;
+        dateH: string;
     }[]>([]);
 
     const [rpgGameName, setRpgGameName] = useState<string | null>(null);
@@ -46,7 +50,7 @@ export const TableAccess = () => {
             setMessageList(prevMessageList => [...prevMessageList, message]);
             console.log(messageList)
         });
-        return () => {socket.off('message')}
+        return () => { socket.off('message') }
 
     }, []);
 
@@ -59,8 +63,7 @@ export const TableAccess = () => {
         const rpgGameId = id;
         const text = messageRef.current?.value;
         const authToken = sessionStorage.getItem('token');
-        let dateH: Date
-        dateH = new Date();
+        const dateH = new Date().toLocaleTimeString();
         let decoded: Decoded = {} as Decoded;
 
         if (authToken) {
@@ -75,9 +78,10 @@ export const TableAccess = () => {
             dateH
         };
 
-        socket.emit('message', {room: rpgGameId, data});
+        socket.emit('message', { room: rpgGameId, data });
         clearInput();
         focusInput();
+
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -100,14 +104,27 @@ export const TableAccess = () => {
     }
 
     return (
-        <div>
-            <h1>Chat na Mesa: {rpgGameName}</h1>
-            {messageList.map((message, index) => (
-                <p key={index}>{message.username}: {message.text}</p>
-            ))}
-            <div ref={bottomRef} />
-            <input type="text" ref={messageRef} onKeyDown={(e) => handleKeyPress(e)} placeholder="mensagem" />
-            <button onClick={handleSubmit}>Enviar</button>
-        </div>
+        <section className={styles.section}>
+            <div className={styles.container}>
+                <h1 className={styles.title}>GUI.S.M.I</h1>
+                <div className={styles.containerText}>
+                    {messageList.map((message, index) => (
+                        <p key={index}>[{message.dateH}] {'--'} <span className={styles.userMessage}>{message.username}</span>: {message.text}</p>
+                    ))}
+                    <div ref={bottomRef} />
+                </div>
+
+                <div className={styles.containerSendMessage}>
+                    <input className={styles.inputMessage} type="text" ref={messageRef} onKeyDown={(e) => handleKeyPress(e)} placeholder="mensagem" />
+                    <button className={styles.sendMessageButton} onClick={handleSubmit}>Enviar</button>
+                </div>
+            </div>
+            <div className={styles.menu}>
+                <NavLink to="/home-minhas-mesas">
+                    <BsXLg className={styles.exitTable} />
+                </NavLink>
+                <BiPencil className={styles.editTable} />
+            </div>
+        </section>
     );
 };

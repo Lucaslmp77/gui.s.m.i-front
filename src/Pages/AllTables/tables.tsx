@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {RpgGameClient} from "../../client/rpg-game.client.ts";
 import {RpgGame} from "../../models/rpg-game.ts";
 import styles from "../Home/styles.module.css";
