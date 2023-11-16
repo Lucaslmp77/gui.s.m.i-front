@@ -23,9 +23,9 @@ export class RpgGameClient {
         }
     }
 
-    public async findAll(): Promise<RpgGame[]> {
+    public async findAll(page: number): Promise<RpgGame[]> {
         try {
-            return (await this.axiosClient.get('',)).data
+            return (await this.axiosClient.get(`?page=${page}`,)).data
         }
         catch (error: any) {
             return Promise.reject(error.response)

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import socketIOClient from 'socket.io-client';
+import socketIOClient, {io} from 'socket.io-client';
 import { Decoded } from "../../models/decoded.ts";
 import { jwtDecode } from "jwt-decode";
 import { RpgGameClient } from "../../client/rpg-game.client.ts";
@@ -17,10 +17,9 @@ export const TableAccess = () => {
     const bottomRef = useRef<HTMLInputElement | null>(null);
     const [messageList, setMessageList] = useState<{
         text: string;
-        author: string;
-        authorId: string;
+        username: string;
+        userId: string;
         dateH: Date;
-        room: string;
     }[]>([]);
 
     const [rpgGameName, setRpgGameName] = useState<string | null>(null);
@@ -29,7 +28,6 @@ export const TableAccess = () => {
         if (id) {
             rpgGameClient.findUnique(id).then(
                 success => {
-                    socket.emit("room", success);
 
                     setRpgGameName(success.name);
                 },
@@ -38,25 +36,19 @@ export const TableAccess = () => {
                 }
             );
         }
-
-        socket.on('message', (messages) => {
-            console.log('Nova mensagem recebida:', messages);
-            setMessageList((prevMessages) => [
-                ...messages.map((message: any) => ({
-                    text: message.text,
-                    author: message.author,
-                    authorId: message.authorId,
-                    dateH: new Date(message.dateH),
-                    room: message.room,
-                })),
-            ]);
+        socket.on("connect", () => {
+            socket.emit('join', id)
+            console.log(socket.id); // ojIckSD2jqNzOqIrAGzL
         });
 
-        return () => {
-            socket.off('message');
-        };
+        socket.on('message', (message) => {
+            console.log(message)
+            setMessageList(prevMessageList => [...prevMessageList, message]);
+            console.log(messageList)
+        });
+        return () => {socket.off('message')}
 
-    }, [id]);
+    }, []);
 
     useEffect(() => {
         scrollDown();
@@ -67,7 +59,8 @@ export const TableAccess = () => {
         const rpgGameId = id;
         const text = messageRef.current?.value;
         const authToken = sessionStorage.getItem('token');
-
+        let dateH: Date
+        dateH = new Date();
         let decoded: Decoded = {} as Decoded;
 
         if (authToken) {
@@ -76,13 +69,13 @@ export const TableAccess = () => {
 
         const userId = decoded.sub;
         const data = {
-            rpgGameId,
             username,
             text,
-            userId
+            userId,
+            dateH
         };
 
-        socket.emit('message', data);
+        socket.emit('message', {room: rpgGameId, data});
         clearInput();
         focusInput();
     };
@@ -110,7 +103,7 @@ export const TableAccess = () => {
         <div>
             <h1>Chat na Mesa: {rpgGameName}</h1>
             {messageList.map((message, index) => (
-                <p key={index}>{message.author}: {message.text}</p>
+                <p key={index}>{message.username}: {message.text}</p>
             ))}
             <div ref={bottomRef} />
             <input type="text" ref={messageRef} onKeyDown={(e) => handleKeyPress(e)} placeholder="mensagem" />
