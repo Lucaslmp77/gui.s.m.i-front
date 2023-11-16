@@ -69,7 +69,7 @@ export const Home: React.FC = () => {
                                         <RpgCard
                                             id={rpg.id}
                                             name={rpg.name}
-                                            master={rpg.user.name}
+                                            master={rpg.user?.name}
                                             description={rpg.description}
                                             imageUrl={FundoRPG}
                                             rpgGameId={rpg.id}

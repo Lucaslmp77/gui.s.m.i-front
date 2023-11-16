@@ -39,18 +39,19 @@ export const Login = () => {
             sessionStorage.setItem('username', authenticateData.email)
             if (response.access_token) {
                 sessionStorage.setItem('token', response.access_token);
-                const authToken = sessionStorage.getItem('token');
-                let decoded: Decoded = {} as Decoded;
-                if (authToken) {
-                    decoded = jwtDecode(authToken) as Decoded;
-                    sessionStorage.setItem('name', decoded.name)
-                }
                 console.log('Autenticação bem-sucedida:', response);
                 navigate('/home-minhas-mesas');
             } else {
                 setError('Token de acesso ausente na resposta.');
                 console.error('Token de acesso ausente na resposta.');
             }
+            const authToken = sessionStorage.getItem('token');
+            let decoded: Decoded = {} as Decoded;
+
+            if (authToken) {
+                decoded = jwtDecode(authToken);
+            }
+            sessionStorage.setItem('name', decoded.name)
         } catch (error) {
             setError('Autenticação falhou. Por favor, verifique suas credenciais.');
             console.error('Erro de autenticação:', error);
