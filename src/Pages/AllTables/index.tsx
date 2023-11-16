@@ -6,7 +6,6 @@ import RpgCard from "../../components/card/index.tsx";
 import FundoRPG from "../../assets/FundoRPG.png";
 import { Decoded } from '../../models/decoded.ts';
 import { jwtDecode } from 'jwt-decode';
-import { NavLink } from "react-router-dom";
 import Header from "../../components/header/index.tsx";
 
 export const Tables = () => {
@@ -71,7 +70,7 @@ export const Tables = () => {
                                         <RpgCard
                                             id={rpg.id}
                                             name={rpg.name}
-                                            master={rpg.user.name}
+                                            master={rpg.user?.name}
                                             description={rpg.description}
                                             imageUrl={FundoRPG}
                                             rpgGameId={rpg.id}
