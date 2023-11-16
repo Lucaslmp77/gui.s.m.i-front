@@ -5,7 +5,6 @@ import { jwtDecode } from "jwt-decode";
 import { RpgGameClient } from "../../client/rpg-game.client.ts";
 import { NavLink, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
-
 import { BiPencil } from "react-icons/bi";
 import { BsXLg } from "react-icons/bs";
 
@@ -23,7 +22,13 @@ export const TableAccess = () => {
         text: string;
         author: string;
         userId: string;
-        dateH: string;
+        dateH: Date;
+    }[]>([]);
+    const [messageListHistory, setMessageListHistory] = useState<{
+        text: string;
+        author: string;
+        userId: string;
+        dateH: Date;
     }[]>([]);
 
     const [rpgGameName, setRpgGameName] = useState<string | null>(null);
@@ -50,7 +55,13 @@ export const TableAccess = () => {
             setMessageList(prevMessageList => [...prevMessageList, message]);
             console.log(messageList)
         });
-        return () => { socket.off('message') }
+        socket.on('messageHistory', (message) => {
+            message.forEach((dado: any) =>{
+                setMessageListHistory(prevMessageList => [...prevMessageList, dado]);
+            })
+            socket.off('messageHistory')
+        })
+        return () => { socket.off('messageHistory'); socket.off('message') }
 
     }, []);
 
@@ -63,7 +74,7 @@ export const TableAccess = () => {
         const rpgGameId = id;
         const text = messageRef.current?.value;
         const authToken = sessionStorage.getItem('token');
-        const dateH = new Date().toLocaleTimeString();
+        const dateH = new Date()
         let decoded: Decoded = {} as Decoded;
 
         if (authToken) {
@@ -109,9 +120,18 @@ export const TableAccess = () => {
             <div className={styles.container}>
                 <h1 className={styles.title}>GUI.S.M.I</h1>
                 <div className={styles.containerText}>
-                    {messageList.map((message, index) => (
-                        <p key={index}>[{message.dateH}] {'--'} <span className={styles.userMessage}>{message.author}</span>: {message.text}</p>
-                    ))}
+                    {messageListHistory.map((message, index) => {
+                        const date = new Date(message.dateH);
+                        return (
+                            <p key={index}>[{date.toLocaleString()}] {'--'} <span className={styles.userMessage}>{message.author}</span>: {message.text}</p>
+                        );
+                    })}
+                    {messageList.map((message, index) => {
+                        const date = new Date(message.dateH);
+                        return (
+                            <p key={index}>[{date.toLocaleString()}] {'--'} <span className={styles.userMessage}>{message.author}</span>: {message.text}</p>
+                        );
+                    })}
                     <div ref={bottomRef} />
                 </div>
 
