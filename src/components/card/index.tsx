@@ -6,16 +6,18 @@ interface RpgCardProps {
   name: string;
   description: string;
   imageUrl: string;
+  master: string
 }
 
-const RpgCard: React.FC<RpgCardProps> = ({ id, name, description, imageUrl }) => {
+const RpgCard: React.FC<RpgCardProps> = ({ id, name, description, imageUrl, master }) => {
   return (
     <div className={styles.card} key={id}>
       <div className={styles.imageContainer}>
         <img src={imageUrl} alt={`Imagem do RPG ${name}`} />
       </div>
       <div className={styles.cardInfo}>
-        <p>Nome: {name}</p>
+        <p>{name}</p>
+        <p>Mestre: {master}</p>
         <p>Descrição: {description}</p>
       </div>
     </div>

@@ -7,6 +7,7 @@ import FundoRPG from '../../assets/FundoRPG.png';
 import styles from './styles.module.css';
 import { RpgGame } from '../../models/rpg-game';
 import { NavLink } from 'react-router-dom';
+import Header from '../../components/header';
 
 export const Home: React.FC = () => {
     const authToken = sessionStorage.getItem('token');
@@ -56,30 +57,7 @@ export const Home: React.FC = () => {
 
     return (
         <section>
-            <div className={styles.header}>
-                <div className={styles.userMenu}>
-                    Bem-vindo, {userName}
-                </div>
-                <nav className={styles.navigation}>
-                    <ul>
-                        <li>
-                            <NavLink to="/home-minhas-mesas" className={`${styles.link} ${window.location.pathname === '/home-minhas-mesas' ? styles.selected : ''}`}>
-                                Minhas mesas
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/criar-mesa" className={styles.link}>
-                                Criar mesa
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/procurar-mesas" className={styles.link}>
-                                Procurar mesas
-                            </NavLink>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <Header userName={userName} />
             <div className={styles.container}>
                 <div className={styles.cardContainer}>
                     {loading ? (
@@ -92,6 +70,7 @@ export const Home: React.FC = () => {
                                         <RpgCard
                                             id={rpg.id}
                                             name={rpg.name}
+                                            master={rpg.user.name}
                                             description={rpg.description}
                                             imageUrl={FundoRPG}
                                         />

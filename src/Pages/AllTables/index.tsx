@@ -1,12 +1,13 @@
-import {useEffect, useState} from "react";
-import {RpgGameClient} from "../../client/rpg-game.client.ts";
-import {RpgGame} from "../../models/rpg-game.ts";
+import { useEffect, useState } from "react";
+import { RpgGameClient } from "../../client/rpg-game.client.ts";
+import { RpgGame } from "../../models/rpg-game.ts";
 import styles from "../Home/styles.module.css";
-import RpgCard from "../../components/card";
+import RpgCard from "../../components/card/index.tsx";
 import FundoRPG from "../../assets/FundoRPG.png";
-import { Decoded } from '../../models/decoded';
+import { Decoded } from '../../models/decoded.ts';
 import { jwtDecode } from 'jwt-decode';
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Header from "../../components/header/index.tsx";
 
 export const Tables = () => {
     const authToken = sessionStorage.getItem('token');
@@ -17,6 +18,7 @@ export const Tables = () => {
     }
 
     const userId = decoded.sub;
+    const userName = decoded.name;
 
     const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
     const [loading, setLoading] = useState(true);
@@ -56,6 +58,7 @@ export const Tables = () => {
 
     return (
         <section>
+            <Header userName={userName} />
             <div className={styles.container}>
                 <div className={styles.cardContainer}>
                     {loading ? (
@@ -68,6 +71,7 @@ export const Tables = () => {
                                         <RpgCard
                                             id={rpg.id}
                                             name={rpg.name}
+                                            master={rpg.user.name}
                                             description={rpg.description}
                                             imageUrl={FundoRPG}
                                         />

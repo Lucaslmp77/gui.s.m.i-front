@@ -16,16 +16,6 @@ section {
   background-color: #22223B;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 40px;
-  color: #fff;
-  font-family: 'Acme', sans-serif;
-  font-size: 24px;
-}
-
 .container {
   display: flex;
   align-items: center;
@@ -34,16 +24,7 @@ section {
   background-color: #22223B;
   text-align: center;
   border-top: 1px solid white;
-  padding-top: 50px;
-}
-
-.navigation ul {
-  list-style: none;
-  display: flex;
-}
-
-.navigation li {
-  margin-right: 40px;
+  padding-top: 40px;
 }
 
 .link {
@@ -60,12 +41,7 @@ section {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
-}
-
-.selected {
-  color: #FFA500;
-  font-weight: bold;
+  gap: 30px;
 }
 
 .pagination {

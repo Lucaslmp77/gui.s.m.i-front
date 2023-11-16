@@ -110,7 +110,7 @@ export const TableAccess = () => {
                 <h1 className={styles.title}>GUI.S.M.I</h1>
                 <div className={styles.containerText}>
                     {messageList.map((message, index) => (
-                        <p key={index}>[{message.dateH}] {'--'} <span className={styles.userMessage}>{message.username}</span>: {message.text}</p>
+                        <p key={index}>[{message.dateH}] {'--'} <span className={styles.userMessage}>{message.author}</span>: {message.text}</p>
                     ))}
                     <div ref={bottomRef} />
                 </div>
