@@ -30,8 +30,6 @@ const CubeGeo: React.FC<CubeGeoProps> = ({ position, size }) => {
     useLoader(TextureLoader, numero6),
   ];
 
-  console.log('Textures:', textures);
-
   useFrame(() => {
     if (meshRef.current) {
       meshRef.current.rotation.x += 0.05;
