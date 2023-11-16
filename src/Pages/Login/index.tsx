@@ -2,6 +2,8 @@ import { useState } from 'react';
 import styles from './styles.module.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthenticateClient } from '../../client/authenticate.client';
+import {Decoded} from "../../models/decoded.ts";
+import { jwtDecode } from "jwt-decode";
 
 export const Login = () => {
     const [loginData, setLoginData] = useState({
@@ -37,6 +39,12 @@ export const Login = () => {
             sessionStorage.setItem('username', authenticateData.email)
             if (response.access_token) {
                 sessionStorage.setItem('token', response.access_token);
+                const authToken = sessionStorage.getItem('token');
+                let decoded: Decoded = {} as Decoded;
+                if (authToken) {
+                    decoded = jwtDecode(authToken) as Decoded;
+                    sessionStorage.setItem('name', decoded.name)
+                }
                 console.log('Autenticação bem-sucedida:', response);
                 navigate('/home-minhas-mesas');
             } else {

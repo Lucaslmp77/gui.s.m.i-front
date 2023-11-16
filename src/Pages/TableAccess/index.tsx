@@ -70,7 +70,7 @@ export const TableAccess = () => {
     }, [messageList]);
 
     const handleSubmit = () => {
-        const author = sessionStorage.getItem('username');
+        const author = sessionStorage.getItem('name');
         const rpgGameId = id;
         const text = messageRef.current?.value;
         const authToken = sessionStorage.getItem('token');
@@ -97,8 +97,11 @@ export const TableAccess = () => {
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter')
-            handleSubmit();
+        if (e.key === 'Enter') {
+            if (messageRef.current?.value.trim() !== '') {
+                handleSubmit();
+            }
+        }
     };
 
     const clearInput = () => {
