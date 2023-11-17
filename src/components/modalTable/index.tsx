@@ -130,31 +130,34 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
             contentLabel="Criar Mesa Modal"
         >
             <div className={styles.formContainer}>
-                {successMessage && (
-                    <div className={styles.successMessage}>{successMessage}</div>
-                )}
                 <form className={styles.formModal} onSubmit={handleSubmit}>
-                    <label htmlFor="tableName">Nome da Mesa</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
+                    {successMessage && (
+                        <div className={styles.successMessage}>{successMessage}</div>
+                    )}
+                    <div className={styles.containerInput}>
+                        <label htmlFor="tableName">Nome da mesa</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
 
-                    {errors.name && <div className={styles.error}>{errors.name}</div>}
+                        {errors.name && <div className={styles.error}>{errors.name}</div>}
+                    </div>
 
-                    <label htmlFor="tableDescription">Descrição</label>
-                    <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
+                    <div className={styles.containerInput}>
+                        <label htmlFor="tableDescription">Descrição</label>
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
 
-                    {errors.description && <div className={styles.error}>{errors.description}</div>}
-
+                        {errors.description && <div className={styles.error}>{errors.description}</div>}
+                    </div>
                     <button type="submit">Criar Mesa</button>
                 </form>
                 <BsXLg className={styles.exitModal} onClick={onRequestClose} />
