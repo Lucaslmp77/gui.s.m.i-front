@@ -69,7 +69,7 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
             contentLabel="Criar Mesa Modal"
         >
             <div className={styles.formContainer}>
-                <form onSubmit={handleSubmit}>
+                <form className={styles.formModal} onSubmit={handleSubmit}>
                     <label htmlFor="tableName">Nome da Mesa</label>
                     <input
                         type="text"
