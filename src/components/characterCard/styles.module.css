@@ -9,21 +9,26 @@
 
 .card {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
     background-color: #333;
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 400px;
     color: #fff;
     border: 2px solid #FFA500;
-    width: 700px;
-    height: 250px;
     gap: 15px;
     border-radius: 5px;
     font-family: 'Poppins', sans-serif;
+    padding-top: 15px;
 }
 
-img {
-    max-width: 45%;
+.img {
+    max-width: 100%;
     height: 100%;
     border-radius: 5px;
+    padding: 2px;
+    border: 2px solid #FFA500;
 }
 
 .containerInfo {
@@ -59,7 +64,7 @@ img {
     hyphens: auto;
 }
 
-.containerInfo button {
+.buttonInfo {
     width: 150px;
     background-color: #FFA500;
     color: white;
@@ -71,6 +76,6 @@ img {
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: rgb(172, 146, 3);
+        background-color: rgb(249, 216, 30);
     }
 }

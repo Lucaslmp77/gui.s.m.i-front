@@ -49,6 +49,14 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
               Procurar mesas
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/my-characters"
+              className={`${styles.link} ${window.location.pathname === '/my-characters' ? styles.selected : ''}`}
+            >
+              Minhas fichas
+            </NavLink>
+          </li>
         </ul>
       </nav>
       <CreateTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
