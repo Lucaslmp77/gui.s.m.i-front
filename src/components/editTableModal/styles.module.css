@@ -32,6 +32,10 @@
     gap: 20px;
 }
 
+.subTitle {
+    color: #FFA500;
+}
+
 .containerInput>label {
     margin-bottom: 8px;
     color: #fff;

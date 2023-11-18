@@ -158,6 +158,7 @@ const CreateTableModal: React.FC<CreateTableModalProps> = ({ isOpen, onRequestCl
                     {successMessage && (
                         <div className={styles.successMessage}>{successMessage}</div>
                     )}
+                     <h2 className={styles.subTitle}>CRIAR MESA</h2>
                     <div className={styles.containerInput}>
                         <label htmlFor="tableName">Nome da mesa</label>
                         <input

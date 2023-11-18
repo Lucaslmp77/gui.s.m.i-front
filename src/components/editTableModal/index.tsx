@@ -187,6 +187,7 @@ const EditTableModal: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClos
                     {successMessage && (
                         <div className={styles.successMessage}>{successMessage}</div>
                     )}
+                    <h2 className={styles.subTitle}>EDITAR MESA</h2>
                     <div className={styles.containerInput}>
                         <label htmlFor="tableName">Nome da mesa</label>
                         <input
