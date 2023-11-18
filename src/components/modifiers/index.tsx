@@ -68,6 +68,10 @@ export const Modifiers = () => {
         });
 
         console.log('Total :',resultadoTotal);
+        
+        if (resultadoTotal !== 0){
+            setModalDice(false);
+        }
 
         setValorD4(0);
         setValorD6(0);
@@ -75,6 +79,7 @@ export const Modifiers = () => {
         setValorD10(0);
         setValorD12(0);
         setValorD20(0);
+
 
     }
 
@@ -88,7 +93,8 @@ export const Modifiers = () => {
             maxHeight: '410px',
             margin: 'auto', // centraliza o modal horizontalmente
             padding: '20px', // espaço interno do modal
-            border: "none"
+            border: "3px solid #32021F",
+            radius: "15px",
         },
     }
 

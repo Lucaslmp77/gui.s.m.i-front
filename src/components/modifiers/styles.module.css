@@ -21,7 +21,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    
+
 }
 
 .row{
@@ -46,6 +46,7 @@
 
 .pair > h1{
     font-size: 40px;
+    color: #32021F;
 }
 
 .buttons{
@@ -119,6 +120,7 @@
     transition: 0.5 ease-out;
 
     font-size: 20px;
+    
 }
 
 .buttonRolar:hover{
@@ -141,7 +143,7 @@
     color: #32021F;
     background-color: white;
     transition: 0.5 ease-out;
-    border: 1px solid #32021F;
+    border: 3px solid #32021F;
 
     font-size: 20px;
 }
