@@ -11,16 +11,62 @@ import { useState } from 'react'
 
 export const Modifiers = () => {
 
-    const [valor, setValor] = useState(0);
+    const [valorD4, setValorD4] = useState(0);
+    const [valorD6, setValorD6] = useState(0);
+    const [valorD8, setValorD8] = useState(0);
+    const [valorD10, setValorD10] = useState(0);
+    const [valorD12, setValorD12] = useState(0);
+    const [valorD20, setValorD20] = useState(0);
 
-    const aumentarValor = () => {
-        setValor(valor + 1);
+    type SetValueFunction = React.Dispatch<React.SetStateAction<number>>;
+
+    const handleDiceValue = (
+        setValue: SetValueFunction, 
+        currentValue: number, 
+        increment: number
+    ) => {
+        if (increment < 0 && currentValue === 0) {
+            return;
+        }
+        setValue(currentValue + increment);
     }
 
-    const diminuirValor = () => {
-        if (valor > 0){
-            setValor(valor - 1);
+    const randomValues = () => {
+        const dados = [
+            {nome:'D4', lados:4, quantidade: valorD4},
+            {nome:'D6', lados:6, quantidade: valorD6},
+            {nome:'D8', lados:8, quantidade: valorD8},
+            {nome:'D10', lados:10, quantidade: valorD10},
+            {nome:'D12', lados:12, quantidade: valorD12},
+            {nome:'D20', lados:20, quantidade: valorD20},
+        ];
+
+        const lancamento = (dado: any) => {
+            const resultado = [];
+
+            for(let i = 0; i < dado.quantidade; i++){
+                const resultadoLancamento = Math.floor(Math.random() * dado.lados) + 1;
+                resultado.push(resultadoLancamento);
+            }
+            return resultado;
         }
+
+        dados.forEach((dado) => {
+            if (dado.quantidade > 0){
+                const resultado = lancamento(dado);
+                const somaResultado = resultado.reduce((soma, valor) => soma + valor, 0);
+
+                console.log(`Resultados para ${dado.quantidade} ${dado.nome} (${dado.lados} lados): ${somaResultado} [${resultado.join(', ')}]`);    
+            }
+        });
+
+        setValorD4(0);
+        setValorD6(0);
+        setValorD8(0);
+        setValorD10(0);
+        setValorD12(0);
+        setValorD20(0);
+
     }
 
     return(
@@ -30,61 +76,84 @@ export const Modifiers = () => {
                     <div className={styles.buttons}>
                         <button 
                             className={styles.buttonMore}
-                            onClick={aumentarValor}></button>
+                            onClick={() => handleDiceValue(setValorD4, valorD4, 1)}></button>
                         <button 
                             className={styles.buttonLess}
-                            onClick={diminuirValor}></button>
+                            onClick={() => handleDiceValue(setValorD4, valorD4, -1)}></button>
                     </div>
                     <img src={D4} alt="Dado 4 Faces"/>
-                    <h1>{valor}</h1>
+                    <h1>{valorD4}</h1>
                 </div>
                 <div className={styles.pair}>
                     <div className={styles.buttons}>
-                        <button className={styles.buttonMore}></button>
-                        <button className={styles.buttonLess}></button>
+                        <button 
+                            className={styles.buttonMore}
+                            onClick={() => handleDiceValue(setValorD6, valorD6, 1)}></button>
+                        <button 
+                            className={styles.buttonLess}
+                            onClick={() => handleDiceValue(setValorD6, valorD6, -1)}></button>
                     </div>
                     <img src={D6} alt="Dado 6 Faces"/>
-                    <h1>0</h1>
+                    <h1>{valorD6}</h1>
                 </div>
             </div>
             <div className={styles.row}>
                 <div className={styles.pair}>
                     <div className={styles.buttons}>
-                        <button className={styles.buttonMore}></button>
-                        <button className={styles.buttonLess}></button>
+                        <button 
+                            className={styles.buttonMore}
+                            onClick={() => handleDiceValue(setValorD8, valorD8, 1)}></button>
+                        <button 
+                            className={styles.buttonLess}
+                            onClick={() => handleDiceValue(setValorD8, valorD8, -1)}></button>
                     </div>
                     <img src={D8} alt="Dado 8 Faces"/>
-                    <h1>0</h1>
+                    <h1>{valorD8}</h1>
                 </div>
                 <div className={styles.pair}>
                     <div className={styles.buttons}>
-                        <button className={styles.buttonMore}></button>
-                        <button className={styles.buttonLess}></button>
+                        <button 
+                            className={styles.buttonMore}
+                            onClick={() => handleDiceValue(setValorD10, valorD10, 1)}></button>
+                        <button 
+                            className={styles.buttonLess}
+                            onClick={() => handleDiceValue(setValorD10, valorD10, -1)}></button>
                     </div>
                     <img src={D10} alt="Dado 10 Faces"/>
-                    <h1>0</h1>
+                    <h1>{valorD10}</h1>
                 </div>
             </div>
             <div className={styles.row}>
                 <div className={styles.pair}>
                     <div className={styles.buttons}>
-                        <button className={styles.buttonMore}></button>
-                        <button className={styles.buttonLess}></button>
+                        <button 
+                            className={styles.buttonMore}
+                            onClick={() => handleDiceValue(setValorD12, valorD12, 1)}></button>
+                        <button 
+                            className={styles.buttonLess}
+                            onClick={() => handleDiceValue(setValorD12, valorD12, -1)}></button>
                     </div>
                     <img src={D12} alt="Dado 12 Faces"/>
-                    <h1>0</h1>
+                    <h1>{valorD12}</h1>
                 </div>
                 <div className={styles.pair}>
                     <div className={styles.buttons}>
-                        <button className={styles.buttonMore}></button>
-                        <button className={styles.buttonLess}></button>
+                        <button 
+                            className={styles.buttonMore}
+                            onClick={() => handleDiceValue(setValorD20, valorD20, 1)}></button>
+                        <button 
+                            className={styles.buttonLess}
+                            onClick={() => handleDiceValue(setValorD20, valorD20, -1)}></button>
                     </div>
                     <img src={D20} alt="Dado 20 Faces"/>
-                    <h1>0</h1>
+                    <h1>{valorD20}</h1>
                 </div>
             </div>
             <div className={styles.finish}>
-                <button className={styles.buttonRolar}>Rolar Dados</button>
+                <button 
+                    className={styles.buttonRolar}
+                    onClick={randomValues}
+                    >Rolar Dados</button>
                 <h4>Esc para Sair</h4>
             </div>
             {/* <div className={styles.inp}>
