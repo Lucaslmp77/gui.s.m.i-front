@@ -32,6 +32,11 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
             </NavLink>
           </li>
           <li>
+          <NavLink
+              to="/home-minhas-mesas"
+              className={`${styles.link} ${window.location.pathname === '/home-minhas-mesas' ? styles.selected : ''}`}
+            >
+              </NavLink>
             <a onClick={openModal} className={styles.link}>
               Criar mesa
             </a>

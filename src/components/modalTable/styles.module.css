@@ -1,25 +1,107 @@
-form {
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 50%;
+    height: 80%;
+    margin-top: 5%;
+    border: none;
+    margin-left: 25%;
+}
+
+.formContainer {
+    display: flex;
+    justify-content: center;
+    background-color: #22223B;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    border: 3px solid #FFA500;
+    font-family: 'Acme', sans-serif;
+}
+
+.formModal {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding-top: 15%;
+    gap: 20px;
 }
 
-label {
+.containerInput>label {
     margin-bottom: 8px;
+    color: #fff;
+    font-family: 'Acme', sans-serif;
+    font-size: 16px;
 }
 
-input,
-textarea {
-    margin-bottom: 16px;
+.containerInput>input {
     padding: 8px;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 40px;
+    max-height: 50%;
+    box-sizing: border-box;
+    font-family: 'Acme', sans-serif;
+    font-size: 16px;
+    border-radius: 5px;
 }
 
-button {
+.containerInput>textarea {
+    padding: 8px;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+    max-height: 150px;
+    box-sizing: border-box;
+    font-family: 'Acme', sans-serif;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.formModal>button {
     background-color: #FFA500;
     color: #fff;
     padding: 8px;
     cursor: pointer;
+    border: none;
+    font-family: 'Acme', sans-serif;
+    font-size: 16px;
+    border-radius: 5px;
 }
 
-button:hover {
+.formModal>button:hover {
     background-color: #FFD700;
+}
+
+.exitModal {
+    color: red;
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    margin-left: 47.4%;
+}
+
+.exitModal:hover {
+    border: 1px solid red;
+}
+
+.successMessage {
+    display: flex;
+    justify-content: center;
+    padding: 1%;
+    margin-bottom: 20px;
+    width: 100%;
+    height: 36px;
+    border-radius: 5px;
+    color: green;
+    background-color: rgb(188, 255, 188);
+}
+
+.error {
+    color: red;
 }
