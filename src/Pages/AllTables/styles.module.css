@@ -5,6 +5,7 @@
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
+  font-family: 'Acme', sans-serif;
 }
 
 section {
@@ -22,7 +23,6 @@ section {
   width: 100%;
   padding: 40px;
   color: #fff;
-  font-family: 'Acme', sans-serif;
   font-size: 24px;
 }
 

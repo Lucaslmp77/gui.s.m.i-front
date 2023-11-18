@@ -10,7 +10,7 @@ interface CreateTableModalProps {
     onRequestClose: () => void;
 }
 
-const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose }) => {
+const CreateTableModal: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose }) => {
     const [formData, setFormData] = useState<any>({
         name: "",
         description: "",
@@ -103,7 +103,12 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
 
                 setTimeout(() => {
                     setSuccessMessage(null);
-                }, 5000);
+                    window.location.reload();
+                }, 1000);
+
+                setTimeout(() => {
+                    setSuccessMessage(null);
+                }, 1000);
             }
         } catch (error) {
             console.error("Erro ao cadastrar mesa:", error);
@@ -185,4 +190,4 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
     );
 };
 
-export default ModalTable;
+export default CreateTableModal;

@@ -7,7 +7,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import { BiPencil } from "react-icons/bi";
 import { BsXLg } from "react-icons/bs";
-import { GiSwordsPower } from "react-icons/gi";
+import { GiSwordsPower, GiIdCard } from "react-icons/gi";
 
 const ENDPOINT = 'http://localhost:3333/';
 
@@ -151,8 +151,14 @@ export const TableAccess = () => {
                     </NavLink>
                 </div>
                 <div className={styles.menu}>
-                    <BiPencil className={styles.editTable} />
-                    <GiSwordsPower className={styles.createCharacter} />
+                    <div className={styles.containerIcon}>
+                        <BiPencil className={styles.editTable} />
+                        <p className={styles.textIcon}>Editar mesa</p>
+                    </div>
+                    <div className={styles.containerIcon}>
+                        <GiIdCard className={styles.createCharacter} />
+                        <p className={styles.textIcon}>Criar ficha</p>
+                    </div>
                 </div>
             </div>
         </section>

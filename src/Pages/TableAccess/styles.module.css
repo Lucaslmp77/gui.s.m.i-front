@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     text-decoration: none;
+    font-family: 'Acme', sans-serif;
 }
 
 .section {
@@ -107,6 +110,19 @@
 
 }
 
+.containerIcon {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3px;
+    color: white;
+}
+
+.textIcon {
+    display: flex;
+    width: 80px;
+}
+
 .exitTable {
     color: red;
     font-size: 40px;
@@ -120,13 +136,11 @@
 .editTable {
     color: white;
     font-size: 70px;
-    border: 1px solid blue;
     cursor: pointer;
 }
 
 .createCharacter {
     color: white;
     font-size: 70px;
-    border: 1px solid purple;
     cursor: pointer;
 }

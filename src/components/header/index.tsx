@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
-import ModalTable from '../modalTable';
+import CreateTableModal from '../createTableModal';
 
 interface HeaderProps {
   userName: string;
@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
           </li>
         </ul>
       </nav>
-      <ModalTable isOpen={isModalOpen} onRequestClose={closeModal} />
+      <CreateTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
     </header>
   );
 };
