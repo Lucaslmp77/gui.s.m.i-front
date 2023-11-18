@@ -1,5 +1,5 @@
-import axios, {AxiosInstance} from "axios";
-import {RpgGameData} from "../models/rpg-game-data.ts";
+import axios, { AxiosInstance } from "axios";
+import { RpgGameData } from "../models/rpg-game-data.ts";
 import { Character } from "../models/character.ts";
 
 export class CharacterClient {
@@ -33,7 +33,7 @@ export class CharacterClient {
     }
 
 
-    public async findUnique(id: string): Promise<Character>{
+    public async findUnique(id: string): Promise<Character> {
         try {
             return (await this.axiosClient.get<Character>(`/${id}`)).data
         }
@@ -41,7 +41,7 @@ export class CharacterClient {
             return Promise.reject(error.response)
         }
     }
-  
+
     public async findCharacterByUser(userId: string, page: number): Promise<Character[]> {
         try {
             return (await this.axiosClient.get(`/findCharacterByUser/${userId}?page=${page}`)).data;
@@ -52,9 +52,9 @@ export class CharacterClient {
 
     public async update(id: string, rpg: RpgGameData): Promise<Character> {
         try {
-          return (await this.axiosClient.put(`/${id}`, rpg)).data;
+            return (await this.axiosClient.put(`/${id}`, rpg)).data;
         } catch (error: any) {
-          return Promise.reject(error.response);
+            return Promise.reject(error.response);
         }
-      }
+    }
 }

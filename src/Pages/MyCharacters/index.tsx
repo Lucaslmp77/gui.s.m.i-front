@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { Decoded } from '../../models/decoded';
-import FundoRPG from '../../assets/FundoRPG.png';
 import styles from './styles.module.css';
 import Header from '../../components/header';
 import { Character } from '../../models/character';
 import { CharacterClient } from '../../client/character.client';
 import CharacterCard from '../../components/characterCard';
+
+import WizardImg from '../../assets/Mago.jpg';
+import RangerImg from '../../assets/Patrulheiro.jpg';
+import WarriorImg from '../../assets/Guerreiro.jpg';
+import ClericImg from '../../assets/Clerigo.jpg';
+import PaladinImg from '../../assets/Paladino.jpg';
+
 
 export const MyCharacters: React.FC = () => {
     const authToken = sessionStorage.getItem('token');
@@ -43,7 +49,7 @@ export const MyCharacters: React.FC = () => {
     }, [userId, currentPage]);
 
     const handleNextPage = () => {
-        if (characters.length === 4) {
+        if (characters.length === 5) {
             setCurrentPage((prev) => prev + 1);
         }
     };
@@ -72,7 +78,25 @@ export const MyCharacters: React.FC = () => {
                                             group={character.group}
                                             race={character.race}
                                             level={character.level}
-                                            imageUrl={FundoRPG}
+                                            imageUrl={
+                                                character.group === "Mago"
+                                                    ? WizardImg
+                                                    : character.group === "Arqueiro"
+                                                        ? RangerImg
+                                                        : character.group === "Guerreiro"
+                                                            ? WarriorImg
+                                                            : character.group === "Ladrão"
+                                                                ? RangerImg
+                                                                : character.group === "Clérigo"
+                                                                    ? ClericImg
+                                                                    : character.group === "Paladino"
+                                                                        ? PaladinImg
+                                                                        : character.group === "Mago Negro"
+                                                                            ? RangerImg
+                                                                            : character.group === "Bárbaro"
+                                                                                ? RangerImg
+                                                                                : RangerImg
+                                            }
                                         />
                                     </div>
                                 ))}
@@ -88,8 +112,8 @@ export const MyCharacters: React.FC = () => {
                                 <span>Página {currentPage}</span>
                                 <button
                                     onClick={handleNextPage}
-                                    disabled={characters.length < 4}
-                                    className={characters.length < 4 ? styles.disabled : ''}
+                                    disabled={characters.length < 5}
+                                    className={characters.length < 5 ? styles.disabled : ''}
                                 >
                                     Próximo
                                 </button>
