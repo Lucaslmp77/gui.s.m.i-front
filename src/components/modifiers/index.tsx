@@ -156,18 +156,6 @@ export const Modifiers = () => {
                     >Rolar Dados</button>
                 <h4>Esc para Sair</h4>
             </div>
-            {/* <div className={styles.inp}>
-                <h3>Modificadores:</h3>
-                <div className={styles.inputs}>
-                    <button className={styles.buttonMore}></button>
-                    <input type="text" className={styles.input}/>
-                </div>
-                <div className={styles.inputs}>
-                    <button className={styles.buttonLess}></button>
-                    <input type="text" className={styles.input}/>
-                </div>
-                
-            </div> */}
         </article>
     )
 }
