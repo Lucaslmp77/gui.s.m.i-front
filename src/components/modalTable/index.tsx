@@ -135,6 +135,18 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Criar Mesa Modal"
+            style={{
+                overlay: {
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                },
+                content: {
+                    maxWidth: "50%",
+                    backgroundColor: "#000",
+                    color: "#fff",
+                    border: "1px solid #333",
+                    background: "transparent",
+                },
+            }}
         >
             <div className={styles.formContainer}>
                 <form className={styles.formModal} onSubmit={handleSubmit}>

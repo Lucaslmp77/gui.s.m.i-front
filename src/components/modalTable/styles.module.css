@@ -78,18 +78,6 @@
     background-color: #FFD700;
 }
 
-.ReactModal__Overlay {
-    background: transparent;
-}
-
-.ReactModal__Content {
-    max-width: 50%;
-    margin: 0 auto;
-    background-color: #000;
-    color: #fff;
-    border: 1px solid #333;
-}
-
 .exitModal {
     color: red;
     font-size: 30px;
