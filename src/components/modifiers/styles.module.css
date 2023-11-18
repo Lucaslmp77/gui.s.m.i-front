@@ -7,6 +7,7 @@
     justify-content: center;
     flex-direction: column;
     
+
 }
 
 .row{
@@ -39,14 +40,44 @@
     justify-content: center;
     flex-direction: column;
 
-    gap: 30px;
+    gap: 25px;
+
+    margin-top: 20px;
+}
+
+.inp > h3{
+    font-size: 30px;
 }
 
 .inputs{
     display: flex;
     align-items: center;
+
+    gap: 20px;
 }
 
 .inputs > img {
-    max-width: 40px;
+    max-height: 30px;
+}
+
+.inputs > input {
+    width: 200px;
+    height: 40px;
+
+    font-size: 20px;
+}
+
+.finish{
+    gap: 20px;
+}
+
+.finish > button { 
+    width: 100px;
+    height: 30px;
+
+    margin-bottom: 10px;
+}
+
+.finish > h4{
+    font-size: 18px;
 }

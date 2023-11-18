@@ -13,7 +13,7 @@ import MENOS from '../../assets/dice/MENOS.png'
 
 export const Modifiers = () => {
     return(
-            <article className={styles.container}>
+        <article className={styles.container}>
             <div className={styles.row}>
                 <div className={styles.pair}>
                     <img src={D4} alt="Dado 4 Faces"/>
@@ -45,7 +45,7 @@ export const Modifiers = () => {
                 </div>
             </div>
             <div className={styles.inp}>
-                <h3 className={styles.modi}>Modificadores:</h3>
+                <h3>Modificadores:</h3>
                 <div className={styles.inputs}>
                     <img src={MAIS} alt="" className={styles.mais}/>
                     <input type="text" />
@@ -54,10 +54,10 @@ export const Modifiers = () => {
                     <img src={MENOS} alt="" className={styles.menos}/>
                     <input type="text" />
                 </div>
-            </div>
-            <div>
-                <button>Rolar Dados</button>
-                <h4>Esc para Sair</h4>
+                <div className={styles.finish}>
+                    <button>Rolar Dados</button>
+                    <h4>Esc para Sair</h4>
+                </div>
             </div>
         </article>
     )
