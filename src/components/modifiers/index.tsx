@@ -56,7 +56,7 @@ export const Modifiers = () => {
                 const resultado = lancamento(dado);
                 const somaResultado = resultado.reduce((soma, valor) => soma + valor, 0);
 
-                console.log(`Resultados para ${dado.quantidade} ${dado.nome} (${dado.lados} lados): ${somaResultado} [${resultado.join(', ')}]`);    
+                console.log(`Resultados para ${dado.quantidade}${dado.nome}: ${somaResultado} [${resultado.join(', ')}]`);    
             }
         });
 
