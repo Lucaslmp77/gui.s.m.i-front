@@ -10,7 +10,7 @@ interface CreateTableModalProps {
     onRequestClose: () => void;
 }
 
-const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose }) => {
+const CreateTableModal: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose }) => {
     const [formData, setFormData] = useState<any>({
         name: "",
         description: "",
@@ -72,10 +72,10 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
                     description: "Descrição da mesa é obrigatória",
                 }));
                 isValid = false;
-            } else if (value.length < 5 || value.length > 300) {
+            } else if (value.length < 5 || value.length > 90) {
                 setErrors((prevErrors) => ({
                     ...prevErrors,
-                    description: "Descrição deve ter entre 5 e 300 caracteres",
+                    description: "Descrição deve ter entre 5 e 90 caracteres",
                 }));
                 isValid = false;
             }
@@ -103,7 +103,12 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
 
                 setTimeout(() => {
                     setSuccessMessage(null);
-                }, 5000);
+                    window.location.reload();
+                }, 1000);
+
+                setTimeout(() => {
+                    setSuccessMessage(null);
+                }, 1000);
             }
         } catch (error) {
             console.error("Erro ao cadastrar mesa:", error);
@@ -153,6 +158,7 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
                     {successMessage && (
                         <div className={styles.successMessage}>{successMessage}</div>
                     )}
+                     <h2 className={styles.subTitle}>CRIAR MESA</h2>
                     <div className={styles.containerInput}>
                         <label htmlFor="tableName">Nome da mesa</label>
                         <input
@@ -185,4 +191,4 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
     );
 };
 
-export default ModalTable;
+export default CreateTableModal;

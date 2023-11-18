@@ -49,4 +49,12 @@ export class RpgGameClient {
             throw error;
         }
     }
+
+    public async update(id: string, rpg: RpgGameData): Promise<RpgGame> {
+        try {
+          return (await this.axiosClient.put(`/${id}`, rpg)).data;
+        } catch (error: any) {
+          return Promise.reject(error.response);
+        }
+      }
 }

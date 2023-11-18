@@ -5,8 +5,14 @@ import { jwtDecode } from "jwt-decode";
 import { RpgGameClient } from "../../client/rpg-game.client.ts";
 import { NavLink, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
+import EditTableModal from '../../components/editTableModal/index.tsx';
+
 import { BiPencil } from "react-icons/bi";
 import { BsXLg } from "react-icons/bs";
+import { GiIdCard } from "react-icons/gi";
+import { TbCardsFilled } from "react-icons/tb";
+import { GiRobotGolem } from "react-icons/gi";
+import { FaUsers } from "react-icons/fa";
 
 const ENDPOINT = 'http://localhost:3333/';
 
@@ -56,7 +62,7 @@ export const TableAccess = () => {
             console.log(messageList)
         });
         socket.on('messageHistory', (message) => {
-            message.forEach((dado: any) =>{
+            message.forEach((dado: any) => {
                 setMessageListHistory(prevMessageList => [...prevMessageList, dado]);
             })
             socket.off('messageHistory')
@@ -118,6 +124,16 @@ export const TableAccess = () => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <section className={styles.section}>
             <div className={styles.container}>
@@ -143,12 +159,36 @@ export const TableAccess = () => {
                     <button className={styles.sendMessageButton} onClick={handleSubmit}>Enviar</button>
                 </div>
             </div>
-            <div className={styles.menu}>
-                <NavLink to="/home-minhas-mesas">
-                    <BsXLg className={styles.exitTable} />
-                </NavLink>
-                <BiPencil className={styles.editTable} />
+            <div className={styles.containerMenuNavigation}>
+                <div className={styles.exit}>
+                    <NavLink to="/home-minhas-mesas">
+                        <BsXLg className={styles.exitTable} />
+                    </NavLink>
+                </div>
+                <div className={styles.menu}>
+                    <div className={styles.containerIcon}>
+                        <BiPencil className={styles.editTable} onClick={openModal} />
+                        <p className={styles.textIcon}>Editar mesa</p>
+                    </div>
+                    <div className={styles.containerIcon}>
+                        <GiIdCard className={styles.createCharacter} />
+                        <p className={styles.textIcon}>Criar ficha</p>
+                    </div>
+                    <div className={styles.containerIcon}>
+                        <TbCardsFilled className={styles.myCharacters} />
+                        <p className={styles.textIcon}>Minhas fichas</p>
+                    </div>
+                    <div className={styles.containerIcon}>
+                        <FaUsers className={styles.users} />
+                        <p className={styles.textIcon}>Usuários</p>
+                    </div>
+                    <div className={styles.containerIcon}>
+                        <GiRobotGolem className={styles.npc} />
+                        <p className={styles.textIcon}>NPC</p>
+                    </div>
+                </div>
             </div>
+            <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
         </section>
     );
 };

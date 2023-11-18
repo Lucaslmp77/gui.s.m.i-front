@@ -23,13 +23,12 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-
     width: 60%;
     border-radius: 2%;
-    background-color: #32021F;
+    background-color: #411630;
     opacity: 97%;
-    border: 2px solid #12010b;
     gap: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 50px rgba(0, 0, 0, 0.1);
 }
 
 .title {
@@ -39,7 +38,6 @@
     font-weight: 600;
     line-height: normal;
     color: #E0D3DE;
-
     padding: 20px;
 }
 
@@ -48,7 +46,6 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
     width: 100%;
     gap: 40px;
 }
@@ -57,14 +54,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
     width: 350px;
     height: 45px;
 }
 
 .inputs>label {
     display: flex;
-
     text-align: center;
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
@@ -119,11 +114,11 @@
     flex-direction: row;
     justify-content: end;
     align-items: center;
-
     width: 100%;
     padding: 40px;
-    background-color: #411630;
+    background-color: #32021F;
     gap: 10px;
+    border-radius: 0px 0px 10px 10px;
 }
 
 .text {
