@@ -42,6 +42,14 @@ export class CharacterClient {
         }
     }
 
+    public async countCharactersByUser(userId: string): Promise<any> {
+        try {
+            return (await this.axiosClient.get(`/countCharactersByUser/${userId}`)).data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     public async findCharacterByUser(userId: string, page: number): Promise<Character[]> {
         try {
             return (await this.axiosClient.get(`/findCharacterByUser/${userId}?page=${page}`)).data;

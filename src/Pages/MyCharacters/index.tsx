@@ -29,12 +29,19 @@ export const MyCharacters: React.FC = () => {
     const [characters, setCharacters] = useState<Character[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalCharacters, setTotalCharacters] = useState(0);
+
+    useEffect(() => {
+        console.log(totalCharacters);
+    }, [totalCharacters]);
 
     useEffect(() => {
         const fetchCharacters = async (page: number) => {
             try {
                 const client = new CharacterClient();
                 const filterCharacter = await client.findCharacterByUser(userId, page);
+                const requestTotalCharacters = await client.countCharactersByUser(userId);
+                setTotalCharacters(requestTotalCharacters);
                 setCharacters(filterCharacter);
             } catch (error) {
                 console.error('Erro ao buscar as fichas:', error);
@@ -48,8 +55,11 @@ export const MyCharacters: React.FC = () => {
         }
     }, [userId, currentPage]);
 
+    const charactersPerPage = 5;
+
     const handleNextPage = () => {
-        if (characters.length === 5) {
+        const totalPages = Math.ceil(totalCharacters / charactersPerPage);
+        if (currentPage < totalPages) {
             setCurrentPage((prev) => prev + 1);
         }
     };
@@ -112,8 +122,8 @@ export const MyCharacters: React.FC = () => {
                                 <span>Página {currentPage}</span>
                                 <button
                                     onClick={handleNextPage}
-                                    disabled={characters.length < 5}
-                                    className={characters.length < 5 ? styles.disabled : ''}
+                                    disabled={currentPage * charactersPerPage >= totalCharacters}
+                                    className={currentPage * charactersPerPage >= totalCharacters ? styles.disabled : ''}
                                 >
                                     Próximo
                                 </button>
