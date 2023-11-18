@@ -8,6 +8,9 @@ import D10 from '../../assets/dice/D10.png'
 import D12 from '../../assets/dice/D12.png'
 import D20 from '../../assets/dice/D20.png'
 
+import MAIS from '../../assets/dice/MAIS.png'
+import MENOS from '../../assets/dice/MENOS.png'
+
 export const Modifiers = () => {
     return(
             <article className={styles.container}>
@@ -41,14 +44,14 @@ export const Modifiers = () => {
                     <h1>0</h1>
                 </div>
             </div>
-            <div>
+            <div className={styles.inp}>
                 <h3 className={styles.modi}>Modificadores:</h3>
                 <div className={styles.inputs}>
-                    <img src="" alt="" />
+                    <img src={MAIS} alt="" className={styles.mais}/>
                     <input type="text" />
                 </div>
                 <div className={styles.inputs}>
-                    <img src="" alt="" />
+                    <img src={MENOS} alt="" className={styles.menos}/>
                     <input type="text" />
                 </div>
             </div>
