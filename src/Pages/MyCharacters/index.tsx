@@ -1,50 +1,49 @@
-import { useEffect, useState } from "react";
-import { RpgGameClient } from "../../client/rpg-game.client.ts";
-import { RpgGame } from "../../models/rpg-game.ts";
-import styles from "../Home/styles.module.css";
-import RpgCard from "../../components/rpgCard/index.tsx";
-import FundoRPG from "../../assets/FundoRPG.png";
-import { Decoded } from '../../models/decoded.ts';
+import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import Header from "../../components/header/index.tsx";
+import { Decoded } from '../../models/decoded';
+import FundoRPG from '../../assets/FundoRPG.png';
+import styles from './styles.module.css';
+import Header from '../../components/header';
+import { Character } from '../../models/character';
+import { CharacterClient } from '../../client/character.client';
+import CharacterCard from '../../components/characterCard';
 
-export const Tables = () => {
+export const MyCharacters: React.FC = () => {
     const authToken = sessionStorage.getItem('token');
+
     let decoded: Decoded = {} as Decoded;
 
     if (authToken) {
         decoded = jwtDecode(authToken) as Decoded;
     }
 
-    const userId = decoded.sub;
     const userName = decoded.name;
+    const userId = decoded.sub;
 
-    const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
+    const [characters, setCharacters] = useState<Character[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
 
-
     useEffect(() => {
-        const fetchRpgGames = async (page: number) => {
+        const fetchCharacters = async (page: number) => {
             try {
-                const client = new RpgGameClient();
-                const rpgs = await client.findAll(page);
-                setRpgGames(rpgs);
+                const client = new CharacterClient();
+                const filterCharacter = await client.findCharacterByUser(userId, page);
+                setCharacters(filterCharacter);
             } catch (error) {
-                console.error('Erro ao buscar os RPGs:', error);
+                console.error('Erro ao buscar as fichas:', error);
             } finally {
                 setLoading(false);
             }
         };
 
         if (userId) {
-            fetchRpgGames(currentPage);
+            fetchCharacters(currentPage);
         }
-    }, [currentPage]);
+    }, [userId, currentPage]);
 
     const handleNextPage = () => {
-        // Verifica se há mais páginas antes de incrementar
-        if (rpgGames.length === 4) {
+        if (characters.length === 4) {
             setCurrentPage((prev) => prev + 1);
         }
     };
@@ -62,18 +61,18 @@ export const Tables = () => {
                 <div className={styles.cardContainer}>
                     {loading ? (
                         <p>Carregando...</p>
-                    ) : rpgGames.length > 0 ? (
+                    ) : characters.length > 0 ? (
                         <div>
                             <div className={styles.cardContainer}>
-                                {rpgGames.map((rpg) => (
-                                    <div key={rpg.id}>
-                                        <RpgCard
-                                            id={rpg.id}
-                                            name={rpg.name}
-                                            master={rpg.user?.name}
-                                            description={rpg.description}
+                                {characters.map((character) => (
+                                    <div key={character.id}>
+                                        <CharacterCard
+                                            id={character.id}
+                                            name={character.name}
+                                            group={character.group}
+                                            race={character.race}
+                                            level={character.level}
                                             imageUrl={FundoRPG}
-                                            rpgGameId={rpg.id}
                                         />
                                     </div>
                                 ))}
@@ -89,18 +88,18 @@ export const Tables = () => {
                                 <span>Página {currentPage}</span>
                                 <button
                                     onClick={handleNextPage}
-                                    disabled={rpgGames.length < 4}
-                                    className={rpgGames.length < 4 ? styles.disabled : ''}
+                                    disabled={characters.length < 4}
+                                    className={characters.length < 4 ? styles.disabled : ''}
                                 >
                                     Próximo
                                 </button>
                             </div>
                         </div>
                     ) : (
-                        <p>Nenhum RPG encontrado.</p>
+                        <p>Nenhuma ficha encontrada.</p>
                     )}
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};

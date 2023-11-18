@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { RpgGameClient } from '../../client/rpg-game.client';
 import { jwtDecode } from 'jwt-decode';
 import { Decoded } from '../../models/decoded';
-import RpgCard from '../../components/card';
+import RpgCard from '../../components/rpgCard';
 import FundoRPG from '../../assets/FundoRPG.png';
 import styles from './styles.module.css';
 import { RpgGame } from '../../models/rpg-game';
