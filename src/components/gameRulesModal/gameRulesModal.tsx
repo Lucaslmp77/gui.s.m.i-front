@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RpgGameRulesClient } from '../../client/rpg-gameRules.client';
+import { RpgGameRulesClient } from '../../client/rpgGameRules.client';
 import { GameRules } from '../../models/gameRules';
 
 interface RulesListModalProps {
