@@ -152,7 +152,7 @@
 }
 
 .createCharacter:hover {
-    color: #FFA500;;
+    color: #FFA500;
     transition: 0.5s;
 }
 
@@ -163,7 +163,7 @@
 }
 
 .myCharacters:hover {
-    color: #FFA500;;
+    color: #FFA500;
     transition: 0.5s;
 }
 
@@ -174,7 +174,7 @@
 }
 
 .npc:hover {
-    color: #FFA500;;
+    color: #FFA500;
     transition: 0.5s;
 }
 
@@ -185,6 +185,6 @@
 }
 
 .users:hover {
-    color: #FFA500;;
+    color: #FFA500;
     transition: 0.5s;
 }
