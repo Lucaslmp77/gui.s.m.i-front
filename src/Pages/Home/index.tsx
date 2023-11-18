@@ -25,10 +25,6 @@ export const Home: React.FC = () => {
     const [totalRpgs, setTotalRpgs] = useState(0);
 
     useEffect(() => {
-        console.log(totalRpgs);
-    }, [totalRpgs]);
-
-    useEffect(() => {
         const fetchRpgGames = async (page: number) => {
             try {
                 const client = new RpgGameClient();
