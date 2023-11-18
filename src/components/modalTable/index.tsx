@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { RpgGameClient } from '../../client/rpg-game.client.ts';
 import styles from './styles.module.css';
@@ -120,6 +120,13 @@ const ModalTable: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose })
 
         return isValid;
     };
+
+    useEffect(() => {
+        if (!isOpen) {
+            setFormData({ name: "", description: "" });
+            setErrors({ name: "", description: "" });
+        }
+    }, [isOpen]);
 
 
     return (
