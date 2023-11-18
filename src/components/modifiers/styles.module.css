@@ -15,7 +15,7 @@
     align-items: center;
     justify-content: center;
 
-    gap: 50px;
+    gap: 40px;
 }
 
 .pair{
@@ -23,7 +23,7 @@
     align-items: center;
     justify-content: center;
 
-    gap: 20px;
+    gap: 10px;
 }
 
 .pair > img{
@@ -46,7 +46,7 @@
 }
 
 .inp > h3{
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .inputs{
@@ -60,22 +60,35 @@
     max-height: 30px;
 }
 
-.inputs > input {
-    width: 200px;
+.input {
+    width: 105px;
     height: 40px;
 
     font-size: 20px;
+
+    padding: 5px;
+    border: solid 1px #32021F;
 }
 
 .finish{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
     gap: 20px;
 }
 
 .finish > button { 
-    width: 100px;
-    height: 30px;
+    width: 160px;
+    height: 50px;
 
-    margin-bottom: 10px;
+    border: solid 1px #32021F ;
+    border-radius: 10px;
+    color: white;
+    background-color: #32021F;
+    transition: 0.5 ease-out;
+
+    font-size: 20px;
 }
 
 .finish > h4{

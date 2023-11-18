@@ -48,11 +48,11 @@ export const Modifiers = () => {
                 <h3>Modificadores:</h3>
                 <div className={styles.inputs}>
                     <img src={MAIS} alt="" className={styles.mais}/>
-                    <input type="text" />
+                    <input type="text" className={styles.input}/>
                 </div>
                 <div className={styles.inputs}>
                     <img src={MENOS} alt="" className={styles.menos}/>
-                    <input type="text" />
+                    <input type="text" className={styles.input}/>
                 </div>
                 <div className={styles.finish}>
                     <button>Rolar Dados</button>
