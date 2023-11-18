@@ -57,7 +57,7 @@ export const TableAccess = () => {
             console.log(messageList)
         });
         socket.on('messageHistory', (message) => {
-            message.forEach((dado: any) =>{
+            message.forEach((dado: any) => {
                 setMessageListHistory(prevMessageList => [...prevMessageList, dado]);
             })
             socket.off('messageHistory')
@@ -144,12 +144,16 @@ export const TableAccess = () => {
                     <button className={styles.sendMessageButton} onClick={handleSubmit}>Enviar</button>
                 </div>
             </div>
-            <div className={styles.menu}>
-                <NavLink to="/home-minhas-mesas">
-                    <BsXLg className={styles.exitTable} />
-                </NavLink>
-                <BiPencil className={styles.editTable} />
-                <GiSwordsPower className={styles.createCharacter} />
+            <div className={styles.containerMenuNavigation}>
+                <div className={styles.exit}>
+                    <NavLink to="/home-minhas-mesas">
+                        <BsXLg className={styles.exitTable} />
+                    </NavLink>
+                </div>
+                <div className={styles.menu}>
+                    <BiPencil className={styles.editTable} />
+                    <GiSwordsPower className={styles.createCharacter} />
+                </div>
             </div>
         </section>
     );
