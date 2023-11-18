@@ -86,6 +86,10 @@
     margin-left: 47.4%;
 }
 
+.exitModal:hover {
+    border: 1px solid red;
+}
+
 .successMessage {
     display: flex;
     justify-content: center;
