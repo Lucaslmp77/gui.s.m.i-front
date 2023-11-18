@@ -7,7 +7,8 @@ import { NavLink, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import { BiPencil } from "react-icons/bi";
 import { BsXLg } from "react-icons/bs";
-import { GiSwordsPower, GiIdCard } from "react-icons/gi";
+import { GiIdCard } from "react-icons/gi";
+import EditTableModal from '../../components/editTableModal/index.tsx';
 
 const ENDPOINT = 'http://localhost:3333/';
 
@@ -119,6 +120,16 @@ export const TableAccess = () => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <section className={styles.section}>
             <div className={styles.container}>
@@ -150,7 +161,7 @@ export const TableAccess = () => {
                         <BsXLg className={styles.exitTable} />
                     </NavLink>
                 </div>
-                <div className={styles.menu}>
+                <div className={styles.menu} onClick={openModal}>
                     <div className={styles.containerIcon}>
                         <BiPencil className={styles.editTable} />
                         <p className={styles.textIcon}>Editar mesa</p>
@@ -161,6 +172,7 @@ export const TableAccess = () => {
                     </div>
                 </div>
             </div>
+            <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
         </section>
     );
 };
