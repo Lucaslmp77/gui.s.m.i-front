@@ -15,7 +15,7 @@
     align-items: center;
     justify-content: center;
 
-    gap: 40px;
+    gap: 50px;
 }
 
 .pair{
@@ -23,52 +23,66 @@
     align-items: center;
     justify-content: center;
 
-    gap: 10px;
+    gap: 5px;
 }
 
 .pair > img{
-    max-width: 75px;
+    max-width: 65px;
 }
 
 .pair > h1{
     font-size: 40px;
 }
 
-.inp{
+.buttons{
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-
-    gap: 25px;
-
-    margin-top: 20px;
 }
 
-.inp > h3{
-    font-size: 25px;
+.buttonMore {
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    background-image: url("../../assets/dice/MAIS.png");
+    background-size: cover;
+    border: 1px solid transparent;
+
 }
 
-.inputs{
-    display: flex;
-    align-items: center;
-
-    gap: 20px;
+.buttonMore:hover{
+    transform: scale(1.1);
+    transition: all 0.1s;
+    cursor: pointer;
 }
 
-.inputs > img {
-    max-height: 30px;
+.buttonMore:active{
+    transform: scale(0.9);
+    transition: all;
 }
 
-.input {
-    width: 105px;
-    height: 40px;
+.buttonLess {
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    background-image: url("../../assets/dice/MENOS.png");
+    background-size: cover;
+    border: 1px solid transparent;
 
-    font-size: 20px;
-
-    padding: 5px;
-    border: solid 1px #32021F;
 }
+
+.buttonLess:hover{
+    transform: scale(1.1);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.buttonLess:active{
+    transform: scale(0.9);
+    transition: all;
+}
+
 
 .finish{
     display: flex;
@@ -76,10 +90,12 @@
     flex-direction: column;
 
     gap: 20px;
+
+    margin-top: 50px;
 }
 
-.finish > button { 
-    width: 160px;
+.buttonRolar { 
+    width: 155px;
     height: 50px;
 
     border: solid 1px #32021F ;
@@ -89,6 +105,17 @@
     transition: 0.5 ease-out;
 
     font-size: 20px;
+}
+
+.buttonRolar:hover{
+    transform: scale(1.05);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.buttonRolar:active{
+    transform: scale(0.99);
+    transition: all;
 }
 
 .finish > h4{
