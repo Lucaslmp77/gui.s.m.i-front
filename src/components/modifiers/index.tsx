@@ -90,7 +90,7 @@ export const Modifiers = () => {
         content: {
             color: 'blue', // cor do texto do modal
             maxWidth: '400px', // largura máxima do modal
-            maxHeight: '410px',
+            maxHeight: '450px',
             margin: 'auto', // centraliza o modal horizontalmente
             padding: '20px', // espaço interno do modal
             border: "3px solid #32021F",
