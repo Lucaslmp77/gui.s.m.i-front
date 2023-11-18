@@ -7,6 +7,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import { BiPencil } from "react-icons/bi";
 import { BsXLg } from "react-icons/bs";
+import { GiSwordsPower } from "react-icons/gi";
 
 const ENDPOINT = 'http://localhost:3333/';
 
@@ -148,6 +149,7 @@ export const TableAccess = () => {
                     <BsXLg className={styles.exitTable} />
                 </NavLink>
                 <BiPencil className={styles.editTable} />
+                <GiSwordsPower className={styles.createCharacter} />
             </div>
         </section>
     );
