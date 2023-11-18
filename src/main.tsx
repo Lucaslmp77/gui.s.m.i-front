@@ -8,6 +8,7 @@ import { Login } from './Pages/Login/index.tsx'
 import { Home } from './Pages/Home/index.tsx'
 import {TableAccess} from "./Pages/TableAccess";
 import {Tables} from "./Pages/AllTables/index.tsx";
+import { Modifiers } from './components/modifiers/index.tsx'
 
 const router = createBrowserRouter ([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter ([
       {
         path: "/procurar-mesas",
         element: <Tables/>
+      },
+      {
+        path:"/modi",
+        element: <Modifiers/>
       }
     ]
 
