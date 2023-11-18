@@ -161,9 +161,9 @@ export const TableAccess = () => {
                         <BsXLg className={styles.exitTable} />
                     </NavLink>
                 </div>
-                <div className={styles.menu} onClick={openModal}>
+                <div className={styles.menu}>
                     <div className={styles.containerIcon}>
-                        <BiPencil className={styles.editTable} />
+                        <BiPencil className={styles.editTable} onClick={openModal} />
                         <p className={styles.textIcon}>Editar mesa</p>
                     </div>
                     <div className={styles.containerIcon}>

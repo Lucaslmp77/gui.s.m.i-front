@@ -139,8 +139,18 @@
     cursor: pointer;
 }
 
+.editTable:hover {
+    color: #FFA500;;
+    transition: 0.5s;
+}
+
 .createCharacter {
     color: white;
     font-size: 70px;
     cursor: pointer;
+}
+
+.createCharacter:hover {
+    color: #FFA500;;
+    transition: 0.5s;
 }
