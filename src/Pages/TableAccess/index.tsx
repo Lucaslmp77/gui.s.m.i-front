@@ -184,7 +184,7 @@ export const TableAccess = () => {
                     </div>
                     <div className={styles.containerIcon}>
                         <GiRobotGolem className={styles.npc} />
-                        <p className={styles.textIcon}>NPC</p>
+                        <p className={styles.textIcon}>NPCs</p>
                     </div>
                 </div>
             </div>
