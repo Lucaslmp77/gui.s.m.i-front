@@ -103,24 +103,25 @@
 .menu {
     display: flex;
     flex-direction: column;
-    padding: 10px 10px;
-    gap: 10px;
-
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    gap: 20px;
     border: 2px solid #FFA500;
-
 }
 
 .containerIcon {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    gap: 3px;
+    align-items: center;
     color: white;
 }
 
 .textIcon {
     display: flex;
-    width: 80px;
+    justify-content: center;
+    width: 90px;
 }
 
 .exitTable {
@@ -135,7 +136,7 @@
 
 .editTable {
     color: white;
-    font-size: 70px;
+    font-size: 60px;
     cursor: pointer;
 }
 
@@ -146,11 +147,44 @@
 
 .createCharacter {
     color: white;
-    font-size: 70px;
+    font-size: 60px;
     cursor: pointer;
 }
 
 .createCharacter:hover {
+    color: #FFA500;;
+    transition: 0.5s;
+}
+
+.myCharacters {
+    color: white;
+    font-size: 60px;
+    cursor: pointer;
+}
+
+.myCharacters:hover {
+    color: #FFA500;;
+    transition: 0.5s;
+}
+
+.npc {
+    color: white;
+    font-size: 60px;
+    cursor: pointer;
+}
+
+.npc:hover {
+    color: #FFA500;;
+    transition: 0.5s;
+}
+
+.users {
+    color: white;
+    font-size: 60px;
+    cursor: pointer;
+}
+
+.users:hover {
     color: #FFA500;;
     transition: 0.5s;
 }
