@@ -19,7 +19,7 @@ export const Home: React.FC = () => {
 
     const userName = decoded.name;
     const userId = decoded.sub;
-
+    let pageSize = 0
     const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -33,6 +33,7 @@ export const Home: React.FC = () => {
                 const requestTotalRpgs = await client.countRpgGameByUser(userId);
                 setTotalRpgs(requestTotalRpgs);
                 setRpgGames(rpgs);
+                pageSize = rpgGames.length
             } catch (error) {
                 console.error('Erro ao buscar os RPGs:', error);
             } finally {

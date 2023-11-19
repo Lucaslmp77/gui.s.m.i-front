@@ -1,28 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react';
-import socketIOClient from 'socket.io-client';
+import socketIOClient, { Socket } from 'socket.io-client';
 import { Decoded } from "../../models/decoded.ts";
 import { jwtDecode } from "jwt-decode";
-import { RpgGameClient } from "../../client/rpg-game.client.ts";
 import { NavLink, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import EditTableModal from '../../components/editTableModal/index.tsx';
-
 import { BiPencil } from "react-icons/bi";
 import { BsXLg } from "react-icons/bs";
 import { GiIdCard } from "react-icons/gi";
 import { TbCardsFilled } from "react-icons/tb";
 import { GiRobotGolem } from "react-icons/gi";
 import { FaUsers } from "react-icons/fa";
+import Modal from "react-modal";
 import ListNpcsModal from '../../components/listNpcsModal/index.tsx';
 
 const ENDPOINT = 'http://localhost:3333/';
 
+Modal.setAppElement('#root');
 export const TableAccess = () => {
+
+    const authToken = sessionStorage.getItem('token');
+    let decoded: Decoded = {} as Decoded;
+
+    if (authToken) {
+        decoded = jwtDecode(authToken);
+    }
+    const nameAccount = decoded.name
+    const userId = decoded.sub;
     const { id } = useParams();
-    const socket = socketIOClient(ENDPOINT, {
-        transports: ['websocket']
-    });
-    const rpgGameClient = new RpgGameClient();
+    const socketRef = useRef<Socket | null>(null); // Usando MutableRefObject para permitir modificação e valor inicial null
     const messageRef = useRef<HTMLInputElement | null>(null);
     const bottomRef = useRef<HTMLInputElement | null>(null);
     const [messageList, setMessageList] = useState<{
@@ -37,40 +43,53 @@ export const TableAccess = () => {
         userId: string;
         dateH: Date;
     }[]>([]);
-
-    const [rpgGameName, setRpgGameName] = useState<string | null>(null);
-
+    const [userList, setUserList] = useState<{
+        id: string, idPlayer: string, namePlayer: string, rpgGame:{id: string}}[]>([]);
     useEffect(() => {
-        if (id) {
-            rpgGameClient.findUnique(id).then(
-                success => {
-
-                    setRpgGameName(success.name);
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-        }
-        socket.on("connect", () => {
-            socket.emit('join', id)
-            console.log(socket.id); // ojIckSD2jqNzOqIrAGzL
+        const socket = socketIOClient(ENDPOINT, {
+            transports: ['websocket']
         });
+        socketRef.current = socket;
 
-        socket.on('message', (message) => {
-            console.log(message)
-            setMessageList(prevMessageList => [...prevMessageList, message]);
-            console.log(messageList)
-        });
-        socket.on('messageHistory', (message) => {
-            message.forEach((dado: any) => {
-                setMessageListHistory(prevMessageList => [...prevMessageList, dado]);
-            })
-            socket.off('messageHistory')
-        })
-        return () => { socket.off('messageHistory'); socket.off('message') }
+        // Cleanup function to disconnect the socket when the component is unmounted
 
     }, []);
+
+    useEffect(() => {
+
+        const socket = socketRef.current;
+
+        if (socket) {
+            socket.on('connect', () => {
+                socket.emit('join', { id, socketId: socket.id, name: nameAccount });
+                console.log(socket.id);
+            });
+
+            socket.on('message', (message) => {
+                setMessageList(prevMessageList => [...prevMessageList, message]);
+            });
+
+            socket.on('messageHistory', (message) => {
+                message.forEach((dado: any) => {
+                    setMessageListHistory(prevMessageList => [...prevMessageList, dado]);
+                });
+                socket.off('messageHistory');
+            });
+
+
+            socket.on('userList', (users) => {
+                setUserList([])
+                setUserList(users);
+            });
+
+            return () => {
+                socket.off('messageHistory');
+                socket.off('message');
+                socket.off('userList')
+                socket.disconnect();
+            };
+        }
+    }, [id]);
 
     useEffect(() => {
         scrollDown();
@@ -80,15 +99,7 @@ export const TableAccess = () => {
         const author = sessionStorage.getItem('name');
         const rpgGameId = id;
         const text = messageRef.current?.value;
-        const authToken = sessionStorage.getItem('token');
         const dateH = new Date()
-        let decoded: Decoded = {} as Decoded;
-
-        if (authToken) {
-            decoded = jwtDecode(authToken);
-        }
-
-        const userId = decoded.sub;
         const data = {
             author,
             text,
@@ -97,10 +108,12 @@ export const TableAccess = () => {
             rpgGameId
         };
 
-        socket.emit('message', { room: rpgGameId, data });
-        clearInput();
-        focusInput();
-
+        const socket = socketRef.current;
+        if (socket) {
+            socket.emit('message', { room: rpgGameId, data });
+            clearInput();
+            focusInput();
+        }
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -119,14 +132,12 @@ export const TableAccess = () => {
 
     const focusInput = () => {
         messageRef.current?.focus()
-    }
+    };
 
     const scrollDown = () => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }
-
+    };
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -134,6 +145,16 @@ export const TableAccess = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModalUsers() {
+        setIsOpen(true);
+    }
+
+    function closeModalUsers() {
+        setIsOpen(false);
+    }
 
     // #############################################
 
@@ -191,7 +212,7 @@ export const TableAccess = () => {
                         <TbCardsFilled className={styles.myCharacters} />
                         <p className={styles.textIcon}>Minhas fichas</p>
                     </div>
-                    <div className={styles.containerIcon}>
+                    <div className={styles.containerIcon} onClick={openModalUsers}>
                         <FaUsers className={styles.users} />
                         <p className={styles.textIcon}>Usuários</p>
                     </div>
@@ -203,6 +224,44 @@ export const TableAccess = () => {
             </div>
             <ListNpcsModal isOpen={isModalNpcOpen} onRequestClose={closeModalNpc} />
             <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
+            <Modal
+                className={styles.modal}
+                isOpen={modalIsOpen}
+                onAfterOpen={openModalUsers}
+                onRequestClose={closeModalUsers}
+                style={{
+                    overlay: {
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                },
+                    content: {
+                    maxWidth: "20%",
+                    backgroundColor: "#000",
+                    color: "#fff",
+                    border: "1px solid #333",
+                    background: "transparent",
+                    top: '50%',
+                    left: '50%',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '-50%',
+                    transform: 'translate(-50%, -50%)',
+                    height: "50%"
+                },
+                }}
+                contentLabel="Example Modal"
+            >
+                <div className={styles.formContainer}>
+
+                    <div  className={styles.formModal}>
+                        <h2>Usuários online</h2>
+                        <ul>
+                            {userList.map((user, index) =>(
+                                <li key={index}>{user.namePlayer}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </Modal>
         </section>
     );
 };
