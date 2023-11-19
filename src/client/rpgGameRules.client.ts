@@ -1,7 +1,15 @@
 import axios, { AxiosInstance } from "axios";
 import { GameRules } from "../models/gameRules";
 
-export class RpgGameRulesClient {
+interface IRpgGameRulesClient {
+    save(rules: any): Promise<GameRules>;
+    findAll(): Promise<GameRules[]>;
+    findUnique(id: string): Promise<GameRules>;
+    update(id: string, rpg: GameRules): Promise<GameRules>;
+    delete(id: string): Promise<void>;
+}
+
+export class RpgGameRulesClient implements IRpgGameRulesClient {
     private axiosClient: AxiosInstance;
 
     constructor() {
@@ -14,7 +22,7 @@ export class RpgGameRulesClient {
         });
     }
 
-    public async save(rules: GameRules): Promise<GameRules> {
+    public async save(rules: any): Promise<GameRules> {
         try {
             return (await this.axiosClient.post('', rules)).data
         }
