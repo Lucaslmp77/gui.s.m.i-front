@@ -2,12 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { RpgGameRulesClient } from '../../client/rpgGameRules.client';
 import { GameRules } from '../../models/gameRules';
+import styles from './index.module.css';
 
 interface RuleListModalProps {
-  onClose: () => void;
+  isOpen: boolean;
+  onRequestClose: () => void;
 }
 
-const RuleListModal: React.FC<RuleListModalProps> = ({ onClose }) => {
+const RuleListModal: React.FC<RuleListModalProps> = ({ isOpen, onRequestClose }) => {
   const [rules, setRules] = useState<GameRules[]>([]);
 
   useEffect(() => {
@@ -23,15 +25,19 @@ const RuleListModal: React.FC<RuleListModalProps> = ({ onClose }) => {
     fetchRules();
   }, []);
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <div>
-      <h2>Lista de regras</h2>
-      <ul>
+    <div className={styles.modal_container}>
+      <h2 className={styles.modal_header}>Lista de regras</h2>
+      <ul className={styles.rule_list}>
         {rules.map((rule) => (
-          <li key={rule.id}>{rule.name}</li>
+          <li key={rule.id} className={styles.rule_list_item}>{rule.name}</li>
         ))}
       </ul>
-      <button onClick={onClose}>Close</button>
+      <button className={styles.close_button} onClick={onRequestClose}>Fechar</button>
     </div>
   );
 };
