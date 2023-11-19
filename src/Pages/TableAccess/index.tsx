@@ -5,7 +5,6 @@ import { jwtDecode } from "jwt-decode";
 import { NavLink, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import EditTableModal from '../../components/editTableModal/index.tsx';
-import CreateGamesRulesModal from "../../components/createGameRulesModal/index.tsx"
 import GameRulesModal from '../../components/gameRulesModal/index.tsx'
 import { BiPencil } from "react-icons/bi";
 import { BsXLg } from "react-icons/bs";
