@@ -188,3 +188,14 @@
     color: #FFA500;
     transition: 0.5s;
 }
+
+.rules {
+    color: white;
+    font-size: 60px;
+    cursor: pointer;
+}
+
+.rules:hover {
+    color: #FFA500;
+    transition: 0.5s;
+}
