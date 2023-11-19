@@ -15,7 +15,7 @@ const RuleListModal: React.FC<RuleListModalProps> = ({ isOpen, onRequestClose })
   useEffect(() => {
     const fetchRules = async () => {
       try {
-        const response = await new RpgGameRulesClient().findAll(1);
+        const response = await new RpgGameRulesClient().findAll();
         setRules(response);
       } catch (error) {
         console.error('Erro ao carregar as regras:', error);
@@ -34,11 +34,17 @@ const RuleListModal: React.FC<RuleListModalProps> = ({ isOpen, onRequestClose })
       <h2 className={styles.modal_header}>Lista de regras</h2>
       <ul className={styles.rule_list}>
         {rules.map((rule) => (
-          <li key={rule.id} className={styles.rule_list_item}>{rule.name}</li>
+          <li key={rule.id} className={styles.rule_list_item}>
+            <strong>{rule.name}</strong>
+            <p>{rule.description}</p>
+          </li>
         ))}
       </ul>
-      <button className={styles.close_button} onClick={onRequestClose}>Fechar</button>
+      <button className={styles.close_button} onClick={onRequestClose}>
+        Fechar
+      </button>
     </div>
+
   );
 };
 
