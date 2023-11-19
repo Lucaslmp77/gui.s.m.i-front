@@ -6,7 +6,7 @@ export class RpgGameRulesClient {
 
     constructor() {
         this.axiosClient = axios.create({
-            baseURL: 'http://localhost:3333/api/rpg-rules',
+            baseURL: 'http://localhost:3333/api/game-rule',
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
@@ -23,12 +23,11 @@ export class RpgGameRulesClient {
         }
     }
 
-    public async findAll(page: number): Promise<GameRules[]> {
+    public async findAll(): Promise<GameRules[]> {
         try {
-            return (await this.axiosClient.get(`?page=${page}`,)).data
-        }
-        catch (error: any) {
-            return Promise.reject(error.response)
+            return (await this.axiosClient.get<GameRules[]>(`/`)).data;
+        } catch (error: any) {
+            return Promise.reject(error.response);
         }
     }
 
