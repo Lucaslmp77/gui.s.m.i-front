@@ -11,8 +11,10 @@ import { GiIdCard } from "react-icons/gi";
 import { TbCardsFilled } from "react-icons/tb";
 import { GiRobotGolem } from "react-icons/gi";
 import { FaUsers } from "react-icons/fa";
+import { GiDiceSixFacesSix } from "react-icons/gi";
 import Modal from "react-modal";
 import ListNpcsModal from '../../components/listNpcsModal/index.tsx';
+import { ModifiersModal } from '../../components/modifiers/index.tsx';
 
 const ENDPOINT = 'http://localhost:3333/';
 
@@ -156,8 +158,6 @@ export const TableAccess = () => {
         setIsOpen(false);
     }
 
-    // #############################################
-
     const [isModalNpcOpen, setIsModalNpcOpen] = useState(false);
 
     const openModalNpc = () => {
@@ -167,6 +167,18 @@ export const TableAccess = () => {
     const closeModalNpc = () => {
         setIsModalNpcOpen(false);
     };
+
+    const [diceModal, setDiceModaL] = useState(false);
+
+    const openDiceModal = () => {
+        setDiceModaL(true);
+    }
+
+    const closeDiceModal = () => {
+        setDiceModaL(false);
+    }
+
+
 
     return (
         <section className={styles.section}>
@@ -220,8 +232,13 @@ export const TableAccess = () => {
                         <GiRobotGolem className={styles.npc} onClick={openModalNpc} />
                         <p className={styles.textIcon}>NPCs</p>
                     </div>
+                    <div className={styles.containerIcon}>
+                        <GiDiceSixFacesSix className={styles.iconDice} onClick={openDiceModal}/>
+                        <p className={styles.textIcon}>Dado</p>
+                    </div>
                 </div>
             </div>
+            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} />
             <ListNpcsModal isOpen={isModalNpcOpen} onRequestClose={closeModalNpc} />
             <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
             <Modal
