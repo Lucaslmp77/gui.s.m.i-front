@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { RpgGameRulesClient } from '../../client/rpgGameRules.client';
 import { GameRules } from '../../models/gameRules';
 import styles from './index.module.css';
+import Modal from 'react-modal';
+import { BsXLg } from "react-icons/bs";
 
 interface RuleListModalProps {
   isOpen: boolean;
@@ -30,21 +32,37 @@ const RuleListModal: React.FC<RuleListModalProps> = ({ isOpen, onRequestClose })
   }
 
   return (
-    <div className={styles.modal_container}>
-      <h2 className={styles.modal_header}>Lista de regras</h2>
-      <ul className={styles.rule_list}>
+    <Modal
+      className={styles.modal}
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      contentLabel="Criar Regra Modal"
+      style={{
+        overlay: {
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+        },
+        content: {
+          maxWidth: "50%",
+          backgroundColor: "#000",
+          color: "#fff",
+          border: "1px solid #333",
+          background: "transparent",
+        },
+      }}>
+    <div className={styles.formContainer}>
+      
+      <ul className={styles.formModal}>
+      <h2 className={styles.subTitle}>Lista de regras</h2>
         {rules.map((rule) => (
-          <li key={rule.id} className={styles.rule_list_item}>
+          <li key={rule.id} className={styles.containerInput}>
             <strong>{rule.name}</strong>
             <p>{rule.description}</p>
           </li>
         ))}
       </ul>
-      <button className={styles.close_button} onClick={onRequestClose}>
-        Fechar
-      </button>
+      <BsXLg className={styles.exitModal} onClick={onRequestClose} />
     </div>
-
+    </Modal>
   );
 };
 
