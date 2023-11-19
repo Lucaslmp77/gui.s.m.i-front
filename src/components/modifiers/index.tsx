@@ -1,89 +1,89 @@
-import ReactModal from 'react-modal'
-import styles from './styles.module.css'
-
-import D4 from '../../assets/dice/D4.png'
-import D6 from '../../assets/dice/D6.png'
-import D8 from '../../assets/dice/D8.png'
-import D10 from '../../assets/dice/D10.png'
-import D12 from '../../assets/dice/D12.png'
-import D20 from '../../assets/dice/D20.png'
-import { useState } from 'react'
+import ReactModal from 'react-modal';
+import styles from './styles.module.css';
+import D4 from '../../assets/dice/D4.png';
+import D6 from '../../assets/dice/D6.png';
+import D8 from '../../assets/dice/D8.png';
+import D10 from '../../assets/dice/D10.png';
+import D12 from '../../assets/dice/D12.png';
+import D20 from '../../assets/dice/D20.png';
+import { useState } from 'react';
 
 interface ModifiersProps {
     isOpen: boolean;
     onRequestClose: () => void;
+    onDiceRoll: (resultado: number) => void;
+    resultadoParcial: (resultado: number) => void;
+
 }
 
-export const ModifiersModal:React.FC<ModifiersProps> = ({isOpen, onRequestClose}) => {
-
+export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClose, onDiceRoll }) => {
     const [valorD4, setValorD4] = useState(0);
     const [valorD6, setValorD6] = useState(0);
     const [valorD8, setValorD8] = useState(0);
     const [valorD10, setValorD10] = useState(0);
     const [valorD12, setValorD12] = useState(0);
     const [valorD20, setValorD20] = useState(0);
+    const [resultadoParcial, setResultadoParcial] = useState<string>('');
 
     type SetValueFunction = React.Dispatch<React.SetStateAction<number>>;
 
     const handleDiceValue = (
-        setValue: SetValueFunction, 
-        currentValue: number, 
+        setValue: SetValueFunction,
+        currentValue: number,
         increment: number
     ) => {
         if (increment < 0 && currentValue === 0) {
             return;
         }
         setValue(currentValue + increment);
-    }
+    };
 
     const randomValues = () => {
         const dados = [
-            {nome:'D4', lados:4, quantidade: valorD4},
-            {nome:'D6', lados:6, quantidade: valorD6},
-            {nome:'D8', lados:8, quantidade: valorD8},
-            {nome:'D10', lados:10, quantidade: valorD10},
-            {nome:'D12', lados:12, quantidade: valorD12},
-            {nome:'D20', lados:20, quantidade: valorD20},
+            { nome: 'D4', lados: 4, quantidade: valorD4 },
+            { nome: 'D6', lados: 6, quantidade: valorD6 },
+            { nome: 'D8', lados: 8, quantidade: valorD8 },
+            { nome: 'D10', lados: 10, quantidade: valorD10 },
+            { nome: 'D12', lados: 12, quantidade: valorD12 },
+            { nome: 'D20', lados: 20, quantidade: valorD20 },
         ];
 
         const lancamento = (dado: any) => {
             const resultado = [];
 
-
-            for(let i = 0; i < dado.quantidade; i++){
+            for (let i = 0; i < dado.quantidade; i++) {
                 const resultadoLancamento = Math.floor(Math.random() * dado.lados) + 1;
                 resultado.push(resultadoLancamento);
             }
             return resultado;
-        }
-        
+        };
+
         let resultadoTotal = 0;
 
         dados.forEach((dado) => {
-            if (dado.quantidade > 0){
+            if (dado.quantidade > 0) {
                 const resultado = lancamento(dado);
                 const somaResultado = resultado.reduce((soma, valor) => soma + valor, 0);
 
                 resultadoTotal += somaResultado;
 
-                console.log(`${dado.quantidade}${dado.nome}: ${somaResultado} [${resultado.join(', ')}]`);    
+                const resultadoParcialAtual = `${dado.quantidade}${dado.nome}: ${somaResultado} [${resultado.join(', ')}]`;
+                setResultadoParcial((prevResultado) => prevResultado + resultadoParcialAtual);
             }
         });
 
-        console.log('Total :',resultadoTotal);
-        
-        if (resultadoTotal !== 0){
-            onRequestClose;
+        if (resultadoTotal !== 0) {
+            onRequestClose();
+            onDiceRoll(resultadoTotal);
         }
-
+        
         setValorD4(0);
         setValorD6(0);
         setValorD8(0);
         setValorD10(0);
         setValorD12(0);
         setValorD20(0);
-
-    }
+    };
 
     const styleModal = {
         overlay: {
@@ -95,10 +95,10 @@ export const ModifiersModal:React.FC<ModifiersProps> = ({isOpen, onRequestClose}
             maxHeight: '450px',
             margin: 'auto', // centraliza o modal horizontalmente
             padding: '20px', // espaço interno do modal
-            border: "3px solid #32021F",
-            radius: "15px",
+            border: '3px solid #32021F',
+            radius: '15px',
         },
-    }
+    };
 
     return(
         <ReactModal

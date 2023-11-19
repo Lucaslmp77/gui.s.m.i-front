@@ -178,7 +178,13 @@ export const TableAccess = () => {
         setDiceModaL(false);
     }
 
+    const [diceResult, setDiceResult] = useState<number>(0);
 
+    const handleDiceRoll = (result: number) => {
+        setDiceResult(result);
+    };
+
+    console.log(diceResult);
 
     return (
         <section className={styles.section}>
@@ -238,7 +244,7 @@ export const TableAccess = () => {
                     </div>
                 </div>
             </div>
-            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} />
+            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} onDiceRoll={handleDiceRoll} />
             <ListNpcsModal isOpen={isModalNpcOpen} onRequestClose={closeModalNpc} />
             <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
             <Modal
