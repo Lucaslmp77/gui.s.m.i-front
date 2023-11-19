@@ -10,6 +10,7 @@ import {TableAccess} from "./Pages/TableAccess";
 import {Tables} from "./Pages/AllTables/index.tsx";
 import { MyCharacters } from './Pages/MyCharacters/index.tsx'
 
+
 const router = createBrowserRouter ([
   {
     path: "/",
