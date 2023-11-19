@@ -32,6 +32,17 @@
   gap: 20px;
 }
 
+.formModal>button {
+  background-color: #FFA500;
+  color: #fff;
+  padding: 8px;
+  cursor: pointer;
+  border: none;
+  font-family: 'Acme', sans-serif;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
 .subTitle {
   display: flex;
   justify-content: center;
@@ -149,4 +160,16 @@
 
 .close_button:hover {
   background-color: #0056b3;
+}
+
+.containerInput {
+  position: relative;
+}
+
+.deleteRule {
+  color: red;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
