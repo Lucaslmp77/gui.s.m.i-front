@@ -1,31 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  text-decoration: none;
-  font-family: 'Acme', sans-serif;
-}
+.modal {
+  width: 90%;
+  height: 90%;
+  border: none;
 
-section {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  height: 100vh;
-  background-color: #22223B;
+  margin-left: 5%;
+  margin-top: 1%;
 }
 
 .container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  width: 100%;
   background-color: #22223B;
   text-align: center;
-  border-top: 1px solid white;
-  padding-top: 40px;
+  padding: 1%;
+  border: 2px solid #fff;
+  border-radius: 4px;
 }
 
 .link {
@@ -41,6 +33,7 @@ section {
 .cardContainer {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   gap: 30px;
 }
@@ -79,15 +72,18 @@ section {
   cursor: not-allowed;
 }
 
-.containerAnythingImg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  min-width: 70%;
-  max-width: 70%;
-  min-height: 70%;
-  max-height: 70%;
-  color: #FFA500;
-  font-size: 18px;
+.exitModal {
+  color: red;
+  font-size: 50px;
+  cursor: pointer;
+  position: absolute;
+
+  top: 20px;
+  right: 80px;
+
+  border-radius: 4px;
+}
+
+.exitModal:hover {
+  border: 1px solid red;
 }

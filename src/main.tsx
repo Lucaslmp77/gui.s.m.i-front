@@ -8,7 +8,8 @@ import { Login } from './Pages/Login/index.tsx'
 import { Home } from './Pages/Home/index.tsx'
 import {TableAccess} from "./Pages/TableAccess";
 import {Tables} from "./Pages/AllTables/index.tsx";
-import { Modifiers } from './components/modifiers/index.tsx'
+import { MyCharacters } from './Pages/MyCharacters/index.tsx'
+
 
 const router = createBrowserRouter ([
   {
@@ -40,8 +41,8 @@ const router = createBrowserRouter ([
         element: <Tables/>
       },
       {
-        path:"/modi",
-        element: <Modifiers/>
+        path: "/my-characters",
+        element: <MyCharacters/>
       }
     ]
 
