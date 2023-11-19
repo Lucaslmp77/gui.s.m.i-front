@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import socketIOClient, { Socket } from 'socket.io-client';
 import { Decoded } from "../../models/decoded.ts";
 import { jwtDecode } from "jwt-decode";
-import { RpgGameClient } from "../../client/rpg-game.client.ts";
 import { NavLink, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import EditTableModal from '../../components/editTableModal/index.tsx';
@@ -29,7 +28,6 @@ export const TableAccess = () => {
     const userId = decoded.sub;
     const { id } = useParams();
     const socketRef = useRef<Socket | null>(null); // Usando MutableRefObject para permitir modificação e valor inicial null
-    const rpgGameClient = new RpgGameClient();
     const messageRef = useRef<HTMLInputElement | null>(null);
     const bottomRef = useRef<HTMLInputElement | null>(null);
     const [messageList, setMessageList] = useState<{
@@ -44,9 +42,8 @@ export const TableAccess = () => {
         userId: string;
         dateH: Date;
     }[]>([]);
-    const [rpgGameName, setRpgGameName] = useState<string | null>(null);
-    const [userList, setUserList] = useState<{ socket_id: string; name: string }[]>([]);
-
+    const [userList, setUserList] = useState<{
+        id: string, idPlayer: string, namePlayer: string, rpgGame:{id: string}}[]>([]);
     useEffect(() => {
         const socket = socketIOClient(ENDPOINT, {
             transports: ['websocket']
@@ -54,22 +51,10 @@ export const TableAccess = () => {
         socketRef.current = socket;
 
         // Cleanup function to disconnect the socket when the component is unmounted
-        return () => {
-            socket.disconnect();
-        };
+
     }, []);
 
     useEffect(() => {
-        if (id) {
-            rpgGameClient.findUnique(id).then(
-                success => {
-                    setRpgGameName(success.name);
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-        }
 
         const socket = socketRef.current;
 
@@ -90,20 +75,20 @@ export const TableAccess = () => {
                 socket.off('messageHistory');
             });
 
+
             socket.on('userList', (users) => {
                 setUserList([])
                 setUserList(users);
-                //console.log(users);
-
             });
 
             return () => {
                 socket.off('messageHistory');
                 socket.off('message');
                 socket.off('userList')
+                socket.disconnect();
             };
         }
-    }, [id, userList]);
+    }, [id]);
 
     useEffect(() => {
         scrollDown();
@@ -256,11 +241,9 @@ export const TableAccess = () => {
                     <div  className={styles.formModal}>
                         <h2>Usuários online</h2>
                         <ul>
-                            {
-                                userList.map((user, index) => (
-                                    <li key={index}>{user.name}</li>
-                                ))
-                            }
+                            {userList.map((user, index) =>(
+                                <li key={index}>{user.namePlayer}</li>
+                            ))}
                         </ul>
                     </div>
                 </div>
