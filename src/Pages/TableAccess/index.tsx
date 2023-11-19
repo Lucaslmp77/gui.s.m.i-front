@@ -12,6 +12,7 @@ import { TbCardsFilled } from "react-icons/tb";
 import { GiRobotGolem } from "react-icons/gi";
 import { FaUsers } from "react-icons/fa";
 import Modal from "react-modal";
+import ListNpcsModal from '../../components/listNpcsModal/index.tsx';
 
 const ENDPOINT = 'http://localhost:3333/';
 
@@ -155,6 +156,18 @@ export const TableAccess = () => {
         setIsOpen(false);
     }
 
+    // #############################################
+
+    const [isModalNpcOpen, setIsModalNpcOpen] = useState(false);
+
+    const openModalNpc = () => {
+        setIsModalNpcOpen(true);
+    };
+
+    const closeModalNpc = () => {
+        setIsModalNpcOpen(false);
+    };
+
     return (
         <section className={styles.section}>
             <div className={styles.container}>
@@ -204,11 +217,12 @@ export const TableAccess = () => {
                         <p className={styles.textIcon}>Usuários</p>
                     </div>
                     <div className={styles.containerIcon}>
-                        <GiRobotGolem className={styles.npc} />
-                        <p className={styles.textIcon}>NPC</p>
+                        <GiRobotGolem className={styles.npc} onClick={openModalNpc} />
+                        <p className={styles.textIcon}>NPCs</p>
                     </div>
                 </div>
             </div>
+            <ListNpcsModal isOpen={isModalNpcOpen} onRequestClose={closeModalNpc} />
             <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
             <Modal
                 className={styles.modal}

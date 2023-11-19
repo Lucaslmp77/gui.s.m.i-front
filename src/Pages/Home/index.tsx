@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { RpgGameClient } from '../../client/rpg-game.client';
 import { jwtDecode } from 'jwt-decode';
 import { Decoded } from '../../models/decoded';
-import RpgCard from '../../components/card';
+import RpgCard from '../../components/rpgCard';
 import FundoRPG from '../../assets/FundoRPG.png';
+import AnythingImg from '../../assets/Anything.png';
 import styles from './styles.module.css';
 import { RpgGame } from '../../models/rpg-game';
 import Header from '../../components/header';
@@ -22,12 +23,15 @@ export const Home: React.FC = () => {
     const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalRpgs, setTotalRpgs] = useState(0);
 
     useEffect(() => {
         const fetchRpgGames = async (page: number) => {
             try {
                 const client = new RpgGameClient();
                 const rpgs = await client.findRpgByUser(userId, page);
+                const requestTotalRpgs = await client.countRpgGameByUser(userId);
+                setTotalRpgs(requestTotalRpgs);
                 setRpgGames(rpgs);
                 pageSize = rpgGames.length
             } catch (error) {
@@ -42,9 +46,11 @@ export const Home: React.FC = () => {
         }
     }, [userId, currentPage]);
 
+    const rpgsPerPage = 4;
+
     const handleNextPage = () => {
-        // Verifica se há mais páginas antes de incrementar
-        if (rpgGames.length === 4) {
+        const totalPages = Math.ceil(totalRpgs / rpgsPerPage);
+        if (currentPage < totalPages) {
             setCurrentPage((prev) => prev + 1);
         }
     };
@@ -89,15 +95,18 @@ export const Home: React.FC = () => {
                                 <span>Página {currentPage}</span>
                                 <button
                                     onClick={handleNextPage}
-                                    disabled={rpgGames.length < 4}
-                                    className={rpgGames.length < 4 ? styles.disabled : ''}
+                                    disabled={currentPage * rpgsPerPage >= totalRpgs}
+                                    className={currentPage * rpgsPerPage >= totalRpgs ? styles.disabled : ''}
                                 >
                                     Próximo
                                 </button>
                             </div>
                         </div>
                     ) : (
-                        <p>Nenhum RPG encontrado.</p>
+                        <div className={styles.containerAnythingImg}>
+                            <img className={styles.anythingImg} src={AnythingImg} alt="wizard dog" />
+                            <h2>Você não tem nenhuma mesa!</h2>
+                        </div>
                     )}
                 </div>
             </div>

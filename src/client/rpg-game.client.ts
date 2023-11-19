@@ -1,6 +1,6 @@
-import axios, {AxiosInstance} from "axios";
-import {RpgGame} from "../models/rpg-game.ts";
-import {RpgGameData} from "../models/rpg-game-data.ts";
+import axios, { AxiosInstance } from "axios";
+import { RpgGame } from "../models/rpg-game.ts";
+import { RpgGameData } from "../models/rpg-game-data.ts";
 
 export class RpgGameClient {
     private axiosClient: AxiosInstance;
@@ -23,6 +23,22 @@ export class RpgGameClient {
         }
     }
 
+    public async countAllRpgGame(): Promise<any> {
+        try {
+            return (await this.axiosClient.get(`/countAllRpgGame`)).data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async countRpgGameByUser(userId: string): Promise<any> {
+        try {
+            return (await this.axiosClient.get(`/countRpgGameByUser/${userId}`)).data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     public async findAll(page: number): Promise<RpgGame[]> {
         try {
             return (await this.axiosClient.get(`?page=${page}`,)).data
@@ -33,7 +49,7 @@ export class RpgGameClient {
     }
 
 
-    public async findUnique(id: string): Promise<RpgGame>{
+    public async findUnique(id: string): Promise<RpgGame> {
         try {
             return (await this.axiosClient.get<RpgGame>(`/${id}`)).data
         }
@@ -41,7 +57,7 @@ export class RpgGameClient {
             return Promise.reject(error.response)
         }
     }
-  
+
     public async findRpgByUser(userId: string, page: number): Promise<RpgGame[]> {
         try {
             return (await this.axiosClient.get(`/findRpgByUser/${userId}?page=${page}`)).data;
@@ -52,9 +68,9 @@ export class RpgGameClient {
 
     public async update(id: string, rpg: RpgGameData): Promise<RpgGame> {
         try {
-          return (await this.axiosClient.put(`/${id}`, rpg)).data;
+            return (await this.axiosClient.put(`/${id}`, rpg)).data;
         } catch (error: any) {
-          return Promise.reject(error.response);
+            return Promise.reject(error.response);
         }
-      }
+    }
 }

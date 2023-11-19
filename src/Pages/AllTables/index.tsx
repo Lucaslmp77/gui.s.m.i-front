@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { RpgGameClient } from "../../client/rpg-game.client.ts";
 import { RpgGame } from "../../models/rpg-game.ts";
 import styles from "../Home/styles.module.css";
-import RpgCard from "../../components/card/index.tsx";
+import RpgCard from "../../components/rpgCard/index.tsx";
 import FundoRPG from "../../assets/FundoRPG.png";
 import { Decoded } from '../../models/decoded.ts';
 import { jwtDecode } from 'jwt-decode';
@@ -22,13 +22,15 @@ export const Tables = () => {
     const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-
+    const [totalRpgs, setTotalRpgs] = useState(0);
 
     useEffect(() => {
         const fetchRpgGames = async (page: number) => {
             try {
                 const client = new RpgGameClient();
                 const rpgs = await client.findAll(page);
+                const requestTotalRpgs = await client.countAllRpgGame();
+                setTotalRpgs(requestTotalRpgs);
                 setRpgGames(rpgs);
             } catch (error) {
                 console.error('Erro ao buscar os RPGs:', error);
@@ -42,9 +44,11 @@ export const Tables = () => {
         }
     }, [currentPage]);
 
+    const rpgsPerPage = 4;
+
     const handleNextPage = () => {
-        // Verifica se há mais páginas antes de incrementar
-        if (rpgGames.length === 4) {
+        const totalPages = Math.ceil(totalRpgs / rpgsPerPage);
+        if (currentPage < totalPages) {
             setCurrentPage((prev) => prev + 1);
         }
     };
@@ -89,8 +93,8 @@ export const Tables = () => {
                                 <span>Página {currentPage}</span>
                                 <button
                                     onClick={handleNextPage}
-                                    disabled={rpgGames.length < 4}
-                                    className={rpgGames.length < 4 ? styles.disabled : ''}
+                                    disabled={currentPage * rpgsPerPage >= totalRpgs}
+                                    className={currentPage * rpgsPerPage >= totalRpgs ? styles.disabled : ''}
                                 >
                                     Próximo
                                 </button>
