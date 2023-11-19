@@ -12,6 +12,7 @@ import RangerImg from '../../assets/Patrulheiro.jpg';
 import WarriorImg from '../../assets/Guerreiro.jpg';
 import ClericImg from '../../assets/Clerigo.jpg';
 import PaladinImg from '../../assets/Paladino.jpg';
+import AnythingImg from '../../assets/Anything.png';
 
 
 export const MyCharacters: React.FC = () => {
@@ -101,7 +102,7 @@ export const MyCharacters: React.FC = () => {
                                                                     ? ClericImg
                                                                     : character.group === "Paladino"
                                                                         ? PaladinImg
-                                                                        : character.group === "Mago Negro"
+                                                                        : character.group === "Bruxo"
                                                                             ? RangerImg
                                                                             : character.group === "Bárbaro"
                                                                                 ? RangerImg
@@ -130,7 +131,10 @@ export const MyCharacters: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <p>Nenhuma ficha encontrada.</p>
+                        <div className={styles.containerAnythingImg}>
+                            <img className={styles.anythingImg} src={AnythingImg} alt="wizard dog" />
+                            <h2>Você não tem nenhuma ficha!</h2>
+                        </div>
                     )}
                 </div>
             </div>

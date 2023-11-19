@@ -112,7 +112,7 @@ const ListNpcsModal: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose
                                                                     ? ClericImg
                                                                     : npc.group === "Paladino"
                                                                         ? PaladinImg
-                                                                        : npc.group === "Mago Negro"
+                                                                        : npc.group === "Bruxo"
                                                                             ? RangerImg
                                                                             : npc.group === "Bárbaro"
                                                                                 ? RangerImg
