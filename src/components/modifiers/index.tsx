@@ -1,5 +1,6 @@
 import ReactModal from 'react-modal'
 import styles from './styles.module.css'
+import { GiDiceSixFacesSix } from "react-icons/gi";
 
 import D4 from '../../assets/dice/D4.png'
 import D6 from '../../assets/dice/D6.png'
@@ -18,7 +19,7 @@ export const Modifiers = () => {
     const [valorD12, setValorD12] = useState(0);
     const [valorD20, setValorD20] = useState(0);
 
-    const [modalDice,setModalDice] = useState(false);
+    const [modalDice, setModalDice] = useState(false);
 
     type SetValueFunction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -100,7 +101,7 @@ export const Modifiers = () => {
 
     return(
         <div className={styles.full}>
-            <button className={styles.iconDice} onClick={() => setModalDice(true)}></button>
+            <GiDiceSixFacesSix className={styles.iconDice} onClick={() => setModalDice(true)}/>
             <ReactModal
                 isOpen={modalDice}
                 onRequestClose={() => setModalDice}

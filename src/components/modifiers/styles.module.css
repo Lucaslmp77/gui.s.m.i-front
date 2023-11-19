@@ -10,9 +10,6 @@
 .iconDice{
     width: 60px;
     height: 60px;
-    background-image: url("../../assets/dice/D20.png");
-    background-size: cover;
-    background-color: black;
 }
 
 .container{
