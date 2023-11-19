@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Decoded } from '../../models/decoded';
 import RpgCard from '../../components/rpgCard';
 import FundoRPG from '../../assets/FundoRPG.png';
+import AnythingImg from '../../assets/Anything.png';
 import styles from './styles.module.css';
 import { RpgGame } from '../../models/rpg-game';
 import Header from '../../components/header';
@@ -101,7 +102,10 @@ export const Home: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <p>Nenhum RPG encontrado.</p>
+                        <div className={styles.containerAnythingImg}>
+                            <img className={styles.anythingImg} src={AnythingImg} alt="wizard dog" />
+                            <h2>Você não tem nenhuma mesa!</h2>
+                        </div>
                     )}
                 </div>
             </div>

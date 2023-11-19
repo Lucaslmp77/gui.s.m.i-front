@@ -78,3 +78,16 @@ section {
   background-color: #888;
   cursor: not-allowed;
 }
+
+.containerAnythingImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  min-width: 70%;
+  max-width: 70%;
+  min-height: 70%;
+  max-height: 70%;
+  color: #FFA500;
+  font-size: 18px;
+}
