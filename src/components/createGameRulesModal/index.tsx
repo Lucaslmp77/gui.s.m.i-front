@@ -1,10 +1,10 @@
 // AddRuleModal.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { RpgGameRulesClient } from '../../client/rpgGameRules.client';
-import { GameRules } from '../../models/gameRules';
 import styles from "./index.module.css";
 import Modal from 'react-modal';
 import { BsXLg } from "react-icons/bs";
+import { useParams } from 'react-router-dom';
 
 interface AddRuleModalProps {
   isOpen: boolean;
@@ -12,6 +12,8 @@ interface AddRuleModalProps {
 }
 
 const AddRuleModal: React.FC<AddRuleModalProps> = ({ isOpen, onRequestClose }) => {
+  const rulesClient = new RpgGameRulesClient();
+  const { id } = useParams<{ id?: string }>() ?? { id: '' };
   const [formData, setFormData] = useState<any>({
     id: "",
     name: "",
@@ -34,6 +36,17 @@ const AddRuleModal: React.FC<AddRuleModalProps> = ({ isOpen, onRequestClose }) =
     name: "",
     description: "",
   });
+
+  const findById = async () => {
+    if (id) {
+        try {
+          const response = await (RpgGameRulesClient as any).findUnique(id);
+            setFormData({ name: response.name, description: response.description, rpgGameId: response.id });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+};
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -118,25 +131,35 @@ const AddRuleModal: React.FC<AddRuleModalProps> = ({ isOpen, onRequestClose }) =
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
+    let rules: {
+      name: string;
+      description: string;
+      rpgGameId: string;
+    } = {
+      name: "",
+      description: "",
+      rpgGameId: id !== undefined ? id : "",
+    };
+  
+    rules.name = formData.name;
+    rules.description = formData.description;
+  
     try {
       const isFormValid = await validateForm();
-
+  
       if (isFormValid) {
-        const rulesClient = new RpgGameRulesClient();
-        const rules = new GameRules();
-
-        rules.name = formData.name;
-        rules.description = formData.description;
-
+        
+  
         await rulesClient.save(rules);
         setSuccessMessage("Regra cadastrada com sucesso");
         setFormData({ name: "", description: "" });
-
+  
         setTimeout(() => {
           setSuccessMessage(null);
           window.location.reload();
         }, 1000);
-
+  
         setTimeout(() => {
           setSuccessMessage(null);
         }, 1000);
@@ -209,10 +232,10 @@ const AddRuleModal: React.FC<AddRuleModalProps> = ({ isOpen, onRequestClose }) =
             {errors.description && <div className={styles.error}>{errors.description}</div>}
           </div>
           <button type="submit">Criar Regra</button>
-                </form>
-                <BsXLg className={styles.exitModal} onClick={onRequestClose} />
-            </div>
-        </Modal>
+        </form>
+        <BsXLg className={styles.exitModal} onClick={onRequestClose} />
+      </div>
+    </Modal>
   );
 };
 
