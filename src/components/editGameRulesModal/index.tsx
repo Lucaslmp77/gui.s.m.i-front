@@ -41,13 +41,12 @@ const EditRuleModal: React.FC<EditRuleModalProps> = ({ isOpen, onRequestClose, i
 
   const findById = async () => {
     if (id) {
-        try {
-          // Altere isso para chamar a função que recupera os dados da regra específica
-          const response = await rulesClient.findUnique(id);
-          setFormData({ name: response.name, description: response.description, rpgGameId: response.id });
-        } catch (error) {
-          console.log(error);
-        }
+      try {
+        const response = await rulesClient.findUnique(id);
+        setFormData({ name: response.name, description: response.description, rpgGameId: response.id });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -148,30 +147,44 @@ const EditRuleModal: React.FC<EditRuleModalProps> = ({ isOpen, onRequestClose, i
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    const updatedRule = {
-      name: formData.name,
-      description: formData.description,
-      rpgGameId: id ?? "", // Usará uma string vazia se id for undefined
+    let rules: {
+      id: string,
+      name: string;
+      description: string;
+      rpgGameId: string;
+    } = {
+      id: "",
+      name: "",
+      description: "",
+      rpgGameId: id !== undefined ? id : "",
     };
+  
+    rules.name = formData.name;
+    rules.description = formData.description;
   
     try {
       const isFormValid = await validateForm();
   
       if (isFormValid) {
-        // Altere isso para chamar a função que atualiza a regra
-        await rulesClient.update(updatedRule.rpgGameId, updatedRule);
+        if (typeof id === 'string') {
+          await rulesClient.update(id, rules);
+          setSuccessMessage("Regra editada com sucesso");
+          setFormData({ name: "", description: "" });
   
-        setSuccessMessage("Regra editada com sucesso");
-  
-        // Chame a função para fechar a modal ou ajuste conforme necessário
-        onRequestClose();
+          setTimeout(() => {
+            setSuccessMessage(null);
+            window.location.reload();
+          }, 1000);
+        } else {
+          console.error("ID não é uma string válida");
+        }
       }
     } catch (error) {
       console.error("Erro ao editar regra:", error);
+      // Remova ou ajuste a linha abaixo conforme necessário
+      setSuccessMessage(null);
     }
   };
-  
-  
   
 
   const validateForm = async () => {
