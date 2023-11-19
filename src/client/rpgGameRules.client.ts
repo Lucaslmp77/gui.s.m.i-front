@@ -48,9 +48,9 @@ export class RpgGameRulesClient implements IRpgGameRulesClient {
         }
     }
 
-    public async update(id: string, rpg: GameRules): Promise<GameRules> {
+    public async update(id: string, rules: any): Promise<GameRules> {
         try {
-            return (await this.axiosClient.put(`/${id}`, rpg)).data;
+            return (await this.axiosClient.put(`/${id}`, rules)).data;
         } catch (error: any) {
             return Promise.reject(error.response);
         }
