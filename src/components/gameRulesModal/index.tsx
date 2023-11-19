@@ -41,7 +41,7 @@ const RuleListModal: React.FC<RuleListModalProps> = ({ isOpen, onRequestClose })
 
   const handleDeleteRule = async (rule: GameRules) => {
     try {
-      const isConfirmed = window.confirm(`Are you sure you want to delete the rule "${rule.name}"?`);
+      const isConfirmed = window.confirm(`Tem certeza que deseja deletar a regra "${rule.name}"?`);
 
       if (isConfirmed) {
         await new RpgGameRulesClient().delete(rule.id);
