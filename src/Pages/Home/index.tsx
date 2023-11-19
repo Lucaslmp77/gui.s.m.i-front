@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Decoded } from '../../models/decoded';
 import RpgCard from '../../components/rpgCard';
 import FundoRPG from '../../assets/FundoRPG.png';
+import AnythingImg from '../../assets/Anything.png';
 import styles from './styles.module.css';
 import { RpgGame } from '../../models/rpg-game';
 import Header from '../../components/header';
@@ -18,7 +19,7 @@ export const Home: React.FC = () => {
 
     const userName = decoded.name;
     const userId = decoded.sub;
-
+    let pageSize = 0
     const [rpgGames, setRpgGames] = useState<RpgGame[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -32,6 +33,7 @@ export const Home: React.FC = () => {
                 const requestTotalRpgs = await client.countRpgGameByUser(userId);
                 setTotalRpgs(requestTotalRpgs);
                 setRpgGames(rpgs);
+                pageSize = rpgGames.length
             } catch (error) {
                 console.error('Erro ao buscar os RPGs:', error);
             } finally {
@@ -101,7 +103,10 @@ export const Home: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <p>Nenhum RPG encontrado.</p>
+                        <div className={styles.containerAnythingImg}>
+                            <img className={styles.anythingImg} src={AnythingImg} alt="wizard dog" />
+                            <h2>Você não tem nenhuma mesa!</h2>
+                        </div>
                     )}
                 </div>
             </div>

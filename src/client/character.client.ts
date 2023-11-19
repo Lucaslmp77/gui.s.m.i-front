@@ -58,6 +58,22 @@ export class CharacterClient {
         }
     }
 
+    public async countCharactersNpcByRpgGame(rpgGameId: string): Promise<any> {
+        try {
+            return (await this.axiosClient.get(`/countCharactersNpcByRpgGame/${rpgGameId}`)).data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async findCharacterNpcByRpgGame(rpgGameId: string, page: number): Promise<Character[]> {
+        try {
+            return (await this.axiosClient.get(`/findCharacterNpcByRpgGame/${rpgGameId}?page=${page}`)).data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     public async update(id: string, rpg: RpgGameData): Promise<Character> {
         try {
             return (await this.axiosClient.put(`/${id}`, rpg)).data;

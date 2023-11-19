@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
 import CreateTableModal from '../createTableModal';
+import AvatarImg from '../../assets/Avatar.jpg';
 
 interface HeaderProps {
   userName: string;
@@ -20,7 +21,9 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.userMenu}>Bem-vindo, {userName}</div>
+      <div className={styles.userMenu}>
+        <img src={AvatarImg} alt="User Avatar" className={styles.avatar} />
+        {userName}</div>
       <nav className={styles.navigation}>
         <ul>
           <li>
@@ -32,11 +35,11 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
             </NavLink>
           </li>
           <li>
-          <NavLink
+            <NavLink
               to="/home-minhas-mesas"
               className={`${styles.link} ${window.location.pathname === '/home-minhas-mesas' ? styles.selected : ''}`}
             >
-              </NavLink>
+            </NavLink>
             <a onClick={openModal} className={styles.link}>
               Criar mesa
             </a>
