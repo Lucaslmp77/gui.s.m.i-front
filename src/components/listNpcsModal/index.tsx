@@ -5,13 +5,13 @@ import { BsXLg } from "react-icons/bs";
 import { useParams } from 'react-router-dom';
 import { Character } from '../../models/character.ts';
 import { CharacterClient } from '../../client/character.client.ts';
-import CharacterCard from '../characterCard/index.tsx';
 
 import WizardImg from '../../assets/Mago.jpg';
 import RangerImg from '../../assets/Patrulheiro.jpg';
 import WarriorImg from '../../assets/Guerreiro.jpg';
 import ClericImg from '../../assets/Clerigo.jpg';
 import PaladinImg from '../../assets/Paladino.jpg';
+import NpcCard from '../npcCard/index.tsx';
 
 interface CreateTableModalProps {
     isOpen: boolean;
@@ -49,7 +49,7 @@ const ListNpcsModal: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose
         }
     }, [id, currentPage]);
 
-    const charactersPerPage = 5;
+    const charactersPerPage = 10;
 
     const handleNextPage = () => {
         const totalPages = Math.ceil(totalNpcs / charactersPerPage);
@@ -69,13 +69,14 @@ const ListNpcsModal: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose
             className={styles.modal}
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-            contentLabel="NPCS"
+            contentLabel="NPCs"
             style={{
                 overlay: {
                     backgroundColor: "rgba(0, 0, 0, 0.8)",
                 },
                 content: {
-                    maxWidth: "50%",
+                    maxWidth: "100%",
+                    maxHeight: "100%",
                     backgroundColor: "#000",
                     color: "#fff",
                     border: "1px solid #333",
@@ -92,7 +93,7 @@ const ListNpcsModal: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose
                             <div className={styles.cardContainer}>
                                 {npcs.map((npc) => (
                                     <div key={npc.id}>
-                                        <CharacterCard
+                                        <NpcCard
                                             id={npc.id}
                                             name={npc.name}
                                             group={npc.group}
@@ -140,11 +141,11 @@ const ListNpcsModal: React.FC<CreateTableModalProps> = ({ isOpen, onRequestClose
                             </div>
                         </div>
                     ) : (
-                        <p>Nenhuma ficha encontrada.</p>
+                        <p>Essa mesa não possui nenhum NPC.</p>
                     )}
                 </div>
+                <BsXLg className={styles.exitModal} onClick={onRequestClose} />
             </div>
-            <BsXLg className={styles.exitModal} onClick={onRequestClose} />
         </Modal>
     );
 };
