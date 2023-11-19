@@ -5,13 +5,15 @@ import styles from "./index.module.css";
 import Modal from 'react-modal';
 import { BsXLg } from "react-icons/bs";
 import { useParams } from 'react-router-dom';
+import { GameRules } from '../../models/gameRules';
 
 interface AddRuleModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
+  initialFormData: GameRules | null;
 }
 
-const AddRuleModal: React.FC<AddRuleModalProps> = ({ isOpen, onRequestClose }) => {
+const AddRuleModal: React.FC<AddRuleModalProps> = ({ isOpen, onRequestClose, initialFormData }) => {
   const rulesClient = new RpgGameRulesClient();
   const { id } = useParams<{ id?: string }>() ?? { id: '' };
   const [formData, setFormData] = useState<any>({
@@ -49,6 +51,19 @@ const AddRuleModal: React.FC<AddRuleModalProps> = ({ isOpen, onRequestClose }) =
 };
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialFormData) {
+      setFormData({
+        id: initialFormData.id,
+        name: initialFormData.name,
+        description: initialFormData.description,
+        rpgGameId: initialFormData.rpgGameId,
+      });
+    } else {
+      // Defina valores iniciais ou manipule a lógica, se necessário
+    }
+  }, [initialFormData]);
 
   const clearErrors = (field: string) => {
     setErrors((prevErrors) => ({
@@ -201,7 +216,8 @@ const AddRuleModal: React.FC<AddRuleModalProps> = ({ isOpen, onRequestClose }) =
           border: "1px solid #333",
           background: "transparent",
         },
-      }}>
+      }}
+    >
       <div className={styles.formContainer}>
         <form className={styles.formModal} onSubmit={handleSubmit}>
           {successMessage && (
