@@ -5,13 +5,15 @@ import { jwtDecode } from "jwt-decode";
 import { NavLink, useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import EditTableModal from '../../components/editTableModal/index.tsx';
+import GameRulesModal from '../../components/gameRulesModal/index.tsx'
 import { BiPencil } from "react-icons/bi";
 import { BsXLg } from "react-icons/bs";
 import { GiIdCard } from "react-icons/gi";
 import { TbCardsFilled } from "react-icons/tb";
 import { GiRobotGolem } from "react-icons/gi";
-import { FaUsers } from "react-icons/fa";
-import { GiDiceSixFacesSix } from "react-icons/gi";
+
+import { FaUsers, FaBalanceScale } from "react-icons/fa";
+
 import Modal from "react-modal";
 import ListNpcsModal from '../../components/listNpcsModal/index.tsx';
 import { ModifiersModal } from '../../components/modifiers/index.tsx';
@@ -98,24 +100,27 @@ export const TableAccess = () => {
     }, [messageList]);
 
     const handleSubmit = () => {
-        const author = sessionStorage.getItem('name');
-        const rpgGameId = id;
-        const text = messageRef.current?.value;
-        const dateH = new Date()
-        const data = {
-            author,
-            text,
-            userId,
-            dateH,
-            rpgGameId
-        };
+        if (messageRef.current?.value.trim() !== '') {
+            const author = sessionStorage.getItem('name');
+            const rpgGameId = id;
+            const text = messageRef.current?.value;
+            const dateH = new Date()
+            const data = {
+                author,
+                text,
+                userId,
+                dateH,
+                rpgGameId
+            };
 
-        const socket = socketRef.current;
-        if (socket) {
-            socket.emit('message', { room: rpgGameId, data });
-            clearInput();
-            focusInput();
+            const socket = socketRef.current;
+            if (socket) {
+                socket.emit('message', { room: rpgGameId, data });
+                clearInput();
+                focusInput();
+            }
         }
+
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -146,6 +151,16 @@ export const TableAccess = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
+    };
+
+    const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
+
+    const openRulesModal = () => {
+        setIsRulesModalOpen(true);
+    };
+
+    const closeRulesModal = () => {
+        setIsRulesModalOpen(false);
     };
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -242,14 +257,18 @@ export const TableAccess = () => {
                         <p className={styles.textIcon}>NPCs</p>
                     </div>
                     <div className={styles.containerIcon}>
-                        <GiDiceSixFacesSix className={styles.iconDice} onClick={openDiceModal}/>
-                        <p className={styles.textIcon}>Dado</p>
+
+                        <FaBalanceScale className={styles.rules} onClick={openRulesModal} />
+                        <p className={styles.textIcon}>Regras</p>
+
                     </div>
                 </div>
             </div>
             <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} onDiceRoll={handleDiceRoll} setResultadoParcial={setResultadoParcial} />
             <ListNpcsModal isOpen={isModalNpcOpen} onRequestClose={closeModalNpc} />
             <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
+            <GameRulesModal isOpen={isRulesModalOpen} onRequestClose={closeRulesModal} />
+            
             <Modal
                 className={styles.modal}
                 isOpen={modalIsOpen}
