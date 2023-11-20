@@ -98,24 +98,27 @@ export const TableAccess = () => {
     }, [messageList]);
 
     const handleSubmit = () => {
-        const author = sessionStorage.getItem('name');
-        const rpgGameId = id;
-        const text = messageRef.current?.value;
-        const dateH = new Date()
-        const data = {
-            author,
-            text,
-            userId,
-            dateH,
-            rpgGameId
-        };
+        if (messageRef.current?.value.trim() !== '') {
+            const author = sessionStorage.getItem('name');
+            const rpgGameId = id;
+            const text = messageRef.current?.value;
+            const dateH = new Date()
+            const data = {
+                author,
+                text,
+                userId,
+                dateH,
+                rpgGameId
+            };
 
-        const socket = socketRef.current;
-        if (socket) {
-            socket.emit('message', { room: rpgGameId, data });
-            clearInput();
-            focusInput();
+            const socket = socketRef.current;
+            if (socket) {
+                socket.emit('message', { room: rpgGameId, data });
+                clearInput();
+                focusInput();
+            }
         }
+
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
