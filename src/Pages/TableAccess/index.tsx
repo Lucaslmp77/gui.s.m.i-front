@@ -11,10 +11,12 @@ import { BsXLg } from "react-icons/bs";
 import { GiIdCard } from "react-icons/gi";
 import { TbCardsFilled } from "react-icons/tb";
 import { GiRobotGolem } from "react-icons/gi";
+
 import { FaUsers, FaBalanceScale } from "react-icons/fa";
 
 import Modal from "react-modal";
 import ListNpcsModal from '../../components/listNpcsModal/index.tsx';
+import { ModifiersModal } from '../../components/modifiers/index.tsx';
 
 const ENDPOINT = 'http://localhost:3333/';
 
@@ -162,7 +164,9 @@ export const TableAccess = () => {
     };
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [resultadoParcial, setResultadoParcial] = useState<string>('');
 
+    console.log(resultadoParcial)
     function openModalUsers() {
         setIsOpen(true);
     }
@@ -170,8 +174,6 @@ export const TableAccess = () => {
     function closeModalUsers() {
         setIsOpen(false);
     }
-
-    // #############################################
 
     const [isModalNpcOpen, setIsModalNpcOpen] = useState(false);
 
@@ -182,6 +184,24 @@ export const TableAccess = () => {
     const closeModalNpc = () => {
         setIsModalNpcOpen(false);
     };
+
+    const [diceModal, setDiceModaL] = useState(false);
+
+    const openDiceModal = () => {
+        setDiceModaL(true);
+    }
+
+    const closeDiceModal = () => {
+        setDiceModaL(false);
+    }
+
+    const [diceResult, setDiceResult] = useState<number>(0);
+
+    const handleDiceRoll = (result: number) => {
+        setDiceResult(result);
+    };
+
+    console.log(diceResult);
 
     return (
         <section className={styles.section}>
@@ -200,6 +220,7 @@ export const TableAccess = () => {
                             <p key={index}>[{date.toLocaleString()}] {'--'} <span className={styles.userMessage}>{message.author}</span>: {message.text}</p>
                         );
                     })}
+                    <p>{resultadoParcial}</p>
                     <div ref={bottomRef} />
                 </div>
 
@@ -236,11 +257,14 @@ export const TableAccess = () => {
                         <p className={styles.textIcon}>NPCs</p>
                     </div>
                     <div className={styles.containerIcon}>
+
                         <FaBalanceScale className={styles.rules} onClick={openRulesModal} />
                         <p className={styles.textIcon}>Regras</p>
+
                     </div>
                 </div>
             </div>
+            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} onDiceRoll={handleDiceRoll} setResultadoParcial={setResultadoParcial} />
             <ListNpcsModal isOpen={isModalNpcOpen} onRequestClose={closeModalNpc} />
             <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
             <GameRulesModal isOpen={isRulesModalOpen} onRequestClose={closeRulesModal} />

@@ -222,3 +222,14 @@
     flex-direction: column;
 
 }
+
+.iconDice {
+    color: white;
+    font-size: 60px;
+    cursor: pointer;
+}
+
+.iconDice:hover {
+    color: #FFA500;;
+    transition: 0.5s;
+}
