@@ -11,6 +11,7 @@ import { BsXLg } from "react-icons/bs";
 import { GiIdCard } from "react-icons/gi";
 import { TbCardsFilled } from "react-icons/tb";
 import { GiRobotGolem } from "react-icons/gi";
+import { GiDiceSixFacesSix } from "react-icons/gi";
 
 import { FaUsers, FaBalanceScale } from "react-icons/fa";
 
@@ -257,10 +258,12 @@ export const TableAccess = () => {
                         <p className={styles.textIcon}>NPCs</p>
                     </div>
                     <div className={styles.containerIcon}>
-
+                        <GiDiceSixFacesSix className={styles.iconDice} onClick={openDiceModal} />
+                        <p className={styles.textIcon}>Dado</p>
+                    </div>
+                    <div className={styles.containerIcon}>
                         <FaBalanceScale className={styles.rules} onClick={openRulesModal} />
                         <p className={styles.textIcon}>Regras</p>
-
                     </div>
                 </div>
             </div>
