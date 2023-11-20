@@ -149,7 +149,9 @@ export const TableAccess = () => {
     };
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [resultadoParcial, setResultadoParcial] = useState<string>('');
 
+    console.log(resultadoParcial)
     function openModalUsers() {
         setIsOpen(true);
     }
@@ -203,6 +205,7 @@ export const TableAccess = () => {
                             <p key={index}>[{date.toLocaleString()}] {'--'} <span className={styles.userMessage}>{message.author}</span>: {message.text}</p>
                         );
                     })}
+                    <p>{resultadoParcial}</p>
                     <div ref={bottomRef} />
                 </div>
 
@@ -244,7 +247,7 @@ export const TableAccess = () => {
                     </div>
                 </div>
             </div>
-            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} onDiceRoll={handleDiceRoll} />
+            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} onDiceRoll={handleDiceRoll} setResultadoParcial={setResultadoParcial} />
             <ListNpcsModal isOpen={isModalNpcOpen} onRequestClose={closeModalNpc} />
             <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
             <Modal

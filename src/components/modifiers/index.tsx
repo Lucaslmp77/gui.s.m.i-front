@@ -12,18 +12,17 @@ interface ModifiersProps {
     isOpen: boolean;
     onRequestClose: () => void;
     onDiceRoll: (resultado: number) => void;
-    resultadoParcial: (resultado: number) => void;
-
+    setResultadoParcial: React.Dispatch<React.SetStateAction<string>>; //{ nome: 'D4', lados: 4, quantidade: valorD4 }
 }
 
-export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClose, onDiceRoll }) => {
+export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClose, onDiceRoll, setResultadoParcial }) => {
     const [valorD4, setValorD4] = useState(0);
     const [valorD6, setValorD6] = useState(0);
     const [valorD8, setValorD8] = useState(0);
     const [valorD10, setValorD10] = useState(0);
     const [valorD12, setValorD12] = useState(0);
     const [valorD20, setValorD20] = useState(0);
-    const [resultadoParcial, setResultadoParcial] = useState<string>('');
+    //const [resultadoParcial, setResultadoParcial] = useState<string>('');
 
     type SetValueFunction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -68,7 +67,9 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
                 resultadoTotal += somaResultado;
 
                 const resultadoParcialAtual = `${dado.quantidade}${dado.nome}: ${somaResultado} [${resultado.join(', ')}]`;
-                setResultadoParcial((prevResultado) => prevResultado + resultadoParcialAtual);
+                setResultadoParcial((prevResultado) => prevResultado + resultadoParcialAtual + resultadoTotal);
+                console.log(`${dado.quantidade}${dado.nome}: ${somaResultado} [${resultado.join(', ')}]`);
+                //setResultadoParcial(resultadoParcialAtual)
             }
         });
 
