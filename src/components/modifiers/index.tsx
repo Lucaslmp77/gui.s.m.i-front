@@ -92,15 +92,18 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
 
     const styleModal = {
         overlay: {
-            backgroundColor: 'transparent', // cor de fundo do overlay
+            backgroundColor: 'transparent', 
         },
         content: {
-            color: 'black',
+            backgroundColor: '#22223B',
+            color: '#FFEAAE',
             maxWidth: '400px', // largura máxima do modal
             maxHeight: '450px',
             margin: 'auto', // centraliza o modal horizontalmente
             padding: '20px', // espaço interno do modal
-            radius: '15px',
+            border: '5px white solid',
+            borderRadius: '25px'
+            
         },
     };
 

@@ -33,7 +33,7 @@
 .pair > h1{
     min-width: 50px;
     font-size: 40px;
-    color: black;
+    color: var(--tertiary);
 }
 
 .buttons{
@@ -44,24 +44,23 @@
 }
 
 .buttonMore {
-    background-color: transparent;
-    background-size: cover;
+    background-color: var(--tertiary);
     border: 1px solid transparent;
 }
 
 .buttonMore:hover{
-    transform: scale(1.2);
+    transform: scale(1.1);
     transition: all 0.1s;
     cursor: pointer;
 }
 
 .buttonMore:active{
-    transform: scale(0.8);
+    transform: scale(0.9);
     transition: all;
 }
 
 .buttonLess {
-    background-color: transparent;
+    background-color: var(--tertiary);
     background-size: cover;
     border: 1px solid transparent;
 
@@ -93,10 +92,10 @@
     width: 155px;
     height: 50px;
 
-    border: solid 1px #FFA500 ;
+    border: solid 1px var(--secundary);
     border-radius: 10px;
-    color: white;
-    background-color: #FFA500;
+    color: var(--tertiary);
+    background-color: var(--secundary);
     transition: 0.5 ease-out;
 
     font-size: 20px;
@@ -118,12 +117,11 @@
     width: 155px;
     height: 50px;
 
-    border: solid 1px white ;
     border-radius: 10px;
-    color: #32021F;
-    background-color: white;
+    color: var(--tertiary);
+    background-color: var(--primary);
     transition: 0.5 ease-out;
-    border: 3px solid #32021F;
+    border: 3px var(--secundary) solid;
 
     font-size: 20px;
 }
