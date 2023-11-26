@@ -33,7 +33,7 @@
 .pair > h1{
     min-width: 50px;
     font-size: 40px;
-    color: #32021F;
+    color: black;
 }
 
 .buttons{
@@ -44,44 +44,37 @@
 }
 
 .buttonMore {
-    width: 25px;
-    height: 25px;
     background-color: transparent;
-    background-image: url("../../assets/dice/MAIS.png");
     background-size: cover;
     border: 1px solid transparent;
-
 }
 
 .buttonMore:hover{
-    transform: scale(1.1);
+    transform: scale(1.2);
     transition: all 0.1s;
     cursor: pointer;
 }
 
 .buttonMore:active{
-    transform: scale(0.9);
+    transform: scale(0.8);
     transition: all;
 }
 
 .buttonLess {
-    width: 25px;
-    height: 25px;
     background-color: transparent;
-    background-image: url("../../assets/dice/MENOS.png");
     background-size: cover;
     border: 1px solid transparent;
 
 }
 
 .buttonLess:hover{
-    transform: scale(1.1);
+    transform: scale(1.2);
     transition: all 0.2s;
     cursor: pointer;
 }
 
 .buttonLess:active{
-    transform: scale(0.9);
+    transform: scale(0.8);
     transition: all;
 }
 

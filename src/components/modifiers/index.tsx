@@ -8,6 +8,9 @@ import D12 from '../../assets/dice/D12.png';
 import D20 from '../../assets/dice/D20.png';
 import { useState } from 'react';
 
+import more from '../../assets/dice/MAIS.png'
+import less from '../../assets/dice/MENOS.png'
+
 interface ModifiersProps {
     isOpen: boolean;
     onRequestClose: () => void;
@@ -84,6 +87,7 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
         setValorD10(0);
         setValorD12(0);
         setValorD20(0);
+
     };
 
     const styleModal = {
@@ -91,12 +95,11 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
             backgroundColor: 'transparent', // cor de fundo do overlay
         },
         content: {
-            color: 'blue', // cor do texto do modal.
+            color: 'black',
             maxWidth: '400px', // largura máxima do modal
             maxHeight: '450px',
             margin: 'auto', // centraliza o modal horizontalmente
             padding: '20px', // espaço interno do modal
-            border: '3px solid #32021F',
             radius: '15px',
         },
     };
@@ -111,24 +114,16 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
                 <div className={styles.row}>
                     <div className={styles.pair}>
                         <div className={styles.buttons}>
-                            <button 
-                                className={styles.buttonMore}
-                                onClick={() => handleDiceValue(setValorD4, valorD4, 1)}></button>
-                            <button 
-                                className={styles.buttonLess}
-                                onClick={() => handleDiceValue(setValorD4, valorD4, -1)}></button>
+                            <img src={more} className={styles.buttonMore} onClick={() => handleDiceValue(setValorD4, valorD4, 1)}/>
+                            <img src={less} className={styles.buttonLess} onClick={() => handleDiceValue(setValorD4, valorD4, -1)}/>
                         </div>
                         <img src={D4} alt="Dado 4 Faces"/>
                         <h1>{valorD4}</h1>
                     </div>
                     <div className={styles.pair}>
                         <div className={styles.buttons}>
-                            <button 
-                                className={styles.buttonMore}
-                                onClick={() => handleDiceValue(setValorD6, valorD6, 1)}></button>
-                            <button 
-                                className={styles.buttonLess}
-                                onClick={() => handleDiceValue(setValorD6, valorD6, -1)}></button>
+                            <img src={more} className={styles.buttonMore} onClick={() => handleDiceValue(setValorD6, valorD6, 1)}/>
+                            <img src={less} className={styles.buttonLess} onClick={() => handleDiceValue(setValorD6, valorD6, -1)}/>
                         </div>
                         <img src={D6} alt="Dado 6 Faces"/>
                         <h1>{valorD6}</h1>
@@ -137,24 +132,16 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
                 <div className={styles.row}>
                     <div className={styles.pair}>
                         <div className={styles.buttons}>
-                            <button 
-                                className={styles.buttonMore}
-                                onClick={() => handleDiceValue(setValorD8, valorD8, 1)}></button>
-                            <button 
-                                className={styles.buttonLess}
-                                onClick={() => handleDiceValue(setValorD8, valorD8, -1)}></button>
+                            <img src={more} className={styles.buttonMore} onClick={() => handleDiceValue(setValorD8, valorD8, 1)}/>
+                            <img src={less} className={styles.buttonLess} onClick={() => handleDiceValue(setValorD8, valorD8, -1)}/>
                         </div>
                         <img src={D8} alt="Dado 8 Faces"/>
                         <h1>{valorD8}</h1>
                     </div>
                     <div className={styles.pair}>
                         <div className={styles.buttons}>
-                            <button 
-                                className={styles.buttonMore}
-                                onClick={() => handleDiceValue(setValorD10, valorD10, 1)}></button>
-                            <button 
-                                className={styles.buttonLess}
-                                onClick={() => handleDiceValue(setValorD10, valorD10, -1)}></button>
+                            <img src={more} className={styles.buttonMore} onClick={() => handleDiceValue(setValorD10, valorD10, 1)}/>
+                            <img src={less} className={styles.buttonLess} onClick={() => handleDiceValue(setValorD10, valorD10, -1)}/>
                         </div>
                         <img src={D10} alt="Dado 10 Faces"/>
                         <h1>{valorD10}</h1>
@@ -163,24 +150,16 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
                 <div className={styles.row}>
                     <div className={styles.pair}>
                         <div className={styles.buttons}>
-                            <button 
-                                className={styles.buttonMore}
-                                onClick={() => handleDiceValue(setValorD12, valorD12, 1)}></button>
-                            <button 
-                                className={styles.buttonLess}
-                                onClick={() => handleDiceValue(setValorD12, valorD12, -1)}></button>
+                            <img src={more} className={styles.buttonMore} onClick={() => handleDiceValue(setValorD12, valorD12, 1)}/>
+                            <img src={less} className={styles.buttonLess} onClick={() => handleDiceValue(setValorD12, valorD12, -1)}/>
                         </div>
                         <img src={D12} alt="Dado 12 Faces"/>
                         <h1>{valorD12}</h1>
                     </div>
                     <div className={styles.pair}>
                         <div className={styles.buttons}>
-                            <button 
-                                className={styles.buttonMore}
-                                onClick={() => handleDiceValue(setValorD20, valorD20, 1)}></button>
-                            <button 
-                                className={styles.buttonLess}
-                                onClick={() => handleDiceValue(setValorD20, valorD20, -1)}></button>
+                            <img src={more} className={styles.buttonMore} onClick={() => handleDiceValue(setValorD20, valorD20, 1)}/>
+                            <img src={less} className={styles.buttonLess} onClick={() => handleDiceValue(setValorD20, valorD20, -1)}/>
                         </div>
                         <img src={D20} alt="Dado 20 Faces"/>
                         <h1>{valorD20}</h1>
