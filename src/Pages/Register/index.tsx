@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { NavLink, useNavigate } from 'react-router-dom';
 import styles from "./styles.module.css";
 import { UserClient } from "../../client/user.client";
 import { User } from "../../models/user";
-import { NavLink } from "react-router-dom";
 
 export const Register = () => {
   const [formData, setFormData] = useState<any>({
@@ -118,7 +118,7 @@ export const Register = () => {
           email: "Email no formato inválido",
         }));
         isValid = false;
-      } else if(await isEmailUnique(value)) {
+      } else if (await isEmailUnique(value)) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           email: "Este email já existe",
@@ -133,6 +133,8 @@ export const Register = () => {
     const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     return emailRegex.test(email);
   };
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,8 +151,8 @@ export const Register = () => {
         user.password = formData.password;
 
         await userClient.save(user);
-        setSuccessMessage("Usuário cadastrado com sucesso");
         setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+        navigate("/verify-email");
       }
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
