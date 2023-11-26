@@ -9,15 +9,18 @@ export const Register = () => {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const isEmailUnique = async (email: string) => {
     const userClient = new UserClient();
@@ -28,11 +31,15 @@ export const Register = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     clearErrors(name);
+
+    if (name === "password" && formData.confirmPassword) {
+      validateField("confirmPassword", formData.confirmPassword);
+    }
   };
 
   const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === "name" || name === "password" || name === "email") {
+    if (name === "name" || name === "password" || name === "email" || name === "confirmPassword") {
       const isValid = await validateField(name, value);
       if (!isValid) {
         e.preventDefault();
@@ -82,6 +89,22 @@ export const Register = () => {
       }
     }
 
+    if (name === "confirmPassword") {
+      if (value.length === 0) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "Confirmação de senha é obrigatória",
+        }));
+        isValid = false;
+      } else if (value !== formData.password) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "As senhas não coincidem",
+        }));
+        isValid = false;
+      }
+    }
+
     if (name === "email") {
       if (value.length === 0) {
         setErrors((prevErrors) => ({
@@ -95,6 +118,11 @@ export const Register = () => {
           email: "Email no formato inválido",
         }));
         isValid = false;
+      } else if(await isEmailUnique(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: "Este email já existe",
+        }));
       }
     }
 
@@ -112,6 +140,7 @@ export const Register = () => {
       const isFormValid = await validateForm();
 
       if (isFormValid) {
+        setLoading(true);
         const userClient = new UserClient();
         const user = new User();
 
@@ -121,20 +150,21 @@ export const Register = () => {
 
         await userClient.save(user);
         setSuccessMessage("Usuário cadastrado com sucesso");
-        setFormData({ name: "", email: "", password: "" });
-
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 5000);
+        setFormData({ name: "", email: "", password: "", confirmPassword: "" });
       }
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
     }
   };
 
   const validateForm = async () => {
     let isValid = true;
-    const fieldNames = ["name", "email", "password"];
+    const fieldNames = ["name", "email", "password", "confirmPassword"];
 
     for (const name of fieldNames) {
       isValid = await validateField(name, formData[name]) && isValid;
@@ -184,8 +214,19 @@ export const Register = () => {
             />
             {errors.password && <div className={styles.error}>{errors.password}</div>}
           </div>
-          <button className={styles.butt} type="submit">
-            Cadastre-se
+          <div className={styles.inputs}>
+            <label>Confirme a Senha</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {errors.confirmPassword && <div className={styles.error}>{errors.confirmPassword}</div>}
+          </div>
+          <button className={styles.butt} type="submit" disabled={loading}>
+            {loading ? "Carregando..." : "Cadastre-se"}
           </button>
         </form>
         <footer className={styles.footer}>
