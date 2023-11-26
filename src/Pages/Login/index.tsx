@@ -2,8 +2,9 @@ import { useState } from 'react';
 import styles from './styles.module.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthenticateClient } from '../../client/authenticate.client';
-import {Decoded} from "../../models/decoded.ts";
+import { Decoded } from "../../models/decoded.ts";
 import { jwtDecode } from "jwt-decode";
+import { UserClient } from '../../client/user.client.ts';
 
 export const Login = () => {
     const [loginData, setLoginData] = useState({
@@ -27,6 +28,8 @@ export const Login = () => {
         e.preventDefault();
 
         const authenticateClient = new AuthenticateClient();
+        const userClient = new UserClient();
+        const user = await userClient.findUserByEmail(loginData.email);
 
         try {
             const authenticateData = {
@@ -53,8 +56,12 @@ export const Login = () => {
             }
             sessionStorage.setItem('name', decoded.name)
         } catch (error) {
-            setError('Autenticação falhou. Por favor, verifique suas credenciais.');
-            console.error('Erro de autenticação:', error);
+            if (user.verified == false) {
+                setError('Usuário não autenticado, verifique seu email ou faça o cadastro novamente.');
+            } else {
+                setError('Autenticação falhou. Por favor, verifique suas credenciais.');
+                console.error('Erro de autenticação:', error);
+            }
         }
     };
 
