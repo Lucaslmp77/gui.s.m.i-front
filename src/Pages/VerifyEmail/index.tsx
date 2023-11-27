@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './styles.module.css';
+import { NavLink } from 'react-router-dom';
 
 export const VerifyEmail = () => {
     const [verificationCode, setVerificationCode] = useState(Array(4).fill(''));
@@ -21,6 +22,14 @@ export const VerifyEmail = () => {
 
     const handleCodeInputChange = (index: number, value: string) => {
         const newCode = [...verificationCode];
+
+        if (value === '' && index > 0) {
+            const prevInputElement = document.getElementById(`code-input-${index - 1}`);
+            if (prevInputElement) {
+                prevInputElement.focus();
+            }
+        }
+
         newCode[index] = value;
 
         if (index < newCode.length - 1 && value !== '') {
@@ -58,7 +67,9 @@ export const VerifyEmail = () => {
                             ))}
                         </form>
                         <button type="submit" className={styles.button}>Verificar</button>
-                        <button className={styles.backButton} onClick={handleBack}>Voltar</button>
+                        <NavLink to={`/register`}>
+                            <button className={styles.backButton} onClick={handleBack}>Voltar</button>
+                        </NavLink>
                     </div>
                 ) : (
                     <p className={styles.successText}>Código verificado com sucesso!</p>
