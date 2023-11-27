@@ -101,6 +101,7 @@ export const TableAccess = () => {
     }, [messageList]);
 
     const handleSubmit = () => {
+        const socket = socketRef.current;
         if (messageRef.current?.value.trim() !== '') {
             const author = sessionStorage.getItem('name');
             const rpgGameId = id;
@@ -113,16 +114,32 @@ export const TableAccess = () => {
                 dateH,
                 rpgGameId
             };
-
-            const socket = socketRef.current;
+            
             if (socket) {
                 socket.emit('message', { room: rpgGameId, data });
                 clearInput();
                 focusInput();
             }
         }
-
+        if (resultadoParcial !== ''){
+            const author = "Sistema";
+            const rpgGameId = id;
+            const text = resultadoParcial;
+            const dateH = new Date()
+            const data = {
+                author,
+                text,
+                userId,
+                dateH,
+                rpgGameId
+            };
+            if (socket) {
+                socket.emit('message', { room: rpgGameId, data });
+                setResultadoParcial('');
+            }
+        }
     };
+
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -167,7 +184,7 @@ export const TableAccess = () => {
     const [modalIsOpen, setIsOpen] = React.useState(false);
     const [resultadoParcial, setResultadoParcial] = useState<string>('');
 
-    console.log(resultadoParcial)
+
     function openModalUsers() {
         setIsOpen(true);
     }
@@ -221,7 +238,6 @@ export const TableAccess = () => {
                             <p key={index}>[{date.toLocaleString()}] {'--'} <span className={styles.userMessage}>{message.author}</span>: {message.text}</p>
                         );
                     })}
-                    <p>{resultadoParcial}</p>
                     <div ref={bottomRef} />
                 </div>
 
@@ -267,7 +283,7 @@ export const TableAccess = () => {
                     </div>
                 </div>
             </div>
-            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} onDiceRoll={handleDiceRoll} setResultadoParcial={setResultadoParcial} />
+            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} onDiceRoll={handleDiceRoll} setResultadoParcial={setResultadoParcial} functionSubmit={handleSubmit} />
             <ListNpcsModal isOpen={isModalNpcOpen} onRequestClose={closeModalNpc} />
             <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
             <GameRulesModal isOpen={isRulesModalOpen} onRequestClose={closeRulesModal} />

@@ -15,10 +15,11 @@ interface ModifiersProps {
     isOpen: boolean;
     onRequestClose: () => void;
     onDiceRoll: (resultado: number) => void;
-    setResultadoParcial: React.Dispatch<React.SetStateAction<string>>; //{ nome: 'D4', lados: 4, quantidade: valorD4 }
+    setResultadoParcial: React.Dispatch<React.SetStateAction<string>>;
+    functionSubmit:Function
 }
 
-export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClose, onDiceRoll, setResultadoParcial }) => {
+export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClose, onDiceRoll, setResultadoParcial,functionSubmit }) => {
     const [valorD4, setValorD4] = useState(0);
     const [valorD6, setValorD6] = useState(0);
     const [valorD8, setValorD8] = useState(0);
@@ -69,17 +70,16 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
 
                 resultadoTotal += somaResultado;
 
-                const resultadoParcialAtual = `${dado.quantidade}${dado.nome}: ${somaResultado} [${resultado.join(', ')}]`;
-                setResultadoParcial((prevResultado) => prevResultado + resultadoParcialAtual + resultadoTotal);
-                console.log(`${dado.quantidade}${dado.nome}: ${somaResultado} [${resultado.join(', ')}]`);
-                //setResultadoParcial(resultadoParcialAtual)
+                const resultadoParcialAtual = `${dado.quantidade}${dado.nome}: [${resultado.join(', ')}] `;
+                setResultadoParcial((prevResultado) => prevResultado + resultadoParcialAtual + resultadoTotal);                
             }
         });
-
+        
         if (resultadoTotal !== 0) {
             onRequestClose();
             onDiceRoll(resultadoTotal);
         }
+        functionSubmit();
         
         setValorD4(0);
         setValorD6(0);
@@ -87,7 +87,6 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
         setValorD10(0);
         setValorD12(0);
         setValorD20(0);
-
     };
 
     const styleModal = {
