@@ -1,15 +1,40 @@
 import { useState } from 'react';
 import styles from './styles.module.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
+import { OtpClient } from '../../client/otp.client';
+import { hash } from 'bcryptjs';
 
 export const VerifyEmail = () => {
     const [verificationCode, setVerificationCode] = useState(Array(4).fill(''));
     const [isCodeSent, setIsCodeSent] = useState(false);
+    const [verificationResult, setVerificationResult] = useState(null);
 
-    const handleVerificationSubmit = (e: { preventDefault: () => void; }) => {
+    const { email } = useParams();
+
+    const handleVerificationSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        console.log('Código a ser verificado:', verificationCode.join(''));
-        setIsCodeSent(true);
+        const otp = verificationCode.join('');
+
+        try {
+            if (email) {
+                const emailDecoded = atob(email);
+                console.log(email);
+                console.log(otp, otp.length);
+
+                const body: { email: string, otp: string } = { email: '', otp: '' };
+
+                body.email = emailDecoded;
+                body.otp = otp;
+
+                const otpClient = new OtpClient();
+                const result = await otpClient.verifyUserEmail(body);
+                console.log(result);
+            } else {
+                console.error(email);
+            }
+        } catch (error) {
+            console.error('Erro ao verificar código:', error);
+        }
     };
 
     const handleResendCode = () => {
@@ -48,11 +73,11 @@ export const VerifyEmail = () => {
                 <h2 className={styles.heading}>Confirmação de Email</h2>
                 {!isCodeSent ? (
                     <div>
-                        <p className={styles.subtext}>
-                            Insira o código de verificação de 4 dígitos enviado para o seu email.
+                        <div className={styles.subtext}>
+                            <p>Insira o código de verificação de 4 dígitos enviado para o seu email.</p>
                             <p className={styles.resend} onClick={handleResendCode}>Enviar código novamente</p>
-                        </p>
-                        <form className={styles.form} onSubmit={handleVerificationSubmit}>
+                        </div>
+                        <form className={styles.form}>
                             {verificationCode.map((digit, index) => (
                                 <input
                                     type="text"
@@ -66,13 +91,15 @@ export const VerifyEmail = () => {
                                 />
                             ))}
                         </form>
-                        <button type="submit" className={styles.button}>Verificar</button>
+                        <button type="submit" onClick={handleVerificationSubmit} className={styles.button}>Verificar</button>
                         <NavLink to={`/register`}>
                             <button className={styles.backButton} onClick={handleBack}>Voltar</button>
                         </NavLink>
                     </div>
                 ) : (
-                    <p className={styles.successText}>Código verificado com sucesso!</p>
+                    <p className={styles.successText}>
+                        {verificationResult === 'success' ? 'Código verificado com sucesso!' : 'Falha na verificação do código.'}
+                    </p>
                 )}
             </div>
         </div>

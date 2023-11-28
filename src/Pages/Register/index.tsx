@@ -152,7 +152,7 @@ export const Register = () => {
 
         await userClient.save(user);
         setFormData({ name: "", email: "", password: "", confirmPassword: "" });
-        navigate("/verify-email");
+        navigate(`/email-verification/verify/${btoa(user.email)}`);
       }
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);

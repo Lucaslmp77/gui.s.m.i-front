@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/jwt-decode": "^3.1.0",
     "@types/socket.io-client": "^3.0.0",
     "axios": "^1.5.1",
+    "bcryptjs": "^2.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",

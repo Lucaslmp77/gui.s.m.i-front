@@ -22,7 +22,7 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
-        path: "/verify-email",
+        path: "/email-verification/verify/:email",
         element: <VerifyEmail />
       },
       {
