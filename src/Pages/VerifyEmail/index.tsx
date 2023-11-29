@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 import { NavLink, useParams } from 'react-router-dom';
 import { OtpClient } from '../../client/otp.client';
@@ -33,13 +33,12 @@ export const VerifyEmail = () => {
                 } else if (error.response && error.response.data) {
                     setVerificationResult(error.response.data);
                 } else {
-                    setVerificationResult('Erro na verificação do código.');
+                    setVerificationResult('Código inválido!');
                 }
             }
         } else {
             console.log(email);
         }
-
     };
 
     const handleResendCode = () => {
@@ -72,6 +71,14 @@ export const VerifyEmail = () => {
         setVerificationCode(newCode);
     };
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setVerificationResult(null);
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, [verificationResult]);
+
     return (
         <div className={styles.pageContainer}>
             <div className={styles.card}>
@@ -85,7 +92,13 @@ export const VerifyEmail = () => {
                     <div>
                         <div className={styles.subtext}>
                             <p>Insira o código de verificação de 4 dígitos enviado para o seu email.</p>
-                            <p className={styles.resend} onClick={handleResendCode}>Enviar código novamente</p>
+                            <button
+                                className={styles.resend}
+                                onClick={handleResendCode}
+                                disabled={verificationResult !== null}
+                            >
+                                Enviar código novamente
+                            </button>
                         </div>
                         <form className={styles.form}>
                             {verificationCode.map((digit, index) => (
@@ -98,12 +111,26 @@ export const VerifyEmail = () => {
                                     key={index}
                                     className={styles.input}
                                     required
+                                    disabled={verificationResult !== null}
                                 />
                             ))}
                         </form>
-                        <button type="submit" onClick={handleVerificationSubmit} className={styles.button}>Verificar</button>
+                        <button
+                            type="submit"
+                            onClick={handleVerificationSubmit}
+                            className={styles.button}
+                            disabled={verificationResult !== null}
+                        >
+                            Verificar
+                        </button>
                         <NavLink to={`/register`}>
-                            <button className={styles.backButton} onClick={handleBack}>Voltar</button>
+                            <button
+                                className={styles.backButton}
+                                onClick={handleBack}
+                                disabled={verificationResult !== null}
+                            >
+                                Voltar
+                            </button>
                         </NavLink>
                     </div>
                 ) : (

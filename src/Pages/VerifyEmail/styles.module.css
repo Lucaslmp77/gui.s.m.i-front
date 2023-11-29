@@ -70,6 +70,16 @@
     color: #FFA500;
     cursor: pointer;
     margin-top: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.resend:hover {
+    transition: 1s;
+    background-color: #ffebc7;
+    border-radius: 5px;
 }
 
 .successText {
@@ -93,8 +103,6 @@
     background-color: #555;
 }
 
-/* -------------------------- */
-
 .successMessage {
     background-color: #27ae60;
     color: #fff;
@@ -109,4 +117,12 @@
     padding: 10px;
     border-radius: 8px;
     margin-top: 20px;
+}
+
+.button:disabled,
+.backButton:disabled,
+.resend:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
 }
