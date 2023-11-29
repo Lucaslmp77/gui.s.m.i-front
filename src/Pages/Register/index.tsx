@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import styles from "./styles.module.css";
 import { UserClient } from "../../client/user.client";
 import { User } from "../../models/user";
+import { FaSpinner } from 'react-icons/fa';
 
 export const Register = () => {
   const [formData, setFormData] = useState<any>({
@@ -133,8 +134,8 @@ export const Register = () => {
         isValid = false;
       } else {
         try {
-          await isEmailUnique(value);
-          if (emailExist === true) {
+          const user = await isEmailUnique(value);
+          if (user && emailExist === true) {
             setErrors((prevErrors) => ({
               ...prevErrors,
               email: "Email já cadastrado!",
@@ -196,10 +197,13 @@ export const Register = () => {
   };
 
   return (
-    <section className={styles.section}>
+    <section className={`${styles.section} ${loading ? styles.sectionLoading : ''}`}>
       <div className={styles.container}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <h2 className={styles.title}>Crie Sua Conta</h2>
+          <div className={styles.loadingContainer}>
+            {loading && <FaSpinner className={styles.spinner} />}
+          </div>
           {successMessage && (
             <div className={styles.successMessage}>{successMessage}</div>
           )}
@@ -247,9 +251,7 @@ export const Register = () => {
             />
             {errors.confirmPassword && <div className={styles.error}>{errors.confirmPassword}</div>}
           </div>
-          <button className={styles.butt} type="submit" disabled={loading}>
-            {loading ? "Carregando..." : "Cadastre-se"}
-          </button>
+          <button className={styles.butt} type="submit" disabled={loading}>Cadastrar-se</button>
         </form>
         <footer className={styles.footer}>
           <p className={styles.text}>Já possui uma conta?</p>
