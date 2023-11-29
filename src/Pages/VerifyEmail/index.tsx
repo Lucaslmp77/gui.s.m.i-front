@@ -7,6 +7,8 @@ export const VerifyEmail = () => {
     const [verificationCode, setVerificationCode] = useState(Array(4).fill(''));
     const [isCodeSent, setIsCodeSent] = useState(false);
     const [verificationResult, setVerificationResult] = useState<string | null>(null);
+    const [resendSuccess, setResendSuccess] = useState<boolean>(false);
+    const [isResendingCode, setIsResendingCode] = useState<boolean>(false);
 
     const { email } = useParams();
 
@@ -41,8 +43,28 @@ export const VerifyEmail = () => {
         }
     };
 
-    const handleResendCode = () => {
-        console.log('Código reenviado.');
+    const handleResendCode = async () => {
+        const otpClient = new OtpClient();
+
+        if (email) {
+            const emailDecoded = atob(email);
+
+            const body: { email: string } = { email: '' };
+
+            body.email = emailDecoded;
+
+            try {
+                setIsResendingCode(true);
+                await otpClient.sendVerificationOtpEmail(body);
+                setResendSuccess(true);
+            } catch (error: any) {
+                console.log(error);
+            } finally {
+                setIsResendingCode(false);
+            }
+        } else {
+            console.log(email);
+        }
     };
 
     const handleBack = () => {
@@ -74,10 +96,11 @@ export const VerifyEmail = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setVerificationResult(null);
-        }, 5000);
+            setResendSuccess(false);
+        }, 1500);
 
         return () => clearTimeout(timer);
-    }, [verificationResult]);
+    }, [verificationResult, resendSuccess]);
 
     return (
         <div className={styles.pageContainer}>
@@ -85,6 +108,11 @@ export const VerifyEmail = () => {
                 {verificationResult !== null && (
                     <div className={verificationResult === 'success' ? styles.successMessage : styles.errorMessage}>
                         {verificationResult === 'success' ? 'Código verificado com sucesso!' : 'Código inválido!'}
+                    </div>
+                )}
+                {resendSuccess && (
+                    <div className={styles.successMessage}>
+                        Código reenviado com sucesso!
                     </div>
                 )}
                 <h2 className={styles.heading}>Confirmação de Email</h2>
@@ -95,7 +123,7 @@ export const VerifyEmail = () => {
                             <button
                                 className={styles.resend}
                                 onClick={handleResendCode}
-                                disabled={verificationResult !== null}
+                                disabled={verificationResult !== null || isResendingCode}
                             >
                                 Enviar código novamente
                             </button>
@@ -111,7 +139,7 @@ export const VerifyEmail = () => {
                                     key={index}
                                     className={styles.input}
                                     required
-                                    disabled={verificationResult !== null}
+                                    disabled={verificationResult !== null || isResendingCode}
                                 />
                             ))}
                         </form>
@@ -119,7 +147,7 @@ export const VerifyEmail = () => {
                             type="submit"
                             onClick={handleVerificationSubmit}
                             className={styles.button}
-                            disabled={verificationResult !== null}
+                            disabled={verificationResult !== null || isResendingCode}
                         >
                             Verificar
                         </button>
@@ -127,7 +155,7 @@ export const VerifyEmail = () => {
                             <button
                                 className={styles.backButton}
                                 onClick={handleBack}
-                                disabled={verificationResult !== null}
+                                disabled={verificationResult !== null || isResendingCode}
                             >
                                 Voltar
                             </button>

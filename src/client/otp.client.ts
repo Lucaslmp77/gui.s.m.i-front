@@ -12,6 +12,14 @@ export class OtpClient {
         })
     }
 
+    public async sendVerificationOtpEmail(body: { email: string }): Promise<any> {
+        try {
+            return (await this.axiosClient.post(`/email-verification`, body)).data;
+        } catch (error: any) {
+            return Promise.reject(error.response);
+        }
+    }
+
     public async verifyUserEmail(body: { email: string, otp: string }): Promise<any> {
         try {
             return (await this.axiosClient.post(`/email-verification/verify/${body.email}`, body)).data;
