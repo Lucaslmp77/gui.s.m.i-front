@@ -1,38 +1,58 @@
 import { useState } from "react";
+import { NavLink, useNavigate } from 'react-router-dom';
 import styles from "./styles.module.css";
 import { UserClient } from "../../client/user.client";
 import { User } from "../../models/user";
-import { NavLink } from "react-router-dom";
 
 export const Register = () => {
   const [formData, setFormData] = useState<any>({
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [emailExist, setEmailExist] = useState(false);
 
   const isEmailUnique = async (email: string) => {
     const userClient = new UserClient();
-    return await userClient.findUserByEmail(email);
+
+    try {
+      const user = await userClient.findUserByEmail(email);
+      if (user.verified === false) {
+        setEmailExist(false);
+        return await userClient.delete(email);
+      } else {
+        setEmailExist(true);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     clearErrors(name);
+
+    if (name === "password" && formData.confirmPassword) {
+      validateField("confirmPassword", formData.confirmPassword);
+    }
   };
 
   const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === "name" || name === "password" || name === "email") {
+    if (name === "name" || name === "password" || name === "email" || name === "confirmPassword") {
       const isValid = await validateField(name, value);
       if (!isValid) {
         e.preventDefault();
@@ -82,6 +102,22 @@ export const Register = () => {
       }
     }
 
+    if (name === "confirmPassword") {
+      if (value.length === 0) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "Confirmação de senha é obrigatória",
+        }));
+        isValid = false;
+      } else if (value !== formData.password) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: "As senhas não coincidem",
+        }));
+        isValid = false;
+      }
+    }
+
     if (name === "email") {
       if (value.length === 0) {
         setErrors((prevErrors) => ({
@@ -95,6 +131,18 @@ export const Register = () => {
           email: "Email no formato inválido",
         }));
         isValid = false;
+      } else {
+        try {
+          await isEmailUnique(value);
+          if (emailExist === true) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              email: "Email já cadastrado!",
+            }));
+          }
+        } catch (error: any) {
+          console.error(error);
+        }
       }
     }
 
@@ -106,12 +154,15 @@ export const Register = () => {
     return emailRegex.test(email);
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const isFormValid = await validateForm();
 
       if (isFormValid) {
+        setLoading(true);
         const userClient = new UserClient();
         const user = new User();
 
@@ -120,21 +171,22 @@ export const Register = () => {
         user.password = formData.password;
 
         await userClient.save(user);
-        setSuccessMessage("Usuário cadastrado com sucesso");
-        setFormData({ name: "", email: "", password: "" });
-
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 5000);
+        setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+        navigate(`/email-verification/verify/${btoa(user.email)}`);
       }
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
     }
   };
 
   const validateForm = async () => {
     let isValid = true;
-    const fieldNames = ["name", "email", "password"];
+    const fieldNames = ["name", "email", "password", "confirmPassword"];
 
     for (const name of fieldNames) {
       isValid = await validateField(name, formData[name]) && isValid;
@@ -184,8 +236,19 @@ export const Register = () => {
             />
             {errors.password && <div className={styles.error}>{errors.password}</div>}
           </div>
-          <button className={styles.butt} type="submit">
-            Cadastre-se
+          <div className={styles.inputs}>
+            <label>Confirme a Senha</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {errors.confirmPassword && <div className={styles.error}>{errors.confirmPassword}</div>}
+          </div>
+          <button className={styles.butt} type="submit" disabled={loading}>
+            {loading ? "Carregando..." : "Cadastre-se"}
           </button>
         </form>
         <footer className={styles.footer}>
