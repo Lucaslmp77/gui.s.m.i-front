@@ -57,7 +57,8 @@ export const Login = () => {
             sessionStorage.setItem('name', decoded.name)
         } catch (error) {
             if (user.verified == false) {
-                setError('Usuário não autenticado, verifique seu email ou faça o cadastro novamente.');
+                setError('Usuário com email não verificado');
+                navigate(`/email-verification/verify/${btoa(user.email)}`);
             } else {
                 setError('Autenticação falhou. Por favor, verifique suas credenciais.');
                 console.error('Erro de autenticação:', error);

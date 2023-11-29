@@ -21,10 +21,23 @@ export const Register = () => {
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [emailExist, setEmailExist] = useState(false);
 
   const isEmailUnique = async (email: string) => {
     const userClient = new UserClient();
-    return await userClient.findUserByEmail(email);
+
+    try {
+      const user = await userClient.findUserByEmail(email);
+      if (user.verified === false) {
+        setEmailExist(false);
+        return await userClient.delete(email);
+      } else {
+        setEmailExist(true);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,11 +131,18 @@ export const Register = () => {
           email: "Email no formato inválido",
         }));
         isValid = false;
-      } else if (await isEmailUnique(value)) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          email: "Este email já existe",
-        }));
+      } else {
+        try {
+          await isEmailUnique(value);
+          if (emailExist === true) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              email: "Email já cadastrado!",
+            }));
+          }
+        } catch (error: any) {
+          console.error(error);
+        }
       }
     }
 

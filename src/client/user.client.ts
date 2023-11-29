@@ -22,11 +22,20 @@ export class UserClient {
         }
     }
 
-    public async findUserByEmail(email: string) : Promise<User> {
+    public async findUserByEmail(email: string): Promise<User> {
         try {
             return (await this.axiosClient.get<User>(`/${email}`)).data
         }
-        catch(error:any) {
+        catch (error: any) {
+            return Promise.reject(error.response)
+        }
+    }
+
+    public async delete(email: string): Promise<any> {
+        try {
+            return (await this.axiosClient.delete(`${email}`)).data
+        }
+        catch (error: any) {
             return Promise.reject(error.response)
         }
     }
