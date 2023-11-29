@@ -35,7 +35,7 @@
     font-family: 'Poppins', sans-serif;
     font-size: 48px;
     font-style: normal;
-    
+
     line-height: normal;
     color: #E0D3DE;
     padding: 20px;
@@ -64,7 +64,7 @@
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     font-style: normal;
-    
+
     line-height: normal;
     color: #E0D3DE;
 }
@@ -78,7 +78,7 @@
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     font-style: normal;
-    
+
     line-height: normal;
     padding: 5%;
 }
@@ -125,7 +125,7 @@
     font-family: 'Poppins', sans-serif;
     font-size: 18px;
     font-style: normal;
-    
+
     line-height: normal;
     color: #E0D3DE;
 }
@@ -144,4 +144,32 @@
     border-radius: 5px;
     color: green;
     background-color: rgb(188, 255, 188);
+}
+
+.loadingContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    position: absolute;
+}
+
+.spinner {
+    font-size: 70px;
+    margin-right: 10px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.sectionLoading {
+    opacity: 80%;
 }
