@@ -92,3 +92,21 @@
 .backButton:hover {
     background-color: #555;
 }
+
+/* -------------------------- */
+
+.successMessage {
+    background-color: #27ae60;
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.errorMessage {
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 20px;
+}

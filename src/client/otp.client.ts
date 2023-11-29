@@ -16,7 +16,11 @@ export class OtpClient {
         try {
             return (await this.axiosClient.post(`/email-verification/verify/${body.email}`, body)).data;
         } catch (error: any) {
-            return Promise.reject(error.response);
+            if (error.response && error.response.status === 500) {
+                return Promise.reject('Código inválido!');
+            } else {
+                return Promise.reject(error.response);
+            }
         }
     }
 }

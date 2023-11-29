@@ -2,12 +2,11 @@ import { useState } from 'react';
 import styles from './styles.module.css';
 import { NavLink, useParams } from 'react-router-dom';
 import { OtpClient } from '../../client/otp.client';
-import { hash } from 'bcryptjs';
 
 export const VerifyEmail = () => {
     const [verificationCode, setVerificationCode] = useState(Array(4).fill(''));
     const [isCodeSent, setIsCodeSent] = useState(false);
-    const [verificationResult, setVerificationResult] = useState(null);
+    const [verificationResult, setVerificationResult] = useState<string | null>(null);
 
     const { email } = useParams();
 
@@ -15,26 +14,32 @@ export const VerifyEmail = () => {
         e.preventDefault();
         const otp = verificationCode.join('');
 
-        try {
-            if (email) {
-                const emailDecoded = atob(email);
-                console.log(email);
-                console.log(otp, otp.length);
+        if (email) {
+            const emailDecoded = atob(email);
 
-                const body: { email: string, otp: string } = { email: '', otp: '' };
+            const body: { email: string, otp: string } = { email: '', otp: '' };
 
-                body.email = emailDecoded;
-                body.otp = otp;
+            body.email = emailDecoded;
+            body.otp = otp;
 
-                const otpClient = new OtpClient();
-                const result = await otpClient.verifyUserEmail(body);
-                console.log(result);
-            } else {
-                console.error(email);
+            const otpClient = new OtpClient();
+
+            try {
+                await otpClient.verifyUserEmail(body);
+                setVerificationResult('success');
+            } catch (error: any) {
+                if (typeof error === 'string') {
+                    setVerificationResult(error);
+                } else if (error.response && error.response.data) {
+                    setVerificationResult(error.response.data);
+                } else {
+                    setVerificationResult('Erro na verificação do código.');
+                }
             }
-        } catch (error) {
-            console.error('Erro ao verificar código:', error);
+        } else {
+            console.log(email);
         }
+
     };
 
     const handleResendCode = () => {
@@ -70,6 +75,11 @@ export const VerifyEmail = () => {
     return (
         <div className={styles.pageContainer}>
             <div className={styles.card}>
+                {verificationResult !== null && (
+                    <div className={verificationResult === 'success' ? styles.successMessage : styles.errorMessage}>
+                        {verificationResult === 'success' ? 'Código verificado com sucesso!' : 'Código inválido!'}
+                    </div>
+                )}
                 <h2 className={styles.heading}>Confirmação de Email</h2>
                 {!isCodeSent ? (
                     <div>
