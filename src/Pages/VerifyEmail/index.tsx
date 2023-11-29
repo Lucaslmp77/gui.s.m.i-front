@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import styles from './styles.module.css';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { OtpClient } from '../../client/otp.client';
 
 export const VerifyEmail = () => {
     const [verificationCode, setVerificationCode] = useState(Array(4).fill(''));
-    const [isCodeSent, setIsCodeSent] = useState(false);
     const [verificationResult, setVerificationResult] = useState<string | null>(null);
     const [resendSuccess, setResendSuccess] = useState<boolean>(false);
     const [isResendingCode, setIsResendingCode] = useState<boolean>(false);
 
     const { email } = useParams();
+    const navigate = useNavigate();
 
     const handleVerificationSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -97,7 +97,10 @@ export const VerifyEmail = () => {
         const timer = setTimeout(() => {
             setVerificationResult(null);
             setResendSuccess(false);
-        }, 1500);
+            if (verificationResult === 'success') {
+                navigate('/');
+            }
+        }, 2300);
 
         return () => clearTimeout(timer);
     }, [verificationResult, resendSuccess]);
@@ -111,61 +114,53 @@ export const VerifyEmail = () => {
                     </div>
                 )}
                 {resendSuccess && (
-                    <div className={styles.successMessage}>
-                        Código reenviado com sucesso!
-                    </div>
+                    <div className={styles.successMessage}>Código reenviado com sucesso!</div>
                 )}
                 <h2 className={styles.heading}>Confirmação de Email</h2>
-                {!isCodeSent ? (
-                    <div>
-                        <div className={styles.subtext}>
-                            <p>Insira o código de verificação de 4 dígitos enviado para o seu email.</p>
-                            <button
-                                className={styles.resend}
-                                onClick={handleResendCode}
-                                disabled={verificationResult !== null || isResendingCode}
-                            >
-                                Enviar código novamente
-                            </button>
-                        </div>
-                        <form className={styles.form}>
-                            {verificationCode.map((digit, index) => (
-                                <input
-                                    type="text"
-                                    value={digit}
-                                    onChange={(e) => handleCodeInputChange(index, e.target.value)}
-                                    maxLength={1}
-                                    id={`code-input-${index}`}
-                                    key={index}
-                                    className={styles.input}
-                                    required
-                                    disabled={verificationResult !== null || isResendingCode}
-                                />
-                            ))}
-                        </form>
+                <div>
+                    <div className={styles.subtext}>
+                        <p>Insira o código de verificação de 4 dígitos enviado para o seu email.</p>
                         <button
-                            type="submit"
-                            onClick={handleVerificationSubmit}
-                            className={styles.button}
+                            className={styles.resend}
+                            onClick={handleResendCode}
                             disabled={verificationResult !== null || isResendingCode}
                         >
-                            Verificar
+                            Enviar código novamente
                         </button>
-                        <NavLink to={`/register`}>
-                            <button
-                                className={styles.backButton}
-                                onClick={handleBack}
-                                disabled={verificationResult !== null || isResendingCode}
-                            >
-                                Voltar
-                            </button>
-                        </NavLink>
                     </div>
-                ) : (
-                    <p className={styles.successText}>
-                        {verificationResult === 'success' ? 'Código verificado com sucesso!' : 'Falha na verificação do código.'}
-                    </p>
-                )}
+                    <form className={styles.form}>
+                        {verificationCode.map((digit, index) => (
+                            <input
+                                type="text"
+                                value={digit}
+                                onChange={(e) => handleCodeInputChange(index, e.target.value)}
+                                maxLength={1}
+                                id={`code-input-${index}`}
+                                key={index}
+                                className={styles.input}
+                                required
+                                disabled={verificationResult !== null || isResendingCode}
+                            />
+                        ))}
+                    </form>
+                    <button
+                        type="submit"
+                        onClick={handleVerificationSubmit}
+                        className={styles.button}
+                        disabled={verificationResult !== null || isResendingCode}
+                    >
+                        Verificar
+                    </button>
+                    <NavLink to={`/register`}>
+                        <button
+                            className={styles.backButton}
+                            onClick={handleBack}
+                            disabled={verificationResult !== null || isResendingCode}
+                        >
+                            Voltar
+                        </button>
+                    </NavLink>
+                </div>
             </div>
         </div>
     );
