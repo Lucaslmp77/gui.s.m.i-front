@@ -6,7 +6,7 @@ import D8 from '../../assets/dice/D8.png';
 import D10 from '../../assets/dice/D10.png';
 import D12 from '../../assets/dice/D12.png';
 import D20 from '../../assets/dice/D20.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import more from '../../assets/dice/MAIS.png'
 import less from '../../assets/dice/MENOS.png'
@@ -26,12 +26,6 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
     const [valorD10, setValorD10] = useState(0);
     const [valorD12, setValorD12] = useState(0);
     const [valorD20, setValorD20] = useState(0);
-    //const [resultadoParcial, setResultadoParcial] = useState<string>('');
-
-    useEffect(() => {
-        // Este efeito será chamado sempre que resultadoParcial for atualizado
-        functionSubmit();
-    }, [setResultadoParcial,functionSubmit]);
 
     type SetValueFunction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -47,6 +41,7 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
     };
 
     const randomValues = () => {
+        setResultadoParcial('');
         const dados = [
             { nome: 'D4', lados: 4, quantidade: valorD4 },
             { nome: 'D6', lados: 6, quantidade: valorD6 },
@@ -67,7 +62,6 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
         };
 
         let resultadoTotal = 0;
-        setResultadoParcial('');
 
         dados.forEach((dado) => {
             if (dado.quantidade > 0) {
@@ -76,13 +70,15 @@ export const ModifiersModal: React.FC<ModifiersProps> = ({ isOpen, onRequestClos
 
                 resultadoTotal += somaResultado;
 
-                const resultadoParcialAtual = `${dado.quantidade}${dado.nome}: [${resultado.join(', ')}] -- TOTAL: ${somaResultado}`;
+                const resultadoParcialAtual = `${dado.quantidade}${dado.nome}: [${resultado.join(', ')}] `;
                 setResultadoParcial((prevResultado) => prevResultado + resultadoParcialAtual);                
-            }
+            } 
         });
+
         if (resultadoTotal !== 0) {
             onRequestClose();
             onDiceRoll(resultadoTotal);
+            functionSubmit();
         }
         
         setValorD4(0);
