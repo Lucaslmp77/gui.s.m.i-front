@@ -74,6 +74,11 @@ export const TableAccess = () => {
                 setMessageList(prevMessageList => [...prevMessageList, message]);
             });
 
+            socket.on('dice', (message) => {
+                console.log("Salvou aonde o renan falou")
+                setMessageList(prevMessageList => [...prevMessageList, message]);
+            })
+
             socket.on('messageHistory', (message) => {
                 message.forEach((dado: any) => {
                     setMessageListHistory(prevMessageList => [...prevMessageList, dado]);
@@ -90,7 +95,8 @@ export const TableAccess = () => {
             return () => {
                 socket.off('messageHistory');
                 socket.off('message');
-                socket.off('userList')
+                socket.off('dice');
+                socket.off('userList');
                 socket.disconnect();
             };
         }
@@ -101,6 +107,7 @@ export const TableAccess = () => {
     }, [messageList]);
 
     const handleSubmit = () => {
+
         if (messageRef.current?.value.trim() !== '') {
             const author = sessionStorage.getItem('name');
             const rpgGameId = id;
@@ -113,7 +120,6 @@ export const TableAccess = () => {
                 dateH,
                 rpgGameId
             };
-
             const socket = socketRef.current;
             if (socket) {
                 socket.emit('message', { room: rpgGameId, data });
@@ -121,8 +127,30 @@ export const TableAccess = () => {
                 focusInput();
             }
         }
-
     };
+
+    const rollDiceSubmit = () => {
+        console.log("chegou na função")
+        
+        if (resultadoParcial.length > 0){
+            const author = "Sistema";
+            const rpgGameId = id;
+            const text = resultadoParcial;
+            const dateH = new Date();
+            const data = {
+                author,
+                text,
+                userId,
+                dateH,
+                rpgGameId
+            };
+            const socket = socketRef.current;
+            if (socket) {
+                socket.emit('dice', { room: rpgGameId, data });
+            }
+        }
+    }
+
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -167,7 +195,7 @@ export const TableAccess = () => {
     const [modalIsOpen, setIsOpen] = React.useState(false);
     const [resultadoParcial, setResultadoParcial] = useState<string>('');
 
-    console.log(resultadoParcial)
+
     function openModalUsers() {
         setIsOpen(true);
     }
@@ -221,7 +249,6 @@ export const TableAccess = () => {
                             <p key={index}>[{date.toLocaleString()}] {'--'} <span className={styles.userMessage}>{message.author}</span>: {message.text}</p>
                         );
                     })}
-                    <p>{resultadoParcial}</p>
                     <div ref={bottomRef} />
                 </div>
 
@@ -267,7 +294,7 @@ export const TableAccess = () => {
                     </div>
                 </div>
             </div>
-            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} onDiceRoll={handleDiceRoll} setResultadoParcial={setResultadoParcial} />
+            <ModifiersModal isOpen={diceModal} onRequestClose={closeDiceModal} onDiceRoll={handleDiceRoll} setResultadoParcial={setResultadoParcial} functionSubmit={rollDiceSubmit}/>
             <ListNpcsModal isOpen={isModalNpcOpen} onRequestClose={closeModalNpc} />
             <EditTableModal isOpen={isModalOpen} onRequestClose={closeModal} />
             <GameRulesModal isOpen={isRulesModalOpen} onRequestClose={closeRulesModal} />
